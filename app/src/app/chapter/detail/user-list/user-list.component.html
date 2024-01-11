@@ -1,0 +1,81 @@
+<ion-card *ngFor="let user of users" class="cursor-pointer" class="body">
+  <ion-card-content *ngIf="isLoading">
+    <div class="flex">
+      <ion-checkbox *ngIf="isSelectCheckbox" class="checkbox" size="small"
+        (ionChange)="changeCheckbox($event, user.id)"></ion-checkbox>
+      <ion-avatar slot="start">
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      </ion-avatar>
+      <div class="ml-3" style="width: 60%;">
+        <ion-card-title class="text-base font-extrabold" [routerLink]="['/tabs', 'users', user.id]">
+          <ion-skeleton-text [animated]="true" style="height: 24px;"></ion-skeleton-text>
+        </ion-card-title>
+        <div class="text-xs">
+          <ion-skeleton-text [animated]="true" style="height: 16px;"></ion-skeleton-text>
+        </div>
+        <div class="items-center group">
+          <div
+            *ngIf="((getMyId() !== user.id) && hasPermission('UPDATE_CHAPTER') && !isIAMGroupAdmin(user.user_chapter?.iam_group_id));then IAMGroupSelect else IAMGroupText">
+          </div>
+          <ng-template #IAMGroupSelect>
+            <div class="flex" (click)="iamGroup.open()">
+              <ion-icon name="lock-closed-outline" class="text-sm"></ion-icon>
+              <div class="items-center rounded-lg pl-1">
+                <app-select title="{{ 'SELECT.LABEL.IAM_GROUP' | translate }}" [items]="iamGroups"
+                  [value]="user.user_chapter?.iam_group_id"
+                  placeHolder="{{ 'MODAL.USER.CHOICE_IAM_GROUP' | translate }}"
+                  (selectionChange)="actionChangeIAMGroup($event, user, iamGroup)" class="text-xs" #iamGroup>
+                </app-select>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template #IAMGroupText>
+            <div class="flex" *ngIf="getIAMGroupById(user.user_chapter?.iam_group_id).name">
+              <ion-icon name="lock-closed-outline" class="text-sm"></ion-icon>
+              <ion-text class="pl-1 text-xs">{{getIAMGroupById(user.user_chapter?.iam_group_id).name}}</ion-text>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </ion-card-content>
+
+  <ion-card-content *ngIf="!isLoading">
+    <div class="flex">
+      <ion-checkbox *ngIf="isSelectCheckbox" class="checkbox scale-75"
+        [disabled]="getMyId() === user.id || (getMeIAMGroupLevel() <= (getIAMGroupById(user.user_chapter?.iam_group_id).level || 0))"
+        (ionChange)="changeCheckbox($event, user.id)"></ion-checkbox>
+      <app-avatar (getSrcImage)="getSrcImage($event)" [classNameAvatar]="'item'" [updateAvatar]="updateAvatar"
+        [data]="user" [isAvatar]="isAvatar"></app-avatar>
+
+      <div class="ml-3">
+        <ion-card-title class="text-base font-extrabold" [routerLink]="['/tabs', 'users', user.id]">
+          <div [ngClass]="{'label-verified': user.verified_flag}">
+            {{ user.username }}
+          </div>
+        </ion-card-title>
+
+        <div class="text-xs" *ngIf="user.is_public_phone">
+          <ion-icon name="call-outline"></ion-icon> {{ user.phone }}
+        </div>
+
+        <div class="items-center group">
+          <div class="flex">
+            <ion-icon name="lock-closed-outline" class="text-sm" *ngIf="user.user_chapter?.iam_group_id"></ion-icon>
+            <div class="items-center rounded-lg pl-1">
+              <app-select title="{{ 'SELECT.LABEL.IAM_GROUP' | translate }}" [items]="iamGroups"
+                [disabled]="!((getMyId() !== user.id) && hasPermission('UPDATE_CHAPTER') && !isIAMGroupAdmin(user.user_chapter?.iam_group_id))"
+                [value]="user.user_chapter?.iam_group_id || getDefaultIAMGroupId()"
+                placeHolder="{{ 'MODAL.USER.CHOICE_IAM_GROUP' | translate }}"
+                (selectionChange)="actionChangeIAMGroup($event, user, iamGroup)" class="text-xs" #iamGroup>
+              </app-select>
+            </div>
+          </div>
+          <div class="mt-1">
+            <app-user-segment [user]="user"></app-user-segment>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>

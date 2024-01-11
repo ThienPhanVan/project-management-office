@@ -1,0 +1,7 @@
+<ion-select label="{{ 'SELECT.LABEL.LANGUAGE' | translate}}" class="ion-page text-xs"
+  okText="{{ 'BUTTON.CHOICE' | translate}}" cancelText="{{ 'BUTTON.CANCEL' | translate}}" [(ngModel)]="languageId"
+  (ionChange)="ionChange()">
+  <ion-select-option *ngFor="let item of languages" [value]="item.key">
+    {{item.language}}
+  </ion-select-option>
+</ion-select>

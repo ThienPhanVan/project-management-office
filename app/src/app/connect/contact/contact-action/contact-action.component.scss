@@ -1,0 +1,10 @@
+
+.disable-pointer-events {
+  pointer-events: none;
+  cursor: default; 
+}
+
+
+::ng-deep ion-input .native-input {
+  cursor: pointer;
+}

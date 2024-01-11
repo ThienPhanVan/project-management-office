@@ -1,0 +1,6 @@
+<div class="flex items-center">
+  <ion-button *ngFor="let group of duplicateEmojiGroups" (click)="unselectEmoji(group)"
+    [ngClass]="isMyIdInGroup(group)?'button-hightlight':'button-noborder'" class="p-px" fill="clear" size="small" shape="round">
+    <span class="text-xs">{{group.char}} {{group.count}}</span>
+  </ion-button>
+</div>

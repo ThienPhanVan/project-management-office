@@ -1,0 +1,246 @@
+<div *ngIf="messages.length === 0">
+  <div class="text-center my-1">
+    <span> You named the group to Test </span>
+  </div>
+  <div
+    class="grid grid-cols-3 px-16 justify-items-center text-center text-xs gap-3 pt-2 my-1"
+  ></div>
+  <div class="text-center my-1">
+    <span> You created this group</span>
+  </div>
+  <div class="text-center">
+    <span> You're not connceted to 1 member</span>
+  </div>
+</div>
+
+<!-- <div *ngIf="pinnedMessage" class="pinned-message-container" (mouseenter)="setHover(true)" (mouseleave)="setHover(false)" #pinnedMessageContainer>
+  <div>
+    <div *ngIf="pinnedMessage.message" class="pinned-indicator flex" (click)="scrollToMessage(pinnedMessage.message.id)">
+      <div>
+        <ion-icon name="chatbubble-ellipses-outline" size="large"></ion-icon>
+      </div>
+      <div class="pinned-info">
+        <p class="font-bold">Tin nhắn</p>
+        <div class="font-thin text-sm">
+          {{ pinnedMessage.user?.username }} : {{ pinnedMessage.message.description }}
+        </div>
+      </div>
+      <ion-button fill="clear" id="click-trigger" class="ellipsis-button"><ion-icon *ngIf="isHovered" name="ellipsis-vertical-outline" class="text-xl mr-4" ></ion-icon></ion-button>
+      <ion-popover trigger="click-trigger" triggerAction="click">
+        <ng-template>
+          <ion-content class="ion-padding" (click)="showAction(pinnedMessage)">Unpin Message</ion-content>
+        </ng-template>
+      </ion-popover>
+    </div>
+  </div>
+</div> -->
+
+<div *ngFor="let message of messages; let i = index" class="messages-container">
+  <div
+    [ngClass]="
+      !isMyMessage(message) ? 'message-align-start' : 'message-align-end'
+    "
+    [attr.id]="'message-' + message.id"
+  >
+    <div
+      class="flex"
+      [ngClass]="{
+        'ml-6': !shouldDisplaySameUserStyles(
+          message,
+          i > 0 ? messages[i - 1] : null
+        )
+      }"
+    >
+      <div
+        *ngIf="
+          shouldDisplaySameUserStyles(
+            message,
+            i > 0 ? messages[i - 1] : null
+          ) &&
+          message.user &&
+          !isMyMessage(message)
+        "
+        class="avatar-container"
+      >
+        <app-avatar
+          [classNameAvatar]="'thumbnail-15'"
+          (getSrcImage)="getSrcImage($event)"
+          [isAvatar]="true"
+          [data]="message.user"
+          class="divide-red-600 outline-1"
+        ></app-avatar>
+      </div>
+      <div
+        class="ml-2 table-row message"
+        long-press
+        (press)="messageActionList.open(message)"
+        [class.clickable]="!isMyMessage(message)"
+      >
+        <div class="flex items-start text-base">
+          <span
+            class="font-bold"
+            *ngIf="
+              shouldDisplaySameUserStyles(
+                message,
+                i > 0 ? messages[i - 1] : null
+              ) &&
+              message.user &&
+              !isMyMessage(message)
+            "
+          >
+            {{ message.user.username }}
+          </span>
+        </div>
+        <div class="flex">
+          <ion-buttons shape="round" fill="outline" *ngIf="isMyMessage(message)" (click)="messageActionList.open(message)" size="small">
+            <ion-icon name="ellipsis-vertical-sharp" class="mr-2 text-right text-xs"></ion-icon>
+          </ion-buttons>
+          <div
+            [ngClass]="{
+              'background-primary': isMyMessage(message) && !message.content,
+              'background-light': !isMyMessage(message) && !message.content,
+              'min-w-[7rem]': true,
+              'rounded-lg': true,
+           
+            }"
+            class="rounded-lg border-2 border-violet-100"
+          >
+            <div *ngIf="message.description || (message.message_images && message.message_images.length > 0)" class="text-wrap">
+              <div *ngIf="isLink(message.description)" class="pt-2 px-2">
+                <div [innerHTML]="sanitizedHtml"></div>
+              </div>
+              <div *ngIf="!isLink(message.description)">
+                <div *ngIf="message.description" class="px-2 pt-2" [ngClass]="{
+                  'italic': message.description === ('TAB.MESSAGE.UNSEND_MESSAGE' | translate)
+                }">
+                  {{ message.description.split('TAB.MESSAGE.EDITED_MESSAGE' | translate)[0] }}
+                </div>
+                <div *ngIf="message.description" class="px-2 pt-2" [ngClass]="{
+                  'italic': message.description === ('TAB.MESSAGE.UNSEND_MESSAGE' | translate)
+                }">
+                  <span *ngIf="message.description.includes('TAB.MESSAGE.EDITED_MESSAGE' | translate) && message.description !== ('TAB.MESSAGE.UNSEND_MESSAGE' | translate)" class="text-xs">{{'TAB.MESSAGE.EDITED_MESSAGE' | translate}}{{ message.description.split('TAB.MESSAGE.EDITED_MESSAGE' | translate)[2] }}</span>
+                </div>
+                <div *ngIf="!message.description">
+                  <ng-container *ngIf="message.message_images && message.message_images.length > 0 && !isVideoUrl(message.message_images[0].image_url)">
+                    <ion-img [src]="message.message_images[0].image_url" class="img-message" (click)="onImageClicked(message.message_images[0].image_url)"></ion-img>
+                  </ng-container>
+                  
+                  <ng-container *ngIf="message.message_images && message.message_images.length > 0 && isVideoUrl(message.message_images[0].image_url)">
+                    <div style="width: 100%;" (click)="onVideoClicked(message.message_images[0].image_url)">
+                      <video controls style="width: 100%;">
+                        <source [src]="message.message_images[0].image_url" type="video/mp4" />
+                      </video>
+                    </div>
+                  </ng-container>
+              </div>
+                
+              </div>
+            </div>
+
+            <div class="flex font-thin text-xs medium-light-color" *ngIf="
+              shouldDisplaySameUserStyles(
+                message,
+                i >= 0 ? messages[i + 1] : null
+              ) &&
+              message.user
+              "
+              >
+            <ion-text
+              class="py-1 flex font-thin text-sm medium-light-color"
+              [ngClass]="!isMyMessage(message) ? 'ml-2' : 'ml-2'"   
+            >
+              {{ formatUpdateTime(message.updated_date) }}
+            </ion-text>
+            </div>
+
+            <app-attachment-list
+              *ngIf="message.attachments"
+              [attachments]="message.attachments"
+              (onImageClicked)="onImageClicked($event)"
+            ></app-attachment-list>
+          </div>
+          <ion-buttons *ngIf="!isMyMessage(message)" class="p-0 text-right text-xs ml-2" size="small" shape="round" fill="outline" (click)="messageActionList.open(message)">
+            <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
+          </ion-buttons>
+        </div>
+        <div
+          *ngIf="isMyMessage(message)"
+          class="mr-1 status-color rounded-full px-2"
+        >
+          <div
+            *ngIf="message.status === messageStatus.DELIVERED"
+            class="flex items-center"
+          >
+            <ion-icon name="checkmark-sharp" class="text-xs"></ion-icon>
+            <span class="text-xs pl-1" style="font-size: 70%">Đã gửi</span>
+          </div>
+
+          <div
+            *ngIf="message.status === messageStatus.SENT"
+            class="flex items-center"
+          >
+            <ion-icon
+              name="arrow-forward-circle-outline"
+              class="text-xs"
+            ></ion-icon>
+            <span class="text-xs pl-1" style="font-size: 70%">Đang gửi</span>
+          </div>
+
+          <div
+            *ngIf="message.status === messageStatus.ERROR"
+            class="flex items-center"
+          >
+            <ion-icon
+              name="alert-circle-outline"
+              class="text-sm"
+              color="danger"
+            ></ion-icon>
+            <span class="text-xs pl-1" style="font-size: 70%">Có lỗi</span>
+          </div>
+        </div>
+
+        <app-emoji-chip-list
+          *ngIf="message.emojis && message.emojis.length"
+          class="block"
+          [emojiUsers]="message.emojis"
+          (onEmojiUnselect)="emojiUnselect($event, message)"
+        ></app-emoji-chip-list>
+        <div
+          *ngIf="message.message_reactions"
+          class="message-reactions"
+          (click)="presentModal(message)"
+          [ngClass]="!isMyMessage(message) ? '' : 'ml-4'" 
+        >
+          <div
+            *ngFor="let reaction of message.message_reactions.slice(0, 1)"
+            class="message-reaction-badge"
+          >
+            <ion-button size="small" shape="round" fill="outline">
+              <ion-badge color="light" class="message-reaction-emoji">
+                {{ reaction.react_emoji }}
+              </ion-badge>
+              <ion-badge
+                *ngIf="getRemainingReactionsCount(message) > 0"
+                color="light-primary"
+                class="message-reaction-emoji"
+              >
+                +{{ getRemainingReactionsCount(message) }}
+              </ion-badge>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-message-action-list
+    [group]="message?.message_group"
+    (onDelete)="onDeleteMessage($event)"
+    (onEmojiChange)="emojiChanged(message, $event)"
+    #messageActionList
+    (emojiSelected)="onReactionsHandler($event)"
+  ></app-message-action-list>
+
+  <app-zoom [showModal]="showZoomModal" [image]="imagesString" (closeModal)="closeModal(false)"></app-zoom>
+  <app-preview-video #appPreviewVideo [showModal]="showVideoModal" [video]="videoString" (closeModal)="closeVideoModal(false)"></app-preview-video>
+</div>

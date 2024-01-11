@@ -1,0 +1,46 @@
+<!-- <ion-item> -->
+<label style="padding-left: 16px" *ngIf="arrayHashtag.length">Hashtag</label>
+<div *ngIf="arrayHashtag.length" class="hashtags">
+  <ion-chip
+    size="small"
+    color="none"
+    class="text-xs p-0 color-blue-600"
+    *ngFor="let tag of arrayHashtag; index as i"
+    style="
+      margin-right: 12px;
+      border: 1px solid #f1f1f1;
+      padding: 8px;
+      background-color: #f1f1f1;
+    "
+    (click)="removeHashtag(i)"
+  >
+    <a color="primary" class="color-blue-600">#{{ tag }}</a>
+    <ion-icon name="close" style="font-size: 12px; color: red"></ion-icon>
+  </ion-chip>
+  <!-- <div *ngFor="let item of arrayHashtag; index as i">
+    <ion-chip>
+      <ion-label>{{ item }}</ion-label>
+      <ion-icon name="close" (click)="removeHashtag(i)"></ion-icon>
+    </ion-chip>
+  </div> -->
+</div>
+<!-- </ion-item> -->
+<ion-item>
+  <div class="hashtag-input">
+    <label *ngIf="!arrayHashtag.length">Hashtag</label>
+    <ion-input
+      [clearInput]="true"
+      (ionInput)="onSearchChange($event)"
+      (keypress)="eventHandler($event)"
+      type="text"
+      labelPlacement="stacked"
+      [placeholder]="'ENTER' | translate"
+      #ionInputEl
+      autocomplete="off"
+      autocorrect="off"
+      class="tag"
+      maxlength="125"
+    >
+    </ion-input>
+  </div>
+</ion-item>

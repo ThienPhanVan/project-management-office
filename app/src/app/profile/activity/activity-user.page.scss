@@ -1,0 +1,25 @@
+ion-card-header {
+    padding: 0;
+
+    .activity-header {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 4px;
+        .email,
+        .time {
+            font-size: 10px;
+        }
+    }
+}
+
+ion-card-content {
+    .title {
+        margin-top:8px;
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 4px;
+    }
+
+    .item {
+        padding: 8px 0 0 0
+    }
+}

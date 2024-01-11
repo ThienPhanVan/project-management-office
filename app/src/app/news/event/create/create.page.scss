@@ -1,0 +1,86 @@
+form {
+  font-size: 16px;
+  margin-top: 12px;
+}
+.events-person {
+  margin-top: 12px;
+}
+.person {
+  width: 100%;
+  .title {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    margin-top: 8px;
+
+    ion-label {
+      margin-left: 12px;
+    }
+  }
+}
+.datetime {
+  .content {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin-top: 4px;
+    .text {
+      margin-left: 8px;
+    }
+  }
+}
+
+.datetime-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.image-event {
+  width: 100%;
+  padding: 16px;
+}
+
+ion-toggle::part(track) {
+  height: 20px;
+
+  /* Required for iOS handle to overflow the height of the track */
+  overflow: visible;
+}
+::ng-deep {
+  /* to penetrate <ngx-editor> CSS styling */
+
+  .NgxEditor {
+    min-height: 10rem;
+  }
+
+  .NgxEditor__Content {
+    max-height: calc(10rem);
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+    }
+  }
+}
+
+.chooseOrg {
+  width: 90%;
+  margin-right: 6px;
+}

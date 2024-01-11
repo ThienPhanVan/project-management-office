@@ -1,0 +1,38 @@
+.scroll-container {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 8px;
+  &.hide-scrollbar {
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    ion-button {
+      --padding-end: 1rem;
+      --padding-start: 1rem;
+    }
+    ion-button.active {
+      --background: var(--btn-color-primary) !important;
+      --color: var(--btn-color-white) !important;
+    }
+  }
+  &.show-scroll {
+    overflow: auto;
+  }
+}
+
+.tabs {
+  margin: 0;
+  padding: 4px;
+  overflow: hidden;
+  // overflow-x: scroll;
+
+  ion-segment-button {
+    min-width: auto !important;
+  }
+}
+
+ion-segment-button {
+  --color: #000;
+}

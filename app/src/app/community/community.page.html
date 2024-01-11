@@ -1,0 +1,162 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center">
+      <!-- <ion-buttons>
+        <ion-back-button class="text-xs" text=""></ion-back-button>
+      </ion-buttons> -->
+      <ion-title class="text-sm"
+        >{{ 'PAGES.COMMUNITY.TITLE' | translate}}</ion-title
+      >
+      <!-- <ion-button size="small" fill="clear" routerLink="/search">
+        <ion-icon color="dark" name="search-outline"></ion-icon>
+      </ion-button> -->
+    </div>
+  </ion-toolbar>
+</ion-header>
+<!-- skeleton loading -->
+<ion-content [fullscreen]="true" *ngIf="isLoading">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="text-sm" routerLink="/tabs/organizations">
+        <ion-icon
+          size="large"
+          aria-hidden="true"
+          name="business-outline"
+        ></ion-icon>
+        <ion-label class="text-xl">
+          {{ 'TAB.COMMUNITY.ORGANIZATIONS' | translate}}</ion-label
+        >
+      </ion-card-title>
+      <ion-card-subtitle>
+        <ion-skeleton-text
+          [animated]="true"
+          style="height: 16px; width: 32px"
+        ></ion-skeleton-text>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="text-sm" routerLink="/tabs/users">
+        <ion-icon
+          size="large"
+          aria-hidden="true"
+          name="people-outline"
+        ></ion-icon>
+        <ion-label class="text-xl">
+          {{ 'TAB.COMMUNITY.MEMBERS' | translate}}</ion-label
+        >
+      </ion-card-title>
+      <ion-card-subtitle>
+        <ion-skeleton-text
+          [animated]="true"
+          style="height: 16px; width: 32px"
+        ></ion-skeleton-text>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="text-sm" routerLink="/tabs/chapters">
+        <ion-icon size="large" name="shapes-outline"></ion-icon>
+        <ion-label class="text-xl">
+          {{ 'TAB.COMMUNITY.CHAPTER' | translate}}</ion-label
+        >
+      </ion-card-title>
+      <ion-card-subtitle>
+        <ion-skeleton-text
+          [animated]="true"
+          style="height: 16px; width: 32px"
+        ></ion-skeleton-text>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="text-sm flex w-full" routerLink="/advertisements">
+        <ion-icon size="large" name="grid-outline"></ion-icon>
+        <div size="large" class="ml-2 self-center">
+          <ion-label class="text-xl">
+            {{ 'TAB.COMMUNITY.ADVERTISEMENTS' | translate}}</ion-label
+          >
+        </div>
+      </ion-card-title>
+      <ion-card-subtitle>
+        {{ campaigns?.paging.count || 0 }}
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+</ion-content>
+<!-- End skeleton loading -->
+
+<ion-content [fullscreen]="true" *ngIf="!isLoading">
+  <ion-card class="hover:bg-slate-100"> 
+    <ion-card-header>
+      <ion-card-title
+        class="text-sm flex w-full"
+        routerLink="/tabs/organizations"
+      >
+        <ion-icon
+          size="large"
+          aria-hidden="true"
+          name="business-outline"
+        ></ion-icon>
+        <div class="ml-2 self-center">
+          <ion-label class="text-xl">
+            {{ 'TAB.COMMUNITY.ORGANIZATIONS' | translate}}</ion-label
+          >
+        </div>
+      </ion-card-title>
+      <ion-card-subtitle> {{organizations?.paging.count}} </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card class="hover:bg-slate-100"> 
+    <ion-card-header>
+      <ion-card-title class="text-sm flex w-full" routerLink="/tabs/users">
+        <ion-icon
+          size="large"
+          aria-hidden="true"
+          name="people-outline"
+        ></ion-icon>
+        <div class="ml-2 self-center">
+          <ion-label class="text-xl">
+            {{ 'TAB.COMMUNITY.MEMBERS' | translate}}</ion-label
+          >
+        </div>
+      </ion-card-title>
+      <ion-card-subtitle> {{users?.paging.count}} </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card class="hover:bg-slate-100"> 
+    <ion-card-header>
+      <ion-card-title class="text-sm flex w-full" routerLink="/tabs/chapters">
+        <ion-icon size="large" name="shapes-outline"></ion-icon>
+        <div class="ml-2 self-center">
+          <ion-label class="text-xl">
+            {{ 'TAB.COMMUNITY.CHAPTER' | translate}}</ion-label
+          >
+        </div>
+      </ion-card-title>
+      <ion-card-subtitle> {{chapters?.paging.count}} </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card class="hover:bg-slate-100"> 
+    <ion-card-header>
+      <ion-card-title class="text-sm flex w-full" routerLink="/advertisements">
+        <ion-icon size="large" name="grid-outline"></ion-icon>
+        <div size="large" class="ml-2 self-center">
+          <ion-label class="text-xl">
+            {{ 'TAB.COMMUNITY.ADVERTISEMENTS' | translate}}</ion-label
+          >
+        </div>
+      </ion-card-title>
+      <ion-card-subtitle> {{ campaigns?.paging.count }} </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+</ion-content>

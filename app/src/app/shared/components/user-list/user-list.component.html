@@ -1,0 +1,82 @@
+<ion-card *ngFor="let user of users" class="cursor-pointer body hover:bg-slate-100">
+  <ion-card-content *ngIf="isLoading">
+    <div class="flex">
+      <ion-checkbox
+        *ngIf="isSelectCheckbox"
+        class="checkbox"
+        (ionChange)="changeCheckbox($event, user.id)"
+      ></ion-checkbox>
+      <ion-avatar slot="start">
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      </ion-avatar>
+      <div class="ml-3" style="width: 60%">
+        <ion-card-title
+          class="text-base font-extrabold"
+          [routerLink]="['/tabs', 'users', user.id]"
+        >
+          <ion-skeleton-text
+            [animated]="true"
+            style="height: 24px"
+          ></ion-skeleton-text>
+        </ion-card-title>
+        <div class="text-xs">
+          <ion-skeleton-text
+            [animated]="true"
+            style="height: 16px"
+          ></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+  </ion-card-content>
+  <ion-card-content *ngIf="!isLoading">
+    <div class="flex" (click)="userClick(user)">
+      <ion-checkbox
+        *ngIf="isSelectCheckbox"
+        class="checkbox"
+        (ionChange)="changeCheckbox($event, user.id)"
+      ></ion-checkbox>
+      <div>
+        <app-avatar
+          (getSrcImage)="getSrcImage($event)"
+          [className]="classNameAvatar"
+          [updateAvatar]="updateAvatar"
+          [data]="user"
+          [isAvatar]="isAvatar"
+        ></app-avatar>
+      </div>
+      <div class="ml-3">
+        <ion-card-title
+          class="text-base font-extrabold"
+          (click)="actionRedirect(user)"
+        >
+          <div
+            class="flex items-center"
+            [ngClass]="{ 'label-verified': user.verified_flag }"
+          >
+            <ion-button
+              fill="clear"
+              size="small"
+              color="tertiary"
+              *ngIf="getMemberType(user)"
+              >{{ getMemberType(user) }}</ion-button
+            >
+            {{
+              user.role === "ADMIN" ? user.username + " (Admin)" : user.username
+            }}
+          </div>
+        </ion-card-title>
+
+        <div class="text-xs" *ngIf="user.is_public_phone">
+          <ion-icon name="call-outline"></ion-icon> {{ user.phone }}
+        </div>
+
+        <div class="text-xs" *ngIf="user.organizations">
+          <ion-icon name="home"></ion-icon> {{ user.organizations[0]?.name }}
+        </div>
+        <div class="mt-1">
+          <app-user-segment [user]="user"></app-user-segment>
+        </div>
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>

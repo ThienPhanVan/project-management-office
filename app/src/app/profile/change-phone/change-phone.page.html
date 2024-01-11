@@ -1,0 +1,112 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-button fill="clear" color="dark" [routerLink]="['/', 'tabs', 'profile', 'security']" slot="start">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title class="text-sm">{{'PAGES.SECURITY.UPDATE_PHONE' | translate}}</ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="isLoading">
+
+  <div class="update-phone-page">
+    <ion-list>
+      <ion-item lines="none" class="ion-margin-top ion-margin-bottom">
+        <ion-skeleton-text [animated]="true" style="height: 73px"></ion-skeleton-text>
+      </ion-item>
+      <form [formGroup]="form1" novalidate *ngIf="stepPassword">
+        <ion-item>
+          <ion-skeleton-text [animated]="true" style="height: 44px"></ion-skeleton-text>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-skeleton-text [animated]="true" style="height: 67px"></ion-skeleton-text>
+        </ion-item>
+      </form>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="!isLoading">
+
+  <div class="update-phone-page">
+    <ion-list>
+      <ion-item lines="none" class="ion-margin-top ion-margin-bottom">
+        <img src="../../../assets/logo/gcec.png" />
+      </ion-item>
+      <form [formGroup]="form1" novalidate *ngIf="stepPassword">
+        <ion-item>
+          <ion-input class="required" label="{{ 'FORM.FIELD.PASSWORD' | translate}}" formControlName="password"
+            labelPlacement="floating" [clearInput]="true" type="password">
+          </ion-input>
+        </ion-item>
+        <div class="error-container"
+          *ngIf="(form1.get('password')?.invalid && form1.get('password')?.touched) || form1.get('password')?.dirty || isSubmitting">
+          <div class="text-rose-600	text-xs pl-4 pr-4">
+            <span *ngIf="form1.get('password')?.errors?.['required']">
+              {{ 'FORM.VALID.PASSWORD.REQUIRED' | translate}}
+            </span>
+            <span *ngIf="form1.get('password')?.errors?.['pattern']">
+              {{ 'FORM.VALID.PASSWORD.CORRECT_FORMAT' | translate}}</span>
+          </div>
+        </div>
+        <ion-row>
+          <ion-col>
+            <ion-button class="px-2" (click)="submitPassword()" expand="block" [disabled]="form1.invalid">
+              <ion-icon name="reload-outline" [hidden]="!isSubmitting" class="icon-load mr-3"></ion-icon>
+              <span>{{ 'BUTTON.NEXT' | translate}}</span></ion-button>
+          </ion-col>
+        </ion-row>
+      </form>
+
+      <form [formGroup]="form2" novalidate *ngIf="stepPhone">
+        <ion-item>
+          <ion-input class="required" label="{{ 'FORM.FIELD.NEW_PHONE' | translate}}" formControlName="phone"
+            labelPlacement="floating" [clearInput]="true" type="tel" />
+        </ion-item>
+        <div class="error-container"
+          *ngIf="(form2.get('phone')?.invalid && form2.get('phone')?.touched) || form2.get('phone')?.dirty  || isSubmitting">
+          <div class="text-rose-600	text-xs pl-4 pr-4">
+            <span *ngIf="form2.get('phone')?.errors?.['required']">
+              {{ 'FORM.VALID.PHONE.REQUIRED' | translate}}
+            </span>
+            <span *ngIf="form2.get('phone')?.errors?.['pattern']">
+              {{ 'FORM.VALID.PHONE.CORRECT_FORMAT' | translate}}
+            </span>
+          </div>
+        </div>
+        <ion-row>
+          <ion-col>
+            <ion-button class="px-2" (click)="submitPhone()" expand="block" [disabled]="form1.invalid">
+              <ion-icon name="reload-outline" [hidden]="!isSubmitting" class="icon-load mr-3"></ion-icon>
+              <span>{{ 'BUTTON.UPDATE' | translate}}</span></ion-button>
+          </ion-col>
+        </ion-row>
+      </form>
+
+      <form [formGroup]="form3" novalidate *ngIf="stepVerify">
+        <ion-item>
+          <ion-input class="required" label="{{ 'FORM.FIELD.OTP' | translate}}" formControlName="otp"
+            labelPlacement="floating" [clearInput]="true" type="text" />
+        </ion-item>
+        <div class="error-container"
+          *ngIf="(form3.get('phone')?.invalid && form3.get('phone')?.touched) || form3.get('phone')?.dirty  || isSubmitting">
+          <div class="text-rose-600	text-xs pl-4 pr-4">
+            <span *ngIf="form3.get('phone')?.errors?.['required']">
+              {{ 'FORM.VALID.OTP.CORRECT_FORMAT' | translate}}
+            </span>
+          </div>
+
+        </div>
+        <ion-row>
+          <ion-col>
+            <ion-button class="px-2" (click)="submitOTP()" expand="block" [disabled]="form1.invalid">
+              <ion-icon name="reload-outline" [hidden]="!isSubmitting" class="icon-load mr-3"></ion-icon>
+              <span>{{ 'BUTTON.CONFIRM' | translate}}</span></ion-button>
+          </ion-col>
+        </ion-row>
+      </form>
+    </ion-list>
+  </div>
+</ion-content>

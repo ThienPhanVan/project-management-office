@@ -1,0 +1,32 @@
+<div>
+    <ion-card-content *ngIf="isLoading">
+        <ion-skeleton-text [animated]="true" style="height: 76px"></ion-skeleton-text>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="!isLoading" class="m-0 p-0 w-full flex">
+        <div class="tag w-full" (click)="checkRouter(data.news.id)">
+            <app-avatar [classNameAvatar]="'item'" [data]="data.organization" [isAvatar]="isAvatar"></app-avatar>
+            <ion-icon class="icon -ml-1 mt-5" slot="bottom" name="newspaper" color="primary"></ion-icon>
+            <div class="ml-2 w-58">
+                <ion-card-title class="text-xs font-extrabold">
+                    <div>
+                        {{data.organization?.name }}
+                        <span class="text-xs content-news">{{ 'NOTIFICATION.CONTENT.ORGANIZATION_CREATE_NEWS' |
+                            translate
+                            }}</span>
+                    </div>
+                </ion-card-title>
+                <div class="text-xs">{{ data.updated_date}}</div>
+            </div>
+        </div>
+        <div class="flex items-center m-2">
+            <ion-icon name="ellipsis-vertical-outline" [id]="'open-action-sheet' + data.id"></ion-icon>
+            <ion-action-sheet [trigger]="'open-action-sheet' + data.id"
+                [buttons]="data.status === 0 ? actionSheetButtonUnread : actionSheetButtonRead"
+                (didDismiss)="setResult($event, data)"></ion-action-sheet>
+        </div>
+        <div class="icon-status flex items-center" (click)="setStatusNotification(data.user_notification_id)">
+            <ion-icon *ngIf="data.status === 0" size="small" color="primary" name="ellipse"></ion-icon>
+        </div>
+    </ion-card-content>
+</div>

@@ -1,0 +1,131 @@
+<ion-card *ngFor="let user of users" class="cursor-pointer">
+  <ion-card-content *ngIf="isLoading">
+    <div class="flex">
+      <ion-checkbox [indeterminate]="true" *ngIf="isSelectCheckbox" class="checkbox"
+        (ionChange)="changeCheckbox($event, user.id)"></ion-checkbox>
+      <ion-avatar slot="start">
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      </ion-avatar>
+      <div class="ml-3" style="width: 72%;">
+        <ion-card-title class="text-base font-extrabold" [routerLink]="['/tabs', 'users', user.id]">
+          <ion-skeleton-text [animated]="true" style="height: 24px;"></ion-skeleton-text>
+        </ion-card-title>
+        <div class="text-xs">
+          <ion-skeleton-text [animated]="true" style="height: 16px;"></ion-skeleton-text>
+        </div>
+
+        <div *ngIf="user?.organizations && user?.organizations[0]?.status === 0">
+          <div class="text-xs mt-0.5" id="open-position-{{ user.id }}">
+
+            <div class="flex items-center group" *ngIf="hasPermission('UPDATE_ORGANIZATION')">
+              <ion-icon name="ribbon-outline"></ion-icon>
+              <div class="p-1 text-xs rounded-lg" style="width: 100%;">
+                <span *ngIf="user?.organizations[0]?.position?.name"><ion-skeleton-text [animated]="true"
+                    style="height: 16px;"></ion-skeleton-text></span>
+                <span *ngIf="!user?.organizations[0]?.position?.name" class="opacity-60"><ion-skeleton-text
+                    [animated]="true" style="height: 16px;"></ion-skeleton-text></span>
+                <ion-icon name="caret-down-outline" class="pl-1 mt-auto"></ion-icon>
+              </div>
+            </div>
+
+            <div class="flex items-center"
+              *ngIf="!hasPermission('UPDATE_ORGANIZATION') && user?.organizations[0]?.position?.name">
+              <ion-icon name="ribbon-outline"></ion-icon>
+              <ion-text class="pl-1 text-xs" style="width: 100%;"><ion-skeleton-text [animated]="true"
+                  style="height: 16px"></ion-skeleton-text></ion-text>
+            </div>
+          </div>
+
+          <div class="items-center group">
+            <div class="flex" *ngIf="getIAMGroupNameById(user?.organizations[0]?.iam_group_id)">
+              <ion-skeleton-text [animated]="true" style="height: 24px;"></ion-skeleton-text>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="user?.organizations && user?.organizations[0]?.status === 1">
+          <div class="text-xs mt-0.5" *ngIf="user?.organizations[0]?.position?.name">
+            <ion-icon name="ribbon-outline"></ion-icon>
+            <ion-text class="pl-1 text-xs" style="width: 100%;"><ion-skeleton-text [animated]="true"
+                style="height: 24px;"></ion-skeleton-text></ion-text>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-card-content>
+
+  <ion-card-content *ngIf="!isLoading" class="p-4">
+    <div class="flex">
+      <ion-checkbox *ngIf="isSelectCheckbox" class="checkbox"
+        (ionChange)="changeCheckbox($event, user.id)"></ion-checkbox>
+      <app-avatar (getSrcImage)="getSrcImage($event)" [isAvatar]="isAvatar" [classNameAvatar]="classNameAvatar"
+        [data]="user"></app-avatar>
+      <div class="ml-3">
+        <ion-card-title class="text-base font-extrabold" [routerLink]="['/tabs', 'users', user.id]">
+          <div [ngClass]="{'label-verified': user.verified_flag}">
+            {{ user.username }}
+          </div>
+        </ion-card-title>
+        <div class="flex">
+          <div class="text-xs">
+            <div *ngIf="user.is_public_phone">
+              <ion-icon name="call-outline"></ion-icon> {{ user.phone }}
+            </div>
+            <div *ngIf="user?.organizations && user?.organizations[0]?.status === 0">
+              <div class="text-xs" id="open-position-{{ user.id }}">
+                <div class="flex items-center group" *ngIf="hasPermission('UPDATE_ORGANIZATION')">
+                  <ion-icon name="ribbon-outline"></ion-icon>
+                  <div class="text-xs rounded-lg">
+                    <span *ngIf="user?.organizations[0]?.position?.name">{{
+                      user?.organizations[0]?.position?.name
+                      }}</span>
+
+                    <span *ngIf="!user?.organizations[0]?.position?.name" class="opacity-60">{{
+                      "MODAL.USER.CHOICE_POSITION"
+                      | translate }}</span>
+                    <ion-icon name="caret-down-outline" class="pl-1 mt-auto"></ion-icon>
+                  </div>
+                </div>
+                <div class="flex items-center"
+                  *ngIf="!hasPermission('UPDATE_ORGANIZATION') && user?.organizations[0]?.position?.name">
+                  <ion-icon name="ribbon-outline"></ion-icon>
+                  <ion-text class="pl-1 text-xs">{{user?.organizations[0]?.position?.name}}</ion-text>
+                </div>
+
+                <ion-modal trigger="open-position-{{ user.id }}" class="popup-modal" #modalPosition>
+                  <ng-template>
+                    <app-position-select [positionId]="user?.organizations[0]?.position_id || ''" (selectionChange)="
+                        actionChangePosition($event, user, modalPosition)
+                      " (selectionCancel)="modalPosition.dismiss()"></app-position-select>
+                  </ng-template>
+                </ion-modal>
+              </div>
+              <div *ngIf="user?.organizations && user?.organizations[0]?.iam_group_id">
+                <div class="flex items-center">
+                  <ion-icon class="position-icon text-sm" name="lock-closed-outline"></ion-icon>
+                  <div class=" rounded-lg ">
+                    <app-select title="{{ 'SELECT.LABEL.IAM_GROUP' | translate }}" [items]="iamGroups"
+                      [value]="user?.organizations[0]?.iam_group_id"
+                      [disabled]="!((getMyId() !== user.id) && hasPermission('UPDATE_ORGANIZATION') && !isIAMGroupAdmin(user?.organizations[0]?.iam_group_id))"
+                      placeHolder="{{ 'MODAL.USER.CHOICE_IAM_GROUP' | translate }}"
+                      (selectionChange)="actionChangeIAMGroup($event, user)" class="text-xs">
+                    </app-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="user?.organizations && user?.organizations[0]?.status === 1">
+              <div class="text-xs mt-0.5" *ngIf="user?.organizations[0]?.position?.name">
+                <ion-icon name="ribbon-outline"></ion-icon>
+                <ion-text class="pl-1 text-xs">{{user?.organizations[0]?.position?.name}}</ion-text>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-1">
+          <app-user-segment [user]="user"></app-user-segment>
+        </div>
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>

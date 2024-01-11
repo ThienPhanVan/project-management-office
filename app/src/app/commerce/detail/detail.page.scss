@@ -1,0 +1,128 @@
+ion-card {
+  margin: 8px;
+
+  ion-card-header {
+    padding: 0;
+
+    .image-detail {
+      height: 320px;
+      width: 100%;
+      object-fit: cover;
+    }
+    .slide-number {
+      display: flex;
+      justify-content: flex-end;
+      pointer-events: none;
+    }
+  }
+
+  .type {
+    padding: 8px;
+    > span {
+      &:last-child {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .spacer {
+    flex: 1 1 0;
+  }
+
+  ion-card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    // display: -webkit-box;
+    // -webkit-line-clamp: 2;
+    // -webkit-box-orient: vertical;
+  }
+
+  ion-card-content {
+    padding: 8px;
+  }
+
+  .type-product {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    text-transform: capitalize;
+    color: #050505;
+  }
+  .price {
+    font-size: 15px;
+    p {
+      font-weight: bold;
+      .text {
+        margin-left: 8px;
+        text-transform: capitalize;
+      }
+    }
+  }
+  .description {
+    margin-bottom: 4px;
+    font-weight: 100;
+    // text-transform: lowercase;
+    font-size: 14px;
+  }
+  .location {
+    font-weight: 100;
+    // text-transform: lowercase;
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  .icon-action {
+    text-align: right;
+  }
+}
+
+::ng-deep {
+  .commerce-tab-detail {
+    app-reactions {
+      .action {
+        padding: 4px 0px 4px 0px;
+      }
+    }
+
+    .comments {
+      padding: 0 8px 0 8px;
+    }
+
+    app-message-input {
+      .w-full.ml-1 {
+        border: 1px solid #f1f1f1;
+        width: 96%;
+        margin: 0 8px 0 8px;
+        position: fixed;
+        bottom: 0;
+        z-index: 9999999;
+        background: #fff;
+
+        div.w-full {
+          padding-left: 8px;
+          padding-right: 8px;
+        }
+      }
+    }
+  }
+}
+
+ion-searchbar.search-news-tabs {
+  padding: 0;
+  width: 100%;
+}
+
+
+.cart-count {
+  position: absolute;
+  top: 8px;
+  right: -4px;
+  background-color: #ff0000;
+  color: #fff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

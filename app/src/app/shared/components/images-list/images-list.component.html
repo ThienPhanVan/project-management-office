@@ -1,0 +1,35 @@
+<div class="list-images" *ngIf="images && images.length">
+  <div
+    *ngFor="let item of images; index as i"
+    [class]="images.length < 2 ? 'one-image' : 'many-images'"
+  >
+    <div *ngIf="item?.image_url !== '' && i < 2">
+      <img
+        class="rounded-2xl"
+        [class]="images.length < 2 ? 'image-list-one' : 'img-list'"
+        alt=""
+        [src]="item?.image_url ?? item"
+        *ngIf="!item?.image_url?.includes('.mp4') && !item?.image_url?.includes('.MOV')"
+        (error)="onError(item)"
+        (click)="clickZoom(i, images)"
+        [style]="images.length < 2 ? 'width: 100%;' : ''"
+      />
+
+      <video
+        class="rounded-2xl"
+        controls
+        style="width: 100%"
+        *ngIf="item.image_url.includes('.mp4') || item?.image_url?.includes('.MOV')"
+      >
+        <source [src]="item?.image_url" type="video/mp4" />
+      </video>
+    </div>
+  </div>
+  <div
+    *ngIf="images.length > 2"
+    class="more-image rounded-2xl"
+    (click)="clickZoom(1, images)"
+  >
+    +{{ images.length - 2 }}
+  </div>
+</div>

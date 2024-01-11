@@ -1,0 +1,26 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-buttons>
+        <ion-back-button class="text-xs" text="" defaultHref="/auth/register"></ion-back-button>
+      </ion-buttons>
+      <ion-title class="text-sm">
+        <ion-text>
+          {{'PAGES.REGISTER.TERMS' | translate}},
+          {{'PAGES.REGISTER.PRIVACY_POLICY' | translate}}
+        </ion-text>
+      </ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="register-page">
+    <ion-list>
+      <ion-item lines="none" class="ion-margin-top ion-margin-bottom">
+        <img src="../../../assets/logo/gcec.png" />
+      </ion-item>
+
+    </ion-list>
+  </div>
+</ion-content>

@@ -1,0 +1,29 @@
+
+ion-button {
+  margin-right: 16px;
+  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+ion-button::part(native) {
+  padding: 0;
+  background-color: #ffffff;
+  text-align: end;
+}
+
+ion-button::part(native) .button-inner {
+  padding-left: 4px;
+  justify-content: space-around;
+  width: 90%;
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-button {
+    &.dark-button {
+      background-color: #333;
+      color: #ffffff;
+    }
+  }
+}

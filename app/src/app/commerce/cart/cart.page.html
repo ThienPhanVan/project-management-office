@@ -1,0 +1,129 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex justify-between items-center">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>{{'TAB.COMMERCE.CART.CART_ITEM' | translate}} ({{countCartItem}})</ion-title>
+      <div *ngIf="!isUpdate" (click)="updateCart(!isUpdate)">{{'TAB.COMMERCE.CART.UPDATE' | translate}}</div>
+      <div *ngIf="isUpdate" (click)="updateCart(!isUpdate)">{{'TAB.COMMERCE.CART.DONE' | translate}}</div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card *ngFor="let orderPreview of cartItems">
+    <ion-card-content>
+      <div class="flex items-center">
+        <div class="flex items-center">
+          <ion-checkbox labelPlacement="end" class="mr-2" [(ngModel)]="orderPreview.checked"
+            (ionChange)="checkedCardItem($event, orderPreview)">
+          </ion-checkbox>
+
+        </div>
+        <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [type]="'cart-user'" [data]="orderPreview.user_sell"
+          [isParticipate]="true" class="scale-75" *ngIf="orderPreview.user_sell?.id"></app-avatar>
+        <div class="text-black font-bold" [routerLink]="['/tabs', 'users', orderPreview?.user_sell?.id]"
+          *ngIf="orderPreview.user_sell?.id">{{
+          orderPreview?.user_sell?.username}} </div>
+        <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [type]="'cart-org'"
+          [data]="orderPreview.organization_sell" [isParticipate]="true" class="scale-75"
+          *ngIf="orderPreview.organization_sell?.id"></app-avatar>
+        <div class="text-black font-bold" [routerLink]="['/tabs', 'organizations', orderPreview.organization_sell?.id]"
+          *ngIf="orderPreview.organization_sell?.id">{{
+          orderPreview.organization_sell?.name}}</div>
+      </div>
+      <div class="w-full">
+        <div class="flex justify-between items-center w-full mt-4" *ngFor=" let cartItem of orderPreview?.cartItems">
+          <div class="flex items-center">
+            <ion-checkbox labelPlacement="end" [(ngModel)]="cartItem.product.checked"
+              (ionChange)="checkedCardItemProduct($event, cartItem?.product)">
+            </ion-checkbox>
+          </div>
+          <div [routerLink]="['/tabs', 'commerces', cartItem?.product?.id]">
+            <img alt="" [src]="cartItem?.product?.images[0].image_url " class="image-product" />
+          </div>
+          <div class="text-black w-2/3">
+            <div class="flex justify-between mb-1">
+              <div class="line-clamp-2 w-4/5" [routerLink]="['/tabs', 'commerces', cartItem?.product?.id]">
+                {{cartItem?.product?.name}}
+              </div>
+              <ion-icon name="close-outline" class="w-1/5" (click)="deleteOneCarItem(cartItem)"></ion-icon>
+            </div>
+
+            <div class="text-gray-500" [routerLink]="['/tabs', 'commerces', cartItem?.product?.id]">
+              <span>{{cartItem?.product?.product_category?.name}}</span>
+            </div>
+            <div class="flex justify-between text-black mt-2 bottom-0">
+              <div class="flex items-center font-bold">
+                {{cartItem?.amount.toLocaleString("it-IT",
+                { style: "currency",
+                currency: "VND" }) }}
+
+              </div>
+              <div class="flex items-center quantity">
+                <ion-button fill="outline" color="dark" size="small" class="m-0 rounded-none"
+                  (click)="reduceQuantity(cartItem)" [disabled]="cartItem.quantity === 1">
+                  <ion-icon name="remove-outline"></ion-icon>
+                </ion-button>
+                <input class="w-12 flex justify-center items-center text-center" type="number" min="1"
+                  [(ngModel)]="cartItem.quantity" (change)="onDiscount($event, cartItem)" />
+                <ion-button fill="outline" color="dark" size="small" class="m-0 rounded-none"
+                  (click)="addQuantity(cartItem)">
+                  <ion-icon name="add-outline"></ion-icon>
+                </ion-button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer class="bg-white" *ngIf="!isUpdate">
+  <div class="flex justify-between">
+    <div class="flex justify-between text-black w-full items-center pl-2">
+
+      <div class="flex items-center">
+        <ion-checkbox labelPlacement="end" class="mr-2" [(ngModel)]="selectAll" (ionChange)="checkAll($event)">
+        </ion-checkbox>
+        <p class="text-sm font-normal text-gray-500">{{'TAB.COMMERCE.CART.CHOOSE_ALL' | translate}}</p>
+      </div>
+
+      <div>
+        <p>{{total.toLocaleString("it-IT",
+          { style: "currency",
+          currency: "VND" })}}</p>
+      </div>
+
+    </div>
+    <ion-button color="danger" class=" pr-2 pl-1" type="submit" expand="block" (click)="directCheckOrder()"
+      [disabled]="total === 0">
+      <span>{{'TAB.COMMERCE.CART.PAYMENT' | translate}}
+        ({{countOrder}})</span>
+      <!-- <span *ngIf="total === 0">{{'TAB.COMMERCE.CART.CHECK' | translate}}</span> -->
+    </ion-button>
+  </div>
+</ion-footer>
+
+<ion-footer class="bg-white h-10" *ngIf="isUpdate">
+  <div class="flex justify-between">
+    <div class="flex justify-between text-black w-full items-center pl-2">
+
+      <div class="flex items-center">
+        <ion-checkbox labelPlacement="end" class="mr-2" [(ngModel)]="selectAll" (ionChange)="checkAll($event)">
+        </ion-checkbox>
+        <p class="text-sm font-normal text-gray-500">{{'TAB.COMMERCE.CART.CHOOSE_ALL' | translate}}</p>
+      </div>
+
+    </div>
+    <div class="text-red-500 font-bold" (click)="deleteCarItem()">
+      <span>{{'TAB.COMMERCE.CART.DELETE' | translate}}</span>
+    </div>
+  </div>
+</ion-footer>

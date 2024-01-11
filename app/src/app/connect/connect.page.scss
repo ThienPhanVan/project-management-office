@@ -1,0 +1,31 @@
+ion-card-content {
+    ion-avatar {
+      height: 48px;
+      width: 48px;
+  
+      img {
+        height: 48px;
+        width: 48px;
+      }
+    }
+  }
+  
+  .ion-item {
+    display: flex;
+    align-items: center;
+    --padding-end: 0px;
+    --inner-padding-end: 0px;
+  }
+  
+  ion-card {
+    flex: 1;
+  }
+
+
+  .card-content-ios {
+    -webkit-padding-start: 10px;
+     padding-inline-start: 10px;
+    -webkit-padding-end: 0px;
+     padding-inline-end: 0px;
+
+  }

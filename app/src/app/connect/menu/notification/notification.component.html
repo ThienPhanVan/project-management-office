@@ -1,0 +1,34 @@
+<ion-button color="light" shape="round" size="small" class="no-shadow" id="open-notification">
+  <ion-icon name="notifications-outline" size="small"></ion-icon>
+</ion-button>
+
+<div>
+  {{"TAB.MESSAGE.DISABLE_NOTIFICATION" | translate}}
+</div>
+
+<ion-modal class="modal-dialog" trigger="open-notification" #modal>
+  <ng-template>
+    <div>
+      <ion-item lines="full">
+        <ion-text class="text-lg font-bold">Tắt thông báo cuộc trò chuyện?</ion-text>
+      </ion-item>
+      <ion-list>
+        <ion-item lines="none">Trong 30 phút</ion-item>
+        <ion-item lines="none">Trong 1 giờ</ion-item>
+        <ion-item lines="none">Trong 3 giờ</ion-item>
+        <ion-item lines="none">Đến 8 giờ sáng</ion-item>
+        <ion-item lines="none">Cho đến khi được mở lại</ion-item>
+        <ion-item lines="none">
+          <ion-input class="no-border" label="Tuỳ chọn:" placeholder="Nhập số phút" type="number"></ion-input>
+        </ion-item>
+      </ion-list>
+      <ion-item lines="none">
+        <span class="spacer"></span>
+        <ion-button fill="clear" class="text-lg" (click)="modal.dismiss()">
+          <ion-text color="primary">{{ 'BUTTON.SAVE' | translate}}</ion-text>
+        </ion-button>
+        <ion-button fill="clear" class="text-lg" (click)="modal.dismiss()"><ion-text color="dark">{{ 'BUTTON.CANCEL' | translate}}</ion-text></ion-button>
+      </ion-item>
+    </div>
+  </ng-template>
+</ion-modal>

@@ -1,0 +1,102 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-button fill="clear" color="dark" routerLink="/tabs/profile" slot="start">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+
+      <ion-title class="text-sm">
+        {{'PAGES.SECURITY.TITLE' | translate}}</ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center" routerLink="/tabs/profile/edit">
+          <ion-icon name="person-outline"></ion-icon>
+          <div class="ml-2">
+            <div class="">{{'PAGES.SECURITY.UPDATE_PROFILE' | translate}}</div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center" routerLink="/tabs/profile/change-phone">
+          <ion-icon name="person-outline"></ion-icon>
+          <div class="ml-2">
+            <div class="">{{'PAGES.SECURITY.UPDATE_PHONE' | translate}}</div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center" routerLink="/tabs/profile/change-password">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          <div class="ml-2">
+            <div class="">{{'PAGES.SECURITY.UPDATE_PASSWORD' | translate}}</div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center" routerLink="/tabs/profile/history">
+          <ion-icon name="refresh-outline" class="transform -scale-x-100"></ion-icon>
+          <div class="ml-2">
+            <div class="">
+              {{'PAGES.SECURITY.HISTORY_LOGIN.TITLE' | translate}}
+            </div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <!-- <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center" routerLink="/tabs/profile/activity">
+          <ion-icon name="refresh-circle-outline" class="transform -scale-x-100"></ion-icon>
+          <div class="ml-2">
+            <div class="">{{'PAGES.ACTIVITY_USER.TITLE' | translate}}</div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card> -->
+
+  <ion-card class="card-language">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center">
+          <ion-icon name="language-outline"></ion-icon>
+          <div class="language">
+            <ion-item lines="none">
+              <app-language-select [languageId]="languageId"
+                (selectionChange)="onChangeLanguage($event)"></app-language-select>
+            </ion-item>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+  <ion-button class="flex items-center m-4" color="danger" (click)="deactivateAccount()">
+    <ion-icon name="trash-outline" class="mr-2"></ion-icon>
+    <div class="">{{'TAB.PROFILE.DEACTIVATE_ACCOUNT' | translate}}</div>
+  </ion-button>
+
+</ion-content>

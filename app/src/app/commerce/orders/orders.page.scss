@@ -1,0 +1,48 @@
+.news-tabs {
+  width: 100%;
+
+  ion-searchbar.search-news-tabs {
+    padding: 0;
+    width: 100%;
+  }
+
+  .tabs {
+    margin: 0;
+    padding: 4px;
+    overflow: hidden;
+    overflow-x: scroll;
+
+    ion-segment-button{
+      min-width: auto !important;
+  }
+  }
+}
+
+ion-button {
+  height: 24px;
+}
+
+ion-button::part(native) {
+  height: 24px;
+}
+
+.image-product {
+  width: 150px !important;
+  height: 100px;
+  object-fit: cover;
+}
+
+.cart-count {
+  position: absolute;
+  top: 0px;
+  right: 1px;
+  background-color: #ff0000;
+  color: #fff;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

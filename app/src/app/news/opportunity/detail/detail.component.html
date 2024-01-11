@@ -1,0 +1,244 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center justify-between">
+      <div class="flex">
+        <ion-buttons class="mr-2">
+          <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+            <!-- <ion-icon name="chevron-back-outline"></ion-icon> -->
+          </ion-button>
+        </ion-buttons>
+        <div *ngIf="isLoading">
+          <ion-skeleton-text class="h-14" [animated]="true"></ion-skeleton-text>
+        </div>
+        <app-avatar [type]="'detail'" class="mr-4" [isAvatar]="isAvatar" [classNameAvatar]="'item'" [data]="data"
+          *ngIf="!isLoading"></app-avatar>
+        <div>
+          <div *ngIf="isLoading">
+            <ion-skeleton-text class="h-14" [animated]="true"></ion-skeleton-text>
+          </div>
+          <div *ngIf="!isLoading">
+            <div class="pr-3">
+              <a class="text-sm decoration-none font-bold"
+                [routerLink]="['/tabs', 'organization', data?.organization?.id]" *ngIf="data?.organization">
+                <h4>{{ data.organization.name }}</h4>
+              </a>
+              <p class="decoration-none font-bold" [class]="data?.organization ? 'text-xs' : 'test-sm'">
+                <a [routerLink]="['/tabs', 'users', data?.user?.id]">
+                  <span *ngIf="data?.organization" class="text-xs mr-2">{{
+                    data.username
+                    }}</span>
+
+                  <span *ngIf="!data?.organization">{{ data.username }}</span>
+                </a>
+                <span *ngIf="data?.organization" class="text-xs font-normal">{{
+                  data.updated_date
+                  }}</span>
+              </p>
+            </div>
+            <div class="text-xs font-normal" *ngIf="!data?.organization">
+              {{ data.updated_date }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mr-4">
+        <span class="spacer"></span>
+        <ion-icon class="rotate-90" name="ellipsis-vertical-outline" (click)="setOpenActionSheet(true)"></ion-icon>
+        <ion-action-sheet [isOpen]="isActionSheetOpen" [buttons]="
+            me?.id !== data?.author?.id ? actionSheetGuests : actionSheetOwn
+          " (didDismiss)="setResult($event)" *ngIf="me?.super_admin !== 1"></ion-action-sheet>
+        <ion-action-sheet [isOpen]="isActionSheetOpen" [buttons]="
+                me?.id !== data?.author?.id ? actionSheetSuperAdmin : actionSheetOwn
+              " (didDismiss)="setResult($event)" *ngIf="me?.super_admin === 1"></ion-action-sheet>
+
+      </div>
+    </div>
+    <!-- <ion-text> {{ "TAB.HOME.COMMENTS" | translate }} </ion-text> -->
+    <!-- </div> -->
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="detail-opportunity-pages">
+    <div class="content" *ngIf="isLoading">
+      <ion-skeleton-text class="h-14" [animated]="true"></ion-skeleton-text>
+      <ion-skeleton-text class="h-10" [animated]="true"></ion-skeleton-text>
+      <ion-skeleton-text class="h-16" [animated]="true"></ion-skeleton-text>
+      <ion-skeleton-text class="h-28" [animated]="true"></ion-skeleton-text>
+      <ion-skeleton-text class="h-6" [animated]="true"></ion-skeleton-text>
+      <ion-skeleton-text class="h-6" [animated]="true"></ion-skeleton-text>
+
+      <ion-skeleton-text class="h-6" [animated]="true"></ion-skeleton-text>
+
+      <ion-segment [value]="segment" (ionChange)="changeSegment($event)">
+        <ion-segment-button value="0">
+          <ion-skeleton-text class="h-7" [animated]="true"></ion-skeleton-text>
+        </ion-segment-button>
+        <ion-segment-button value="1">
+          <ion-skeleton-text class="h-7" [animated]="true"></ion-skeleton-text>
+        </ion-segment-button>
+      </ion-segment>
+
+      <ion-card *ngFor="let bid of dataBids; index as i">
+        <ion-card-header>
+          <ion-skeleton-text class="h-12" [animated]="true"></ion-skeleton-text>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-skeleton-text class="h-12" [animated]="true"></ion-skeleton-text>
+        </ion-card-content>
+      </ion-card>
+    </div>
+    <div *ngIf="!isLoading">
+      <!-- <div> -->
+      <div [class]="data.listImages.length === 0 ? 'px-4 py-4 pt-4 pb-0 text-black' : 'p-4 text-black'">
+        <div class="date-time">
+          {{ data?.event_date_start }}
+          <span *ngIf="data?.event_date_end"> - </span>
+          {{ data?.event_date_end }}
+        </div>
+
+        <div class="text-sm font-bold" *ngIf="data?.requirement && data.requirement !== ''">
+          <span>{{ "TAB.HOME.REQUIRED" | translate
+            }} : {{ data?.requirement }}</span>
+        </div>
+
+        <div class="text-sm font-bold">
+          {{ data.name }}
+        </div>
+
+        <p class="text-sm" #myIdentifier [innerHTML]="data.content"></p>
+      </div>
+
+      <app-images-list [images]="data.images" (zoom)="onZoom($event)"></app-images-list>
+      <div [class]="data.listImages.length === 0 ? 'p-4 pt-0' : 'p-4'">
+        <div *ngIf="data?.industry?.name" class="text-xs italic items-center count mt-1 mb-1 mr-1 flex">
+          <ion-icon name="layers-outline" class="mr-1"></ion-icon>
+          <span>
+            {{ data?.industry?.name }}
+          </span>
+        </div>
+        <div class="flex mt-1 mb-1 mr-1 items-center">
+          <ion-icon name="cash-outline" class="mr-1"></ion-icon>
+          <span class="text-red-600 mr-1 text-xs">{{ "COMMON.PRICE_OPP" | translate }} : </span>
+          <span class="text-red-600 text-xs" *ngIf="data?.minimum_price > 0">{{
+            data?.minimum_price?.toLocaleString("it-IT", {
+            style: "currency",
+            currency: "VND"
+            })
+            }}</span>
+
+          <span class="text-red-600 text-xs" *ngIf="data?.minimum_price === 0">{{ "COMMON.FREE" | translate }}</span>
+
+          <span class="text-red-600 text-xs" *ngIf="data?.minimum_price === -1">
+            {{ "COMMON.CONTACT" | translate
+            }}
+          </span>
+
+          <span class="button-container mt-0 mr-1 text-xs">
+            <ion-button size="small" (click)="sendMessage(data)" shape="round" fill="outline">
+              <ion-icon name="chatbubble-outline" class="p-0 text-right text-xs"></ion-icon>
+              {{ "COMMON.MESSAGE" | translate
+              }}
+            </ion-button>
+          </span>
+        </div>
+
+        <div class="location" *ngIf="data?.location" class="mt-1 mb-1 mr-1 flex">
+          <ion-icon name="location-outline" class="p-0 text-left"></ion-icon><span class="ml-1 text-xs">{{
+            data?.location }}</span>
+        </div>
+        <div class="text-xs text-black italic items-center count mt-1 mb-1 mr-1 flex">
+          <ion-icon name="people-outline" class="people"></ion-icon>
+          <span *ngIf="data?.summary?.number_of_bids < 2">
+            {{ data?.summary?.number_of_bids ?? 0 }}
+            {{ "COMMON.BID" | translate }}
+          </span>
+          <span *ngIf="data?.summary?.number_of_bids >= 2">
+            {{ data?.summary?.number_of_bids ?? 0 }}
+            {{ "COMMON.BIDS" | translate }}
+          </span>
+        </div>
+
+        <div *ngIf="data.tags" class="p-0 m-0 items-center">
+          <app-tags-list [tags]="data.tags"></app-tags-list>
+        </div>
+      </div>
+
+      <app-reactions [data]="data" (heart)="onHeart($event)" [hasBid]="hasBid" (callbackBids)="getCallbackBids()"
+        [type]="'bids'" [page]="'detail'" (redirect)="redirect($event)" (bidDetail)="onBidDetail($event)"
+        [hostNameLocation]="hostNameLocation"></app-reactions>
+
+      <div class="tabs">
+        <ion-segment [value]="segment" (ionChange)="changeSegment($event)">
+          <ion-segment-button value="0">
+            <ion-label>{{ "TAB.HOME.CONTRACTOR" | translate }}</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="1">
+            <ion-label>{{ "TAB.HOME.COMMENTS" | translate }}</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      <div *ngIf="segment === '0'" class="list-user">
+        <ion-card *ngFor="let bid of dataBids; index as i">
+          <ion-card-header>
+            <ion-card-content><app-avatar [isAvatar]="isAvatar" [classNameAvatar]="'item'" [data]="bid.user"
+                [isParticipate]="true"></app-avatar>
+              <div class="username" [routerLink]="['/tabs', 'users', bid?.user?.id]">
+                <div class="font-bold">{{ bid?.user.username }}</div>
+                <div class="text-red-500 font-normal price">
+                  {{
+                  bid?.price.toLocaleString("it-IT", {
+                  style: "currency",
+                  currency: "VND"
+                  })
+                  }}
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card-header>
+
+          <ion-card-content *ngIf="bid?.description">
+            <p class="pl-4 pt-2 pr-4" [innerHTML]="bid?.description"></p>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-infinite-scroll (ionInfinite)="onIonInfiniteBids($event)" *ngIf="segment === '0'">
+          <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </div>
+      <div *ngIf="segment === '1'">
+        <div class="comments" #commentElement>
+          <app-comment-list [me]="me" [authorId]="data?.author?.id" [comments]="comments"
+            (replies)="onRepliesComment($event)" (editComment)="onEditComment($event)"
+            (deleteComment)="onDeleteComment($event)"></app-comment-list>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfiniteComments($event)" *ngIf="segment === '1'">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-modal [isOpen]="isShowReport" class="modal-report" (didDismiss)="onCloseReport(false)">
+    <ng-template>
+      <app-report-form (getValues)="onGetValueReport($event)" (close)="onCloseReport($event)"></app-report-form>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isModalUpload" class="modal-upload-image">
+    <ng-template>
+      <app-album-image [isUploadSuccess]="isUploadSuccess" [images]="data.images" [data]="data"
+        (addImage)="handleAddImage($event)" (removeImage)="handleRemoveImage($event)"
+        (closeModal)="handleCloseUpload($event)"></app-album-image>
+    </ng-template>
+  </ion-modal>
+
+  <app-preview-image [showModal]="showModal" [images]="images" (closeModal)="closeModal($event)"></app-preview-image>
+</ion-content>
+
+<app-send-comment *ngIf="segment === '1'" (messageChange)="sendComments($event)" [replies]="repliesData" [data]="data"
+  (removeReply)="onRemoveReply($event)"
+  [message]="commentEdit?.parentName ?? commentEdit?.childrenName"></app-send-comment>

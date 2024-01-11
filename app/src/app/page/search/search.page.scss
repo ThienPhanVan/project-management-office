@@ -1,0 +1,19 @@
+.show {
+    padding: 8px;
+    text-align: center;
+    button {
+        width: 100%;
+        .more,
+        .less {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+
+            span.text {
+                margin-right: 12px;
+            }
+        }
+    }
+    
+}

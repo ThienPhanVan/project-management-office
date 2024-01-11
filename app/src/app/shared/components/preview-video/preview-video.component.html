@@ -1,0 +1,43 @@
+<!-- <div *ngIf="showModal" [class]="showModal ? 'modal modal-show' : 'modal'">
+   <div class="modal-container">
+     <button class="close-button" (click)="hideModal()">Close</button>
+     <ngx-slick-carousel
+       #slickModal="slick-carousel"
+       [config]="slideConfig"
+       (afterChange)="afterChange($event)"
+       (init)="slickInit()"
+     >
+       <div *ngFor="let video of videos">
+         <video controls style="width: 100%;">
+           <source [src]="video.url" type="video/mp4" />
+           Your browser does not support the video tag.
+         </video>
+       </div>
+     </ngx-slick-carousel>
+   </div>
+ </div>
+  -->
+
+ <div id="modal-zoom" [class]="showModal ? 'modal modal-show' : 'modal'">
+  <span class="close" (click)="hideModal()">&times;</span>
+  <div class="container">
+    <div *ngIf="dataImage.length">
+      <div *ngFor="let item of dataImage; index as i"
+        [class]="indexCurrent === i ? 'image-item is-active' : 'image-item' ">
+        <div class="content-image">
+          <video controls style="width: 100%;">
+            <source [src]="video.url" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+      <div [class]="indexCurrent===dataImage.length-1 ? 'disabled next-img' : 'next-img'">
+        <ion-icon name="caret-forward-outline"></ion-icon>
+      </div>
+    </div>
+    <div *ngIf="!dataImage.length">
+      <img class="modal-content" alt="" [src]="video">
+      <div id="caption"></div>
+    </div>
+  </div>
+</div>

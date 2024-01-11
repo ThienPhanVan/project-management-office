@@ -1,0 +1,190 @@
+<ion-avatar [class]="classNameAvatar ? classNameAvatar : ''" *ngIf="isAvatar">
+  <img alt="data.organization.thumbnail" [src]="
+      data?.organization?.thumbnail
+        ? data?.organization?.thumbnail
+        : data.thumbnail
+    " (error)="onError(data)" [class]="isUploadImage ? 'opacity-50' : ''" *ngIf="data?.organization" class="rounded"
+    [routerLink]="['/tabs', 'organizations', data?.organization?.id]" />
+  <img alt="data.thumbnail" [src]="data?.thumbnail" (error)="onError(data)" [class]="isUploadImage ? 'opacity-50' : ''"
+    *ngIf="data?.organization" [class]="
+      type === 'detail'
+        ? 'absolute rounded-full scale-50 top-detail left-15'
+        : 'absolute rounded-full scale-50 top-6 left-7'
+    " [routerLink]="['/tabs', 'users', data?.author?.id]" />
+
+  <img alt="data.thumbnail" [src]="data?.thumbnail" (error)="onError(data)" [class]="isUploadImage ? 'opacity-50' : ''"
+    *ngIf="
+      !data?.organization &&
+      type !== 'user-detail' &&
+      type !== 'order' &&
+      type !== 'cart-user' &&
+      type !== 'cart-org' &&
+      !isParticipate
+    " [routerLink]="data?.is_private !== 1 ? ['/tabs', 'users', data?.id] : null" />
+  <img alt="data.thumbnail" [src]="data?.thumbnail" (error)="onError(data)" [class]="isUploadImage ? 'opacity-50' : ''"
+    *ngIf="!data?.organization && type === 'user-detail' && !isParticipate" />
+
+  <img alt="data.thumbnail" [src]="data?.thumbnail" (error)="onError(data)" [class]="isUploadImage ? 'opacity-50' : ''"
+    *ngIf="
+      !data?.organization &&
+      type !== 'user-detail' &&
+      type !== 'order' &&
+      type !== 'cart-user' &&
+      type !== 'cart-org' &&
+      isParticipate
+    " [routerLink]="['/tabs', 'users', data?.id]" />
+
+  <img alt="data.thumbnail" [src]="data?.thumbnail" (error)="onError(data)" [class]="isUploadImage ? 'opacity-50' : ''"
+    *ngIf="type === 'order'" />
+
+  <img alt="data.thumbnail" [src]="data?.thumbnail" (error)="onError(data)" [class]="isUploadImage ? 'opacity-50' : ''"
+    *ngIf="!data?.organization && type === 'cart-user'!; isParticipate" [routerLink]="['/tabs', 'users', data?.id]" />
+
+  <img alt="data.thumbnail" [src]="data?.thumbnail" (error)="onError(data)" [class]="isUploadImage ? 'opacity-50' : ''"
+    *ngIf="!data?.organization && type === 'cart-org'!; isParticipate"
+    [routerLink]="['/tabs', 'organizations', data?.id]" />
+
+  <div *ngIf="isUploadImage" class="absolute bottom-[1rem] right-[1rem] rounded-full">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div class="absolute bottom-[-0.6rem] right-[0.9rem] rounded-full" *ngIf="updateAvatar && !isUploadImage">
+    <ion-button class="p-0" size="small" fill="clear" (click)="cover.click()">
+      <div class="clear-both rounded-full text-white">
+        <ion-icon slot="icon-only" name="camera-outline" class="text-base p-[0.2rem]">
+        </ion-icon>
+      </div>
+    </ion-button>
+    <input type="file" accept="image/png, image/jpeg" hidden (change)="setCoverImage($event)" #cover />
+  </div>
+
+  <div class="status-circle" *ngIf="isOnline"></div>
+</ion-avatar>
+
+<div class="outer-background" *ngIf="isBackground">
+  <img [src]="form ? form.value.cover : data.cover" [class]="isUploadImageBg ? 'opacity-50 bg-img' : 'bg-img'"
+    (error)="onError(form ? form.value : data)" />
+  <div *ngIf="isUploadImageBg" class="inner-background loader-bg rounded-full">
+    <ion-spinner></ion-spinner>
+  </div>
+  <div class="inner-background text-xs" *ngIf="form && !isUploadImageBg">
+    <ion-button size="small" fill="clear" color="light" (click)="coverBackground.click()">
+      <ion-icon slot="icon-only" name="camera-outline" color="medium">
+      </ion-icon>
+    </ion-button>
+    <input type="file" accept="image/png, image/jpeg" class="file-input" (change)="setCoverImageBackground($event)"
+      #coverBackground />
+  </div>
+</div>
+
+<div *ngIf="isLogo" [class]="classNameThumbnail ? classNameThumbnail : 'thumbnail-logo'">
+  <ion-thumbnail slot="start">
+    <img [class]="isUploadImageLogo ? 'opacity-50 rounded-md' : 'rounded-md'"
+      [src]="form ? form.value.thumbnail : data.thumbnail" (error)="onError(form ? form.value : data)" />
+    <div *ngIf="isUploadImageLogo" class="absolute bottom-[0.8rem] right-[1rem]">
+      <ion-spinner></ion-spinner>
+    </div>
+    <div class="mx-auto w-full text-center" *ngIf="form && !isUploadImageLogo">
+      <ion-button size="small" fill="clear" color="light" (click)="thumbnailLogo.click()">
+        <ion-icon class="mx-auto -mt-2" name="camera-outline" color="medium">
+        </ion-icon>
+      </ion-button>
+    </div>
+    <input type="file" accept="image/png, image/jpeg" class="file-input" (change)="setThumbnailLogo($event)"
+      #thumbnailLogo />
+  </ion-thumbnail>
+</div>
+<div class="open-loading">
+  <ion-loading class="custom-loading"></ion-loading>
+</div>
+<div *ngIf="
+    data?.listImages?.length > 0 &&
+    !isEdit &&
+    !isCreate &&
+    !isAvatar &&
+    !isBackground &&
+    !isLogo &&
+    type !== 'detail'
+  " class="list-images">
+  <div *ngFor="let item of data.listImages; index as i"
+    [class]="data.listImages.length < 2 ? 'one-image' : 'many-images'">
+    <div *ngIf="i < 2">
+      <img [class]="images.length < 2 ? 'image-list-one' : 'img-list'" alt="" [src]="item?.image_url ?? item"
+        (error)="onError(item?.image_url ?? item)" />
+    </div>
+  </div>
+  <div *ngIf="data?.listImages?.length > 2" class="more-image">
+    +{{ data.listImages.length - 2 }}
+  </div>
+</div>
+
+<div *ngIf="
+    data?.listImages?.length > 0 &&
+    !isEdit &&
+    !isCreate &&
+    !isAvatar &&
+    !isBackground &&
+    !isLogo &&
+    type === 'detail'
+  " class="list-images">
+  <div *ngFor="let item of data.listImages; index as i" class="one-image">
+    <div *ngIf="!item.image_url" class="open-loading items-center justify-items-center">
+      <ion-spinner></ion-spinner>
+    </div>
+    <div *ngIf="item?.image_url">
+      <img class="img-detail" alt="" [src]="item?.image_url ?? item" *ngIf="!item?.image_url?.includes('mp4')"
+        (error)="onError(item?.image_url ?? item)" />
+      <video controls style="width: 100%" *ngIf="item?.image_url?.includes('mp4')">
+        <source [src]="item?.image_url" type="video/mp4" />
+      </video>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isEdit || isCreate" class="list-images-remove">
+  <div *ngFor="let item of data.listImages; index as i" class="image">
+    <div *ngIf="!item?.image_url" class="open-loading items-center justify-items-center">
+      <ion-spinner></ion-spinner>
+    </div>
+    <div *ngIf="item?.image_url" class="container">
+      <img alt="" [src]="item?.image_url ?? item" *ngIf="
+          !item?.image_url?.includes('.mp4') &&
+          !item?.image_url?.includes('.MOV')
+        " (error)="onError(item?.image_url ?? item)" />
+      <video controls style="width: 100%" *ngIf="
+          item?.image_url?.includes('.mp4') || item?.image_url?.includes('.MOV')
+        ">
+        <source [src]="item?.image_url" type="video/mp4" />
+      </video>
+      <div *ngIf="isLoadingUpload" class="inner-background loader-bg rounded-full">
+        <ion-spinner></ion-spinner>
+      </div>
+      <div class="remove-icon" (click)="handleRemoveImage(i)">
+        <ion-icon name="trash-outline"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <div class="image select-image">
+    <div class="ant-upload ant-upload-select" (click)="newsThumbnail.click()">
+      <span class="ant-upload">
+        <input type="file" multiple="multiple" accept="" style="display: none" #newsThumbnail
+          (change)="handleUpload($event)" />
+        <div>
+          <span role="img" aria-label="plus" class="anticon anticon-plus">
+            <svg viewBox="64 64 896 896" focusable="false" data-icon="plus" width="1em" height="1em" fill="currentColor"
+              aria-hidden="true">
+              <defs>
+                <style></style>
+              </defs>
+              <path d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"></path>
+              <path d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"></path>
+            </svg>
+          </span>
+          <div style="margin-top: 8px">Upload</div>
+        </div>
+      </span>
+    </div>
+  </div>
+  <!-- <img alt="" [src]="item.src" (error)="onError(item.src)"/> -->
+</div>

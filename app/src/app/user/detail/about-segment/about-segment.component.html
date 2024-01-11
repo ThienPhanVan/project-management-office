@@ -1,0 +1,44 @@
+<app-member-detail [isAdmin]="isAdmin"></app-member-detail>
+
+
+<ion-card *ngIf="user.organizations">
+  <ion-content>
+
+  </ion-content>
+</ion-card>
+
+
+<ion-card class="px-0">
+  <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header" color="light">
+        <div class="flex items-center">
+          <ion-icon name="business-outline" class="text-xs"></ion-icon>
+          <ion-card-subtitle class="ml-2">{{'PAGES.USER_INFO.ORGANIZATIONS' | translate}} {{user.organizations |
+            displayTotal}}</ion-card-subtitle>
+        </div>
+      </ion-item>
+      <div *ngIf="user.organizations" class="w-full" slot="content">
+        <app-organization-list (getThumbnail)="getSrcImage($event)" [isLoading]="isLoading"
+          [organizations]="user.organizations" class="my-0"></app-organization-list>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-card>
+
+<ion-card class="px-0">
+  <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header" color="light">
+        <div class="flex items-center">
+          <ion-icon name="shapes-outline" class="text-xs"></ion-icon>
+          <ion-card-subtitle class="ml-2">{{'PAGES.USER_INFO.CHAPTERS' | translate}} {{user.chapters |
+            displayTotal}}</ion-card-subtitle>
+        </div>
+      </ion-item>
+      <div *ngIf="user.chapters" class="w-full" slot="content">
+        <app-chapter-list class="my-0 p-0" [isLoading]="isLoading" [chapters]="user.chapters"></app-chapter-list>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-card>

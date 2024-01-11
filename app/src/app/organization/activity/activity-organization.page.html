@@ -1,0 +1,117 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title class=" text-sm">
+        {{'PAGES.ACTIVITY_ORGANIZATION.TITLE' | translate}}
+      </ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div *ngFor="let item of data; index as i">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-item>
+            <app-avatar (getSrcImage)="getSrcImage($event)" [classNameAvatar]="classNameAvatar" [isAvatar]="isAvatar"
+              [data]="item.user"></app-avatar>
+            <ion-label>
+              <div>
+                {{item.user.username}}
+              </div>
+
+              <div class="activity-header">
+                <div class="email">
+                  {{item.user.email}}
+                </div>
+                <div class="time">
+                  <b><i>{{item.created_at}}</i></b>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+
+        <div *ngIf="item.name === nameActivity[0]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã tạo doanh nghiệp mới
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã tạo doanh nghiệp mới
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[1]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã cập nhật doanh nghiệp
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã cập nhật doanh nghiệp
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[2]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã thiết lập Owner cho doanh nghiệp
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã thiết lập Owner cho doanh nghiệp
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[3]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã xác thực cho doanh nghiệp
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã xác thực cho doanh nghiệp
+          </div>
+        </div>
+
+        <div *ngIf="item.name === nameActivity[4]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã mời user1, user2 vào doanh nghiệp
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã mời user1, user2 vào doanh nghiệp
+          </div>
+        </div>
+
+        <div *ngIf="item.name === nameActivity[5]">
+          <div class="item">
+            <b>Bạn</b> đã chấp nhận vào doanh nghiệp
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[6]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã rời khỏi doanh nghiệp
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã được mời rời khỏi doanh nghiệp
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[7]">
+          <div class="item">
+            <b>user1, user2,..</b> đã thêm doanh nghiệp vào chapter
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[8]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã xóa doanh nghiệp ra khỏi chapter
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã xóa doanh nghiệp ra khỏi chapter
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>
+</ion-content>

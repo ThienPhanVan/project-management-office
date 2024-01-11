@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title></ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCloseModal(false)">{{
+        "BUTTON.CLOSE" | translate
+        }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-segment [value]="segment" (ionChange)="changeSegment($event)">
+    <ion-segment-button value="0">
+      <ion-label>{{ "TAB.HOME.DETAIL_TAB_VIEW" | translate }}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="1">
+      <ion-label>{{ "TAB.HOME.DETAIL_TAB_CREATE" | translate }}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="2">
+      <ion-label>{{ "TAB.HOME.DETAIL_TAB_DELETE" | translate }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <div class="container">
+    <div class="gallery" style="position: relative" *ngIf="segment === 0">
+      <div *ngFor="let image of images; index as i" [class]="i === 0 ? 'main' : ''" style="position: relative">
+        <img [src]="image?.image_url ?? image?.src" alt="" *ngIf="i <= 4" (click)="zoomArrayImage(i)" />
+        <div *ngIf="images.length > 5 && i === 4" class="more-image">
+          <div (click)="zoomArrayImage(4)" style="
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width: 100%;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: #00000035;
+              color: #ffffff;
+            ">
+            <span style="font-size: 28px">+{{ images.length - 5 }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="image select-image" *ngIf="segment === 1">
+      <div class="ant-upload ant-upload-select" (click)="newsThumbnail.click()">
+        <span class="ant-upload">
+          <input type="file" accept="" style="display: none" #newsThumbnail (change)="handleUpload($event)" />
+          <div>
+            <span role="img" aria-label="plus" class="anticon anticon-plus"><svg viewBox="64 64 896 896"
+                focusable="false" data-icon="plus" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                <defs>
+                  <style></style>
+                </defs>
+                <path d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"></path>
+                <path d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"></path>
+              </svg></span>
+            <div style="margin-top: 8px">
+              {{ "FORM.FIELD.UPLOAD_IMAGE" | translate }}
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <div style="
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        justify-content: space-between;
+        padding: 4px;
+      " *ngIf="segment === 2">
+      <div *ngFor="let image of images; index as i" style="position: relative; width: 49%"
+        [class]="images.length <= 1 ? 'one-image' : ''">
+        <img [src]="image?.image_url ?? image?.src" (click)="zoomImage(i)"
+          style="height: 100%; width: 100%; object-fit: cover" />
+        <div class="remove-icon" (click)="handleRemoveImage(image.id)" style="
+            position: absolute;
+            top: 5%;
+            right: 4%;
+            z-index: 9999;
+            color: red;
+          ">
+          <ion-icon name="trash-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-zoom" [class]="isPreview ? 'modal modal-show' : 'modal'">
+      <span class="close" (click)="hideModal()">&times;</span>
+      <div class="container">
+        <div *ngIf="dataImages?.length">
+          <div [class]="indexPreview === 0 ? 'disabled prev-img' : 'prev-img'" (click)="actionImage(-1)"
+            [id]="dataImages.length <= 1 ? 'none' : ''">
+            <ion-icon name="caret-back-outline"></ion-icon>
+          </div>
+          <div *ngFor="let item of dataImages; index as i"
+            [class]="indexPreview === i ? 'image-item is-active' : 'image-item'">
+            <div class="content-image">
+              <img class="modal-content" [src]="item.image_url" alt="" />
+              <div id="caption"></div>
+            </div>
+          </div>
+          <div [class]="
+              indexPreview === dataImages.length - 1
+                ? 'disabled next-img'
+                : 'next-img'
+            " (click)="actionImage(1)" [id]="dataImages.length <= 1 ? 'none' : ''">
+            <ion-icon name="caret-forward-outline"></ion-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

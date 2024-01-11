@@ -1,0 +1,59 @@
+<ion-menu side="end" contentId="main-content" menuId="menu">
+  <ion-header>
+    <ion-toolbar>
+      <ion-label class="ml-2 font-bold text-xl">Menu</ion-label>
+      <ion-menu-toggle slot="end" class="mr-2">
+        <ion-button fill="clear">
+          <ion-icon size="large" name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-list>
+      <!-- <ion-item>
+        <a class="color-blue-500 w-full">
+          <ion-icon name="cart-outline">
+          </ion-icon>
+          <span class="ml-2">Giỏ hàng </span>
+        </a>
+      </ion-item> -->
+
+      <ion-item routerLink="/orders">
+        <a class="flex items-center color-blue-500 w-full">
+          <ion-icon name="list-outline">
+          </ion-icon>
+          <span class="ml-2">{{'TAB.COMMERCE.ORDERS' | translate}}</span>
+        </a>
+      </ion-item>
+      <!-- <ion-item>
+        <a class="flex items-center color-blue-500 w-full">
+          <ion-icon name="heart-outline">
+          </ion-icon>
+          <span class="ml-2">{{'TAB.COMMERCE.FAVORITE' | translate}}</span>
+        </a>
+      </ion-item>
+      <ion-item>
+        <a class="flex items-center color-blue-500 w-full">
+          <ion-icon name="albums-outline">
+          </ion-icon>
+          <span class="ml-2">{{'TAB.COMMERCE.PRODUCTS' | translate}}</span>
+        </a>
+      </ion-item>
+      <ion-item>
+        <a class="flex items-center color-blue-500 w-full">
+          <ion-icon name="settings-outline">
+          </ion-icon>
+          <span class="ml-2">{{'TAB.COMMERCE.SETTING_ACCOUNT' | translate}}</span>
+        </a>
+      </ion-item>
+      <ion-item>
+        <a class="flex items-center color-blue-500 w-full">
+          <ion-icon name="help-outline">
+          </ion-icon>
+          <span class="ml-2">{{'TAB.COMMERCE.HELP_CENTER' | translate}}</span>
+        </a>
+      </ion-item> -->
+    </ion-list>
+  </ion-content>
+</ion-menu>

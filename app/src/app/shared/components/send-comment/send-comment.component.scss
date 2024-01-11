@@ -1,0 +1,48 @@
+
+
+.auto-resize {
+  padding: 8px;
+  overflow-y: auto;
+  max-height: 200px;
+  resize: none;
+  width: 200px;
+  border-radius: 8px;
+  background-color: #fafafa;
+  line-height: 14px !important;
+}
+
+.auto-resize::placeholder {
+  font-size: 14px;
+}
+
+.auto-resize::-webkit-scrollbar {
+  width: 4px;
+}
+
+.auto-resize::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.auto-resize::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+ion-modal::part(handle) {
+  background: none;
+}
+
+
+
+@media only screen and (min-width: 768px) and (min-height: 600px) {
+  ion-modal {
+    --width: 384px;
+  }
+}
+
+
+
+
+
+
+

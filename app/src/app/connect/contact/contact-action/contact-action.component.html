@@ -1,0 +1,51 @@
+<ion-header *ngIf="users">
+  <ion-toolbar class="flex">
+      <ion-avatar slot="start" class="m-5" >
+          <ion-img [src]="users.thumbnail || userThumbnail" style="border-color: black;"></ion-img>
+      </ion-avatar>
+      <div>
+          <p class="text-lg">{{users.username}}</p>
+          <p class="text-xs">Friends since October 2015</p>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="users">
+    <ion-list>
+      <ion-item [hoverEffect]=false>
+        <ion-avatar slot="start">
+            <ion-icon name="chatbubble-outline" size="large"></ion-icon>
+        </ion-avatar>
+        <ion-label (click)="messAction()">
+          <h2>{{"TAB.MESSAGE.MESSAGE" | translate}}</h2>
+        </ion-label>
+      </ion-item>
+      <ion-item [hoverEffect]=false> 
+        <ion-avatar slot="start">
+            <ion-icon name="close-circle-outline" size="large"></ion-icon>
+        </ion-avatar>
+        <ion-label (click)="unfollowAction()">
+          <h2>{{"TAB.MESSAGE.UNFOLLOW" | translate}}</h2>
+          <p>{{"TAB.MESSAGE.UNFOLLOW_DECRIPTION" | translate}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item [hoverEffect]=false>
+        <ion-avatar slot="start">
+            <ion-icon name="person-remove-outline" size="large"></ion-icon>
+        </ion-avatar>
+        <ion-label (click)="blockAction()" >
+          <h2>{{"TAB.MESSAGE.BLOCK_FRIEND" | translate}} {{users.username}}</h2>
+          <p>{{"TAB.MESSAGE.BLOCK_FRIEND_DESCRIPTION" | translate}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item [hoverEffect]=false pointer-events: none>
+        <ion-avatar slot="start">
+            <ion-icon name="remove-circle-outline" size="large"></ion-icon>       
+         </ion-avatar>
+        <ion-label (click)="unfriendAction()" style="color: red;">
+          <h2>{{"TAB.MESSAGE.UNFRIEND" | translate}} {{users.username}}</h2>
+          <p>{{"TAB.MESSAGE.UNFRIEND_DESCRIPTION" | translate}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>

@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-searchbar class="!py-0" [debounce]="1000" (ionInput)="handleSearch($event)"
+        placeholder="{{ 'PLACEHOLDER.SEARCH' | translate }}"></ion-searchbar>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-segment [value]="segmentStatus" (ionChange)="changeSegment($event)" style="margin-top: 4px">
+    <ion-segment-button value="0">
+      <ion-label>{{'TAB.PROFILE.POST' | translate }}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="1">
+      <ion-label>{{'TAB.PROFILE.FOLLOWINGS' | translate }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <app-categories-slide class="flex" [categories]="productCategories" [productCategoryId]="productCategoryId"
+    (active)="onSearchCategories($event)" (segment)="onChangeSegment($event)"
+    [isLoading]="isLoading"></app-categories-slide>
+
+  <app-product-two-column [data]="data" [isLoading]="isLoading" (heart)="onHeart($event)" [me]="me"
+    (show)="onShow($event)" (actionSheet)="onActionSheet($event)"></app-product-two-column>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button size="small" (click)="onClickCreate(0)">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+    <!-- <ion-fab-list side="top" class="right-0" style="right: 0">
+      <app-fab-list [buttons]="buttonCommerces" (type)="onClickCreate($event)">
+      </app-fab-list>
+    </ion-fab-list> -->
+  </ion-fab>
+
+  <!-- <app-fab-list [buttons]="buttonCommerces" [page]="pageName" (type)="onClickCreate($event)">
+  </app-fab-list> -->
+  <ion-modal [isOpen]="isModalUpload" class="modal-upload-image">
+    <ng-template>
+      <app-album-image [isUploadSuccess]="isUploadSuccess" [images]="uploadData.images" [data]="uploadData"
+        (addImage)="handleAddImage($event)" (removeImage)="handleRemoveImage($event)"
+        (closeModal)="handleCloseUpload($event)"></app-album-image>
+    </ng-template>
+  </ion-modal>
+
+  <app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>
+</ion-content>

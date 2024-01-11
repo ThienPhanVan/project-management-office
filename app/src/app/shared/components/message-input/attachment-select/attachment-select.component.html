@@ -1,0 +1,13 @@
+<ion-button fill="clear" size="medium" (click)="chooseAttachment.click()">
+  <ion-icon
+    name="attach-outline"
+    id="open-image-select"
+    size="medium"
+  ></ion-icon>
+</ion-button>
+<input
+  type="file"
+  hidden
+  (change)="attachmentChanged($event)"
+  #chooseAttachment
+/>

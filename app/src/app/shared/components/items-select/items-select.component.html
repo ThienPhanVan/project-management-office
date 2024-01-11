@@ -1,0 +1,87 @@
+<ion-header class="category-header">
+  <div style="padding-left: 16px; padding-right: 16px">
+    <div style="
+        display: flex;
+        align-items: center;
+        height: 100%;
+        min-height: 48px;
+        border-bottom: 1px solid #dddce0;
+      ">
+
+      <ion-label style="width: 100%">
+        <div class="flex justify-between" (click)="setOpen(!isModalOpen)">
+          <div [class]="nameChoose !== '' ? 'text-xs' : ''">{{ title | translate }} <span class="text-red-700">*</span>
+          </div>
+        </div>
+        <div *ngIf="nameChoose !== ''" class="flex justify-between">
+          <span class="mr-2">{{ nameChoose }}</span>
+        </div>
+      </ion-label>
+
+      <ion-icon name="chevron-expand-outline" size="small" class="font-bold"></ion-icon>
+
+      <ion-icon *ngIf="nameChoose !== ''" name="close-outline" size="large" class="ml-2"
+        (click)="removeItem()"></ion-icon>
+    </div>
+  </div>
+  <!-- <ion-toolbar >
+    <ion-title>{{ "CHOOSE" | translate }} {{ title | translate }}</ion-title>
+    <p>{{ data?.name }}</p>
+
+  </ion-toolbar> -->
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar class="text-sm">
+          <ion-buttons slot="start">
+            <ion-button (click)="cancelChanges()" class="normal-case">{{
+              "BUTTON.CANCEL" | translate
+              }}</ion-button>
+          </ion-buttons>
+
+          <ion-title class="text-center text-base">{{
+            title | translate
+            }}</ion-title>
+
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmChanges()" class="normal-case" [disabled]="!itemId">{{ "BUTTON.CHOICE" |
+              translate }}</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content color="light" [fullscreen]="true">
+        <ion-toolbar>
+          <div class="flex">
+            <ion-searchbar [debounce]="1500" placeholder="{{ 'PLACEHOLDER.SEARCH' | translate }}" class="mt-1"
+              (ionInput)="handleSearch($event)"></ion-searchbar>
+          </div>
+        </ion-toolbar>
+        <ion-radio-group>
+          <ion-item *ngFor="let item of data; trackBy: trackItems" lines="none">
+            <ion-radio *ngIf="isLoading">
+              <ion-skeleton-text [animated]="true" style="height: 44px"></ion-skeleton-text>
+            </ion-radio>
+            <ion-radio [value]="item.id" (click)="ionChange(item)" *ngIf="!isLoading">
+              {{ item.name }}</ion-radio>
+          </ion-item>
+        </ion-radio-group>
+
+        <ion-item lines="none" *ngIf="type !== 'category'">
+          <ion-input placeholder="{{ 'MODAL.ITEM.ADD_CATEGORY' | translate }}" (ionInput)="changeNewItem($event)"
+            [(ngModel)]="newItemName">
+          </ion-input>
+
+          <ion-button slot="end" fill="clear" (click)="addItem()" [disabled]="isCreating || !newItemName.trim()">
+            <ion-icon name="reload-outline" [hidden]="!isCreating" class="icon-load mr-1"></ion-icon>
+            <ion-icon name="add-circle-outline" [hidden]="isCreating" class="mr-1"></ion-icon>
+            {{ "BUTTON.ADD" | translate }}
+          </ion-button>
+        </ion-item>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

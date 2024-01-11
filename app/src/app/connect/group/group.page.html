@@ -1,0 +1,71 @@
+<ion-menu
+  side="end"
+  class="custom"
+  contentId="main-content"
+  width="100%"
+  max-width="500px"
+  #menu
+>
+  <app-menu-group (close)="menu.close()"></app-menu-group>
+</ion-menu>
+
+<div class="ion-page" id="main-content" #content>
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <div class="flex justify-between">
+        <div class="flex items-center">
+          <ion-button
+            fill="clear"
+            color="dark"
+            (click)="back()"
+            slot="start"
+            size="small"
+          >
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </ion-button>
+          <app-avatar
+            [isAvatar]="true"
+            [classNameAvatar]="'thumbnail-15'"
+            [data]="getContactInfo()"
+            isAvatar="true"
+          ></app-avatar>
+          <ion-label class="ml-2 text-sm">{{groupName}}</ion-label>
+        </div>
+        <ion-buttons slot="end" class="text-base">
+          <ion-menu-button color="dark" *ngIf="selectedGroup?.is_group === 1"
+            ><ion-icon name="ellipsis-vertical-sharp" size="small"></ion-icon
+          ></ion-menu-button>
+        </ion-buttons>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content color="light">
+    <ion-infinite-scroll
+      (ionInfinite)="onIonInfinite($event)"
+      position="top"
+      style="position: absolute; z-index: -1"
+      [disabled]="!shouldCallInfinite"
+    >
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <app-message-list-group
+      *ngIf="messages.length > 0"
+      [messages]="messages"
+      (imageClicked)="onImageClicked($event)"
+    ></app-message-list-group>
+  </ion-content>
+
+  <ion-footer #footer style="background: white">
+    <div
+      *ngIf="isTyping"
+      class="absolute -top-4 left-0 px-1 opacity-80 flex items-center rounded-t-lg background-light"
+    >
+      <!-- <ion-spinner name="dots" class="spinner-typing" color="primary"></ion-spinner>
+      <ion-text class="text-xs ml-1" color="primary">Tamv has been typing</ion-text> -->
+    </div>
+    <app-message-input
+      (messageChange)="sendMessage($event)"
+    ></app-message-input>
+  </ion-footer>
+</div>

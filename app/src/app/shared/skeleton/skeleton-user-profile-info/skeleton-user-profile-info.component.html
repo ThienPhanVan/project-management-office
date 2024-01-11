@@ -1,0 +1,44 @@
+<ion-card class="user-detail">
+  <ion-avatar class="absolute h-12">
+    <ion-skeleton-text [animated]="true" class="m-2" style=" width: 64px;height: 64px;"></ion-skeleton-text>
+  </ion-avatar>
+  <ion-card-header class=" ml-16">
+    <ion-card-title>
+      <div class="flex">
+        <div class="" style="width: 100%;">
+          <div class="font-extrabold">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </div>
+          <div class="text-xs opacity-80">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </div>
+
+          <div class="text-xs">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </div>
+        </div>
+      </div>
+    </ion-card-title>
+  </ion-card-header>
+  <ion-card-content class="mt-6">
+    <div class="text-sm">
+      <div>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      </div>
+      <div class="">
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+<ion-segment value="default">
+  <ion-segment-button value="default">
+      <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+  </ion-segment-button>
+  <ion-segment-button value="segment">
+      <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+  </ion-segment-button>
+</ion-segment>
+
+<app-skeleton-news-item></app-skeleton-news-item>

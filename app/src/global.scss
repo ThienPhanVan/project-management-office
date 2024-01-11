@@ -1,0 +1,274 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+* {
+  font-family: "Lexend Deca", sans-serif;
+}
+app-categories-slide {
+  --btn-color-primary:#3880ff;
+  --btn-color-white :#fff;
+  --color-text-black :#000;
+}
+pre {
+  font-family: "Lexend Deca", sans-serif;
+}
+
+pre {
+  white-space: pre-wrap;
+  /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;
+  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;
+  /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  /* Opera 7 */
+  word-wrap: break-word;
+  /* Internet Explorer 5.5+ */
+}
+
+.spacer {
+  flex: 1 1 0;
+}
+
+.friends {
+  --ion-grid-column-padding: 0px;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+  will-change: scroll-position;
+  justify-content: center;
+}
+
+.friend-item {
+  text-align: center;
+  --col-item-width: 5;
+  flex: 0 0 calc(var(--col-item-width) / var(--ion-grid-columns, 12) * 100%);
+  width: calc(var(--col-item-width) / var(--ion-grid-columns, 12) * 100%);
+  max-width: calc(var(--col-item-width) / var(--ion-grid-columns, 12) * 100%);
+  padding: 0px var(--page-friends-gutter);
+  margin: 0 0.5rem;
+}
+
+ion-input,
+ion-textarea,
+.has-value.input-label-placement-floating,
+.has-focus.input-label-placement-floating {
+  &.required {
+    .label-text-wrapper {
+      &::after {
+        content: "*";
+        color: red;
+        margin-left: 4px;
+      }
+    }
+  }
+}
+
+ion-textarea {
+  &.required {
+    .label-text-wrapper {
+      display: flex;
+    }
+  }
+}
+
+.label-required {
+  &::after {
+    content: "*";
+    color: red;
+    margin-left: 4px;
+  }
+}
+
+.label-verified {
+  &:after {
+    content: url("./assets/icon/mark-icon-12x12.svg");
+    margin-left: 4px;
+  }
+}
+
+.tooltip-2-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.tooltip-3-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.icon-search-page {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.no-shadow {
+  --box-shadow: none;
+}
+
+ion-modal.modal-dialog {
+  --width: fit-content;
+  --min-width: 22rem;
+  --height: fit-content;
+  --border-radius: 1rem;
+}
+
+.no-border {
+  border-bottom: 0;
+}
+
+.background-base-color {
+  background-color: var(--ion-color-medium-contrast);
+}
+
+.medium-light-color {
+  color: var(--app-color-medium-light);
+}
+
+.popup-modal {
+  --max-width: 90vw;
+  --min-width: 22rem;
+  --overflow: auto;
+  --max-height: 80vh;
+  --min-height: 8rem;
+
+  --border-radius: 6px;
+  --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+}
+
+ion-card-header {
+  padding: 12px 16px;
+  color: #000000 !important;
+}
+
+ion-card-content {
+  padding: 16px;
+  color: #000000 !important;
+}
+
+.content-news * {
+  font-size: 14px !important;
+  // font-weight: normal !important;
+
+}
+
+ion-fab-button::part(native) {
+  background-color: #386a20 !important;
+}
+ion-fab-button::part(native)::after {
+  background-color: #386a20 !important;
+}
+
+ion-button::part(native) {
+  padding-inline-start: 4px !important;
+  padding-inline-end: 4px !important;
+}
+
+.many-images:first-child {
+  padding-right: 1px;
+}
+
+ion-header {
+  ion-toolbar {
+    --background : #fdfdfd;
+    --border-color : #e9e9e9;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-header {
+    background-color : #fdfdfd;
+
+  }
+}
+
+@media only screen and (min-width: 768px) and (min-height: 600px) {
+  ion-modal {
+    --width: 384px;
+  }
+}
+
+// click icon reaction
+.ripple-parent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  width: 60%;
+  height: auto;
+}
+.cl-blue {
+  color: #0951c5;
+}
+.cl-red {
+  color: #eb445a;
+}
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 99999px;
+}
+
+label .label-text-wrapper {
+  margin-inline: 0px 0px !important;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+
+:root {
+	--ion-color-has_requested: #006600;
+	--ion-color-has_requested-rgb: 0,102,0;
+	--ion-color-has_requested-contrast: #ffffff;
+	--ion-color-has_requested-contrast-rgb: 255,255,255;
+	--ion-color-has_requested-shade: #005a00;
+	--ion-color-has_requested-tint: #1a751a;
+}
+
+.ion-color-has_requested {
+	--ion-color-base: var(--ion-color-has_requested);
+	--ion-color-base-rgb: var(--ion-color-has_requested-rgb);
+	--ion-color-contrast: var(--ion-color-has_requested-contrast);
+	--ion-color-contrast-rgb: var(--ion-color-has_requested-contrast-rgb);
+	--ion-color-shade: var(--ion-color-has_requested-shade);
+	--ion-color-tint: var(--ion-color-has_requested-tint);
+}
+
+ion-card {
+  margin-top: 0;
+  margin-bottom: 0;
+  box-shadow: none;
+}

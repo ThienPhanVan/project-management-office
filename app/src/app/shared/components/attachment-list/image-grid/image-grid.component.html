@@ -1,0 +1,6 @@
+<div class="flex flex-wrap justify-center max-w-[17rem] space-x-1">
+  <div *ngFor="let item of imageGrid" (click)="onClick(item.image);$event.stopPropagation()"
+    class="mt-1 grid place-items-center background-light w-[{{item.max_width}}rem] h-[{{item.height}}rem]">
+    <img src={{item.image.content}} alt="" class="object-cover w-[{{item.width}}rem] h-[{{item.height}}rem]">
+  </div>
+</div>

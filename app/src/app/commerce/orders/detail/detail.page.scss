@@ -1,0 +1,21 @@
+
+.image-product {
+  width: 150px !important;
+  height: 100px;
+  object-fit: cover;
+}
+
+ion-card {
+  ion-card-content {
+    padding: 0;
+  }
+  ion-button {
+    height: 24px;
+  }
+
+  ion-button::part(native) {
+    height: 24px;
+  }
+}
+
+

@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title class="text-sm">{{'SEARCH' | translate}}: {{query.q}}</ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="page-news">
+    <div *ngFor="let item of data; index as i">
+      <div *ngIf="item.type === 0">
+        <app-opportunity-item (getImages)="getImageSrc($event)" [data]="item" [isLoading]="isLoading"
+          (getIndexArrayImage)="showPopupImages($event)" (heart)="clickHeart($event, 'opportunity')"
+          (tagSearch)="onSearchTag($event)" [me]="me" [indexNews]="i" (showNews)="onShowNews($event)"
+          (actionSheet)="onActionSheet($event)"></app-opportunity-item>
+      </div>
+      <div *ngIf="item.type === 2">
+        <app-news-item (getImages)="getImageSrc($event)" [data]="item" [isLoading]="isLoading"
+          (getIndexArrayImage)="showPopupImages($event)" (heart)="clickHeart($event, 'news')"
+          (tagSearch)="onSearchTag($event)" [me]="me" [indexNews]="i + 'news-tag'" (showNews)="onShowNews($event)"
+          (actionSheet)="onActionSheet($event)"></app-news-item>
+      </div>
+      <div *ngIf="item.type === 1">
+        <!-- casi nay cua event -->
+        <app-event-item [data]="item" (willParticipate)="setWillParticipate($event)"
+          (heart)="clickHeart($event, 'event')" (tagSearch)="onSearchTag($event)" [me]="me" [indexNews]="i"
+          (showNews)="onShowNews($event)" (actionSheet)="onActionSheet($event)"></app-event-item>
+      </div>
+    </div>
+
+    <ion-infinite-scroll (ionInfinite)="onIonInfiniteByTag($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+    <app-zoom [showModal]="showModal" [dataImage]="showDataImage.images" [indexCurrent]="showDataImage.index"
+      [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>
+  </div>
+
+  <ion-modal [isOpen]="isModalUpload" class="modal-upload-image">
+    <ng-template>
+      <app-album-image [isUploadSuccess]="isUploadSuccess" [images]="uploadData.images" [data]="uploadData"
+        (addImage)="handleAddImage($event)" (removeImage)="handleRemoveImage($event)"
+        (closeModal)="handleCloseUpload($event)"></app-album-image>
+    </ng-template>
+  </ion-modal>
+
+  <app-fab-list [buttons]="buttonNews" [page]="'home'" (type)="onClickCreate($event)">
+  </app-fab-list>
+</ion-content>

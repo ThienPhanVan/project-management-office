@@ -1,0 +1,94 @@
+<div>
+  <!-- <ion-segment [(ngModel)]="currentSegment" value="users">
+    <ion-segment-button value="users">
+      <ion-label>{{ 'TAB.MESSAGE.FRIEND' | translate }}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="block">
+      <ion-label>{{ 'TAB.MESSAGE.BLOCK_FRIEND' | translate }}</ion-label>
+    </ion-segment-button>
+  </ion-segment> -->
+
+  <!-- <ion-searchbar
+    animated="true"
+    placeholder="{{ 'PLACEHOLDER.SEARCH' | translate }}"
+  ></ion-searchbar> -->
+
+  <ion-card class="m-2">
+    <ion-card-content *ngIf="!isLoading">
+      <ng-container *ngIf="requests && requests.length > 0">
+        <ng-container *ngIf="!requests || requests.length > 0">
+          <ion-card-title class="my-3 text-base">{{"TAB.MESSAGE.REQUEST_FRIEND" | translate}}</ion-card-title>
+        </ng-container>
+        <ion-grid *ngFor="let request of requests">
+          <ion-row class="ion-align-items-center">
+            <ion-col size="3">
+              <app-avatar
+                (getSrcImage)="getSrcImage($event)"
+                [className]="classNameAvatar"
+                [data]="request.sender"
+                [isAvatar]="isAvatar"
+              ></app-avatar>
+            </ion-col>
+            <ion-col size="8" class="ion-text-left ml-1 ml-0.5">
+              <ion-card-title class="text-base font-extrabold">{{ request.sender.username }}</ion-card-title>
+              <div>
+                <ion-button (click)="acceptRequest(request.sender.id)" size="small" class="text-center" shape="round">Chấp nhận</ion-button>
+                <ion-button (click)="rejectRequest(request.sender.id)" size="small" class="text-center" shape="round" fill="outline">Từ chối</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-container>
+      <ng-container *ngIf="requests && requests.length === 0">
+        <ng-container *ngIf="!requests || requests.length === 0">
+          <ion-card-title class="my-3 text-base">Không có yêu cầu kết bạn mới</ion-card-title>
+        </ng-container>
+      </ng-container>
+    </ion-card-content>
+  </ion-card>
+  
+
+  <ion-card  *ngFor="let user of currentSegment === 'users' ? users : blocks" class="m-2">
+    <ion-card-content *ngIf="!isLoading">
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col size="3">
+            <app-avatar
+              (getSrcImage)="getSrcImage($event)"
+              [updateAvatar]="updateAvatar"
+              [data]="user"
+              [isAvatar]="isAvatar"
+              [classNameAvatar]="'thumbnail-8'"
+            ></app-avatar>
+          </ion-col>
+  
+          <ion-col size="8" class="ion-text-left ml-1">
+            <ion-card-title class="text-base font-extrabold ml-0.5">
+              <div [ngClass]="{'label-verified': user.verified_flag}" (click)="actionRedirect(user)">
+                {{ truncate(user.username) }}
+              </div>
+            </ion-card-title>
+            
+            <div>
+              <ion-button size="small" (click)="messAction(user)" shape="round" fill="outline">
+                <ion-icon name="chatbubble-outline" class="p-0 text-right text-xs"></ion-icon>
+                {{ "COMMON.MESSAGE" | translate
+                }}
+              </ion-button>
+              <app-contact-action [users]="user" (onDelete)="onDeleteFriend($event)">
+                <ion-button size="small" shape="round" fill="outline" (click)="presentModal(user)">
+                  <ion-icon name="ellipsis-horizontal-outline" class="p-0 text-right text-xs"></ion-icon>
+                </ion-button>
+              </app-contact-action>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+  
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</div>

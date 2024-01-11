@@ -1,0 +1,38 @@
+<div *ngIf="isLoading">
+  <ion-card>
+    <ion-card-content class="flex">
+      <div style="width: 70%">
+        <ion-card-subtitle class="font-medium" style="width: 100%;"><ion-skeleton-text [animated]="true"
+            style="height: 20px;"></ion-skeleton-text></ion-card-subtitle>
+        <div class="mt-2">
+          <ion-text style="width: 100%;"><ion-skeleton-text [animated]="true"
+              style="height: 20px;"></ion-skeleton-text></ion-text>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</div>
+
+<div *ngIf="!isLoading">
+  <ion-card *ngIf="userRank === 1" class="card-selected">
+    <ion-card-content class="flex items-center">
+      <ion-icon name="diamond"></ion-icon>
+      <ion-card-subtitle class="font-medium ml-1">{{'TAB.PROFILE.NORMAL_USER' | translate}}</ion-card-subtitle>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="userRank === 2" class="card-selected">
+    <ion-card-content class="flex items-center">
+      <ion-icon name="diamond"></ion-icon>
+      <ion-card-subtitle class="font-medium ml-1">{{'TAB.PROFILE.VIP_USER' | translate}}</ion-card-subtitle>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="userRank === 3" class="card-selected">
+    <ion-card-content class="flex items-center">
+      <ion-icon name="diamond"></ion-icon>
+      <ion-card-subtitle class="font-medium ml-1">{{'TAB.PROFILE.ADMIN_USER' | translate}}</ion-card-subtitle>
+    </ion-card-content>
+  </ion-card>
+
+</div>

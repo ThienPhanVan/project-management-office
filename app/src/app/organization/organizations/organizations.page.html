@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" [routerLink]="['/', 'tabs', 'community']" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-searchbar placeholder="{{ 'PLACEHOLDER.SEARCH_ORGANIZATIONS' | translate }}" class="mt-3 pl-0 pr-1"
+        [value]="searchValue" (ionFocus)="showSearchOrganizationModel()"></ion-searchbar>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <app-organization-list (getThumbnail)="getImageSrc($event)" [organizations]="organizations" [isLoading]="isLoading"
+    (followOrg)="followOrganization($event)"></app-organization-list>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>
+</ion-content>

@@ -1,0 +1,125 @@
+<ion-card class="user-detail">
+  <app-avatar (getSrcImage)="getSrcImage($event)" [isAvatar]="isAvatar" [data]="user" [type]="'user-detail'"
+    [classNameAvatar]="'left-5 top-7 absolute scale-150 item'"></app-avatar>
+
+  <ion-card-header class=" ml-16 pt-2">
+    <ion-card-title>
+      <div class="flex">
+        <div class="w-full">
+          <div [ngClass]="{'label-verified': user.verified_flag}">
+            <span class="text-base font-extrabold">
+              {{user.username}}
+            </span>
+          </div>
+
+          <div class="text-xs"  *ngIf="user.is_public_phone">
+            <ion-icon name="call-outline"></ion-icon> {{user.phone}}
+          </div>
+
+          <div class="text-xs" *ngIf="user.email">
+            <ion-icon name="at-outline"></ion-icon> {{user.email}}
+          </div>
+
+          <div class="text-xs flex justify-start mt-1">
+            <div class="text-xs mr-2" *ngIf="!showButton">
+              <ion-button *ngIf="!user.has_followed" class="text-xs normal-case m-0 h-6" color="danger" size="small"
+                (click)="followUser(user.id)" [disabled]='isFollowing'>
+                <ion-icon slot="start" name="duplicate-outline" class="ml-1"></ion-icon>
+                <span class="mr-1">{{ 'PAGES.USER_INFO.FOLLOW' | translate}}</span>
+              </ion-button>
+              <ion-button *ngIf="user.has_followed" class="text-xs m-0 h-6 w-32 normal-case" size="small" fill="outline"
+                color="danger" (click)="followUser(user.id)" [disabled]='isFollowing'>
+                <ion-icon slot="start" name="checkmark-done-circle-outline" class="ml-1"></ion-icon>
+                <span class="mr-1">{{ 'PAGES.USER_INFO.FOLLOWING' | translate}}</span>
+              </ion-button>
+            </div>
+
+            <div class="text-xs" *ngIf="!showButton">
+              <ion-button *ngIf="!user.has_friended && !user.receiver_request_from_me && !user.send_request_to_me"
+                class="text-xs m-0 h-6 normal-case" size="small" [disabled]='isButtonFriend' (click)="request(user.id)">
+                <ion-icon slot="start" name="person-add" class="ml-1"></ion-icon>
+                <span class="mr-1">{{ 'PAGES.USER_INFO.ADD_FRIEND' | translate}}</span>
+              </ion-button>
+
+              <ion-button *ngIf="user.has_friended" class="text-xs m-0 h-6 normal-case" size="small"
+                fill="outline" color="medium" [disabled]='isButtonFriend' (click)="setOpenAlert(true)">
+                <ion-icon slot="start" name="people" class="ml-1"></ion-icon>
+                <span class="mr-1">{{ 'PAGES.USER_INFO.FRIEND' | translate}}</span>
+              </ion-button>
+              <ion-alert [isOpen]="isAlertOpen" header="{{ 'PAGES.USER_INFO.CONFIRM_DELETE_FIREND' | translate}}"
+                [buttons]="alertButtons" (didDismiss)="setResult($event, user.id)">
+              </ion-alert>
+
+              <ion-button *ngIf="!user.has_friended && user.receiver_request_from_me"
+                class="text-xs m-0 h-6 normal-case" size="small" fill="outline" [disabled]='isButtonFriend'
+                (click)="unRequest(user.id)">
+                <ion-icon slot="start" name="person-remove-outline" class="ml-1"></ion-icon>
+                <span class="mr-1">{{ 'PAGES.USER_INFO.CANCEL_REQUEST' | translate}}</span>
+              </ion-button>
+
+              <ion-button *ngIf="!user.has_friended && user.send_request_to_me" class="text-xs m-0 h-6 normal-case w-30"
+                size="small" fill="outline" [disabled]='isButtonFriend'>
+                <ion-icon class="mr-1 ml-1 opacity-100 color-blue-600" slot="start"
+                  name="person-add-outline"></ion-icon>
+                <ion-select (ionChange)="responseRequest($event, user.id)" class="text-xs" fill="outline"
+                  interface="action-sheet" placeholder="{{ 'PAGES.USER_INFO.RESPONSE' | translate}}">
+                  <ion-select-option value="accept">{{ 'PAGES.USER_INFO.ACCEPT' | translate}}</ion-select-option>
+                  <ion-select-option value="reject">{{ 'PAGES.USER_INFO.REJECT' | translate}}</ion-select-option>
+                </ion-select>
+              </ion-button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-blue-500 flex mt-1">
+        <div class="mr-4">
+          {{followers || 0}}
+          <a (click)="setOpenListFollower(true)"> {{ 'PAGES.USER_INFO.FOLLOWERS' | translate}}</a>
+        </div>
+        <div>
+          {{followings|| 0}}
+          <a (click)="setOpenListFollowing(true)"> {{ 'PAGES.USER_INFO.FOLLOWINGS' | translate}}</a>
+        </div>
+      </div>
+    </ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content class="text-sm font-bold">
+
+    <p *ngIf="user.description">
+      <ion-icon name="menu-outline"></ion-icon>
+      {{user.description}}
+    </p>
+    <p *ngIf="user.address">
+      <ion-icon name="location-outline"></ion-icon> {{user.address}}
+    </p>
+    <div *ngIf="user.activated">
+      <ion-icon name="git-network-outline"></ion-icon>
+      {{ 'PAGES.USER_INFO.JOIN_IN' | translate}}: {{user.activated}}
+    </div>
+    <div class="w-full pt-2" *ngFor="let org of user.organizations">
+      <ion-icon name="business-outline"></ion-icon>
+      <span *ngIf="org?.position?.name"> {{'PAGES.USER_INFO.WORK' | translate}} {{org?.position?.name}}
+        {{'PAGES.USER_INFO.AT' | translate}} </span>
+      <span *ngIf="!org?.position?.name"> {{'PAGES.USER_INFO.WORK_AT' | translate}} </span>
+      <a [routerLink]="['/tabs','organizations',org.id]"> {{org.name}} </a>
+    </div>
+    <div class="w-full pt-2" *ngFor="let chapter of user.chapters">
+      <ion-icon name="people-outline"></ion-icon>
+      <span *ngIf="chapter?.position?.name"> {{'PAGES.USER_INFO.IS_A' | translate}} {{chapter?.position?.name}}
+        {{'PAGES.USER_INFO.AT' | translate}} </span>
+      <span *ngIf="!chapter?.position?.name"> {{'PAGES.USER_INFO.IS_A' | translate}} {{'PAGES.USER_INFO.MEMBER' |
+        translate}}
+        {{'PAGES.USER_INFO.AT' | translate}} </span>
+      <a [routerLink]="['/tabs','chapters',chapter.id]"> {{chapter.name}} </a>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+<ion-modal [isOpen]="isShowListFollow">
+  <ng-template>
+    <app-users-follows [data]="user" [type]="listType" [resource_type]="'user'"
+      (setOpen)="setOpen($event)"></app-users-follows>
+  </ng-template>
+</ion-modal>

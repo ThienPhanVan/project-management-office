@@ -1,0 +1,124 @@
+<ion-card class="mx-0 my-1" *ngIf="!data.hidden">
+  <app-post-header [isLoading]="isLoading" [data]="data" [me]="me" [indexNews]="indexNews"
+    (hidden)="handleHidden($event)" (actionSheet)="setResult($event)"></app-post-header>
+
+  <div *ngIf="isLoading">
+    <ion-skeleton-text [animated]="true" class="h-40"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-6"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-16"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-5"></ion-skeleton-text>
+  </div>
+
+  <div *ngIf="!isLoading">
+    <app-images-list [images]="data.images" (zoom)="onZoom($event)"></app-images-list>
+    <!-- <app-avatar
+      [data]="data"
+      (getIndexArrayImage)="getIndexArrayImages($event)"
+    ></app-avatar> -->
+    <ion-card-content [class]="data.listImages.length === 0 ? 'px-4 py-4 pb-4 pt-1' : 'p-4'">
+      <div class="date-time" (click)="clickRedirectDetail($event)">
+        {{ data?.event_date_start }}
+        <span *ngIf="data?.event_date_end"> - </span>
+        {{ data?.event_date_end }}
+      </div>
+
+      <div class="title-new" (click)="clickRedirectDetail($event)" *ngIf="data?.requirement && data.requirement !== ''">
+        <span>{{ "TAB.HOME.REQUIRED" | translate }} : {{ data?.requirement }}</span>
+      </div>
+
+      <div (click)="clickRedirectDetail($event)" class="title-new">
+        {{ data.name }}
+      </div>
+
+      <p (click)="clickRedirectDetail($event)" class="content-news" [innerHTML]="
+          isShowMore
+            ? data.content
+            : (data.content | slice : 0 : 250).length >= 250
+            ? (data.content | slice : 0 : 250) + '...'
+            : (data.content | slice : 0 : 250)
+        "></p>
+      <p *ngIf="(data.content | slice : 0 : 250).length >= 250" class="text-blue-500 content-news-more">
+        <a *ngIf="isShowMore" (click)="isShowMore = !isShowMore">{{
+          "TAB.HOME.SHOW_LESS" | translate
+          }}</a>
+        <a *ngIf="!isShowMore" (click)="isShowMore = !isShowMore">{{
+          "TAB.HOME.SHOW_MORE" | translate
+          }}</a>
+      </p>
+
+      <div class="price flex mt-1 mb-1 mr-1 items-center justify-between w-full">
+        <div>
+          <!-- industry -->
+          <div *ngIf="data?.industry?.name" class="text-xs italic items-center count mt-1 mb-1 mr-1 flex">
+            <ion-icon name="layers-outline" class="mr-2"></ion-icon>
+            <span>
+              {{ data?.industry?.name }}
+            </span>
+          </div>
+          <!-- industry -->
+
+          <!-- value -->
+          <div class="flex flex-wrap items-center">
+            <ion-icon name="cash-outline" class="mr-1"></ion-icon>
+            <span class="text-red-600 mr-1 text-xs">{{ "COMMON.PRICE_OPP" | translate }} :
+            </span>
+            <span class="text-red-600 text-xs" *ngIf="data?.minimum_price > 0">{{
+              data?.minimum_price?.toLocaleString("it-IT", {
+              style: "currency",
+              currency: "VND"
+              })
+              }}</span>
+
+            <span class="text-red-600 text-xs" *ngIf="data?.minimum_price === 0">{{ "COMMON.FREE" | translate }}</span>
+
+            <span class="text-red-600 text-xs" *ngIf="data?.minimum_price === -1">
+              {{ "COMMON.CONTACT" | translate }}</span>
+          </div>
+
+          <!-- end value -->
+
+          <!-- number_of_bids -->
+          <div class="text-xs italic items-center count mt-1 mb-1 mr-1 flex">
+            <ion-icon name="people-outline" class="people"></ion-icon>
+            <span *ngIf="data?.summary?.number_of_bids < 2">
+              {{ data?.summary?.number_of_bids ?? 0 }}
+              {{ "COMMON.BID" | translate }}
+            </span>
+            <span *ngIf="data?.summary?.number_of_bids >= 2">
+              {{ data?.summary?.number_of_bids ?? 0 }}
+              {{ "COMMON.BIDS" | translate }}
+            </span>
+          </div>
+          <!-- end number_of_bids -->
+        </div>
+        <div>
+          <span class="text-xs">
+            <ion-button size="small" (click)="sendMessage(data)" fill="outline">
+              <ion-icon name="chatbubble-ellipses-outline" class="mr-1 text-right"></ion-icon>
+              {{ "COMMON.CONTACT" | translate }}
+            </ion-button>
+          </span>
+        </div>
+      </div>
+
+      <!-- location -->
+      <div class="location" *ngIf="data?.location" class="mt-1 mb-1 mr-1 flex">
+        <ion-icon name="location-outline" class="p-0 text-left"></ion-icon><span class="ml-1 text-xs">{{ data?.location
+          }}</span>
+      </div>
+      <!-- end location -->
+
+      <div *ngIf="data.tags" class="p-0 m-0 items-center">
+        <app-tags-list [tags]="data.tags"></app-tags-list>
+      </div>
+    </ion-card-content>
+  </div>
+  <div *ngIf="isLoading">
+    <ion-skeleton-text [animated]="true" class="h-5"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-6"></ion-skeleton-text>
+  </div>
+  <app-reactions *ngIf="!isLoading" [data]="data" (heart)="onHeart($event)" [hasBid]="hasBid" [type]="'bids'"
+    [page]="'list'" (redirect)="clickRedirectDetail($event)" (dataPost)="getDataPostBided($event)"
+    [hostNameLocation]="hostNameLocation"></app-reactions>
+</ion-card>
+<app-hide-news-box [data]="data" (undo)="handleUndo($event)"></app-hide-news-box>

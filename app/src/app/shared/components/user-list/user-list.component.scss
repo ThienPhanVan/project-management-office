@@ -1,0 +1,18 @@
+ion-card-content{
+    ion-avatar {
+        height: 48px;
+        width: 48px;
+
+        img {
+            height: 48px;
+            width: 48px;
+        }
+    }
+}
+
+ion-checkbox.checkbox {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+}
+

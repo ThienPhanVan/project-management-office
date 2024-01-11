@@ -1,0 +1,37 @@
+.user {
+  margin: 24px 0 8px 0;
+
+  ion-label {
+    margin-left: 20px;
+  }
+}
+
+ion-content {
+  min-height: 65%;
+  --overflow: hidden;
+}
+
+::ng-deep {
+  /* to penetrate <ngx-editor> CSS styling */
+
+  .NgxEditor {
+    min-height: 10rem;
+  }
+
+  .NgxEditor__Content {
+    max-height: calc(10rem);
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+    }
+  }
+}

@@ -1,0 +1,98 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-button
+        fill="clear"
+        color="dark"
+        routerLink="/tabs/profile/security"
+        slot="start"
+      >
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title class="text-sm"
+        >{{'PAGES.SECURITY.HISTORY_LOGIN.TITLE' | translate}}</ion-title
+      >
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="isLoading">
+  <div *ngFor="let item of data; index as i">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-skeleton-text
+            [animated]="true"
+            style="height: 34px"
+          ></ion-skeleton-text>
+        </ion-card-title>
+        <ion-card-subtitle
+          class="text-sm"
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          {{'PAGES.SECURITY.HISTORY_LOGIN.OPERATING_SYSTEM' | translate}}:
+          <ion-skeleton-text
+            [animated]="true"
+            style="height: 18px; width: 48px"
+          ></ion-skeleton-text>
+          - {{'PAGES.SECURITY.HISTORY_LOGIN.VERSION' | translate}}:
+          <ion-skeleton-text
+            [animated]="true"
+            style="height: 18px; width: 48px"
+          ></ion-skeleton-text>
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <span
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+          >{{'PAGES.SECURITY.HISTORY_LOGIN.LOGGED_IN' | translate}}
+          <b
+            ><i>
+              <ion-skeleton-text
+                [animated]="true"
+                style="height: 22px; width: 120px"
+              ></ion-skeleton-text></i></b
+        ></span>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="!isLoading">
+  <div *ngFor="let item of data; index as i">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon
+            class="text-sm"
+            [name]="item.info.device.type === 'desktop' ? 'desktop-outline' : 'phone-portrait-outline'"
+          ></ion-icon>
+          <div class="text-sm">
+            {{item.info.client.name}} - {{item.info.client.type}}
+          </div>
+        </ion-card-title>
+        <ion-card-subtitle class="text-sm normal-case">
+          {{item.info.os.name}} -
+          <span class=""
+            >{{'PAGES.SECURITY.HISTORY_LOGIN.VERSION' | translate}}
+            {{item.info.os.version}} {{item.info.os.platform}}
+          </span>
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content class="text-xs">
+        {{'PAGES.SECURITY.HISTORY_LOGIN.LOGGED_IN' | translate}}
+        <b> {{item.updated_date}} </b>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

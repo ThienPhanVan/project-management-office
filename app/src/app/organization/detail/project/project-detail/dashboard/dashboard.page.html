@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title>dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div *ngFor="let item of data" class="m-2">
+    <div *ngIf="item.values[0]">
+      <div class="flex items-center">
+        <app-avatar
+          class=""
+          [classNameAvatar]="'thumbnail-08'"
+          [isAvatar]="true"
+          [data]="item.values[0] || {}"
+        ></app-avatar>
+        <div class="flex-1 pl-2 text-xs">{{item.values[0]?.username}}</div>
+      </div>
+    </div>
+    <div class="flex">
+      <div *ngFor="let value of item.values" class="ml-2 text-xs">
+        <div class="flex">{{value.name}}: {{value.count}}</div>
+      </div>
+    </div>
+  </div>
+</ion-content>

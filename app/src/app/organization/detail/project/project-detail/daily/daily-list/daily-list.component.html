@@ -1,0 +1,38 @@
+<div *ngFor="let key of keys">
+  <ion-item color="primary"> {{key | date:"dd-MM-yyyy" }}</ion-item>
+  <ion-list>
+
+    <ion-item *ngFor="let daily of dailies[key]" [routerLink]="[daily.id, 'update']">
+      <div class="w-full py-2">
+        <div class="flex items-center text-sm">
+          <app-avatar class="" [classNameAvatar]="'thumbnail-08'" [isAvatar]="true"
+            [data]="daily.user || {}"></app-avatar>
+          <div class="flex pl-2">
+            {{daily.user?.username }}
+          </div>
+          <div class="flex-1 pl-1 medium-light-color">
+            {{daily.updated_date | date:"hh:mm:ss a" }}
+          </div>
+        </div>
+
+        <div class="pl-1 pt-2">
+          <h3 class="font-bold">Yesterday:</h3>
+          <div>
+            <app-daily-issue-item *ngFor="let issue of daily.issues_yesterday" [issue]="issue"></app-daily-issue-item>
+          </div>
+          <div class="text-orange-500">{{daily.note_yesterday }}</div>
+          <h3 class="font-bold pt-3">Today:</h3>
+          <div>
+            <app-daily-issue-item *ngFor="let issue of daily.issues_today" [issue]="issue"></app-daily-issue-item>
+          </div>
+          <div class="text-orange-500"> {{daily.note_today }}</div>
+          <h3 class="font-bold pt-3">Issues:</h3>
+          <div class="text-orange-500"> {{daily.note_issue }}</div>
+        </div>
+      </div>
+    </ion-item>
+  </ion-list>
+</div>
+<!-- <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+</ion-infinite-scroll> -->

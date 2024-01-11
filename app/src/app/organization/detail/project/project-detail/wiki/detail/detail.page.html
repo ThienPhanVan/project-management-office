@@ -1,0 +1,15 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title>{{wiki.name}}</ion-title>
+    <ion-button fill="clear" slot="end" [routerLink]="['update']">
+      <ion-icon size="medium" color="dark" name="create-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-text class="mt-3 mx-4 block" [innerHTML]="wiki.description | sanitizedHtml"></ion-text>
+</ion-content>

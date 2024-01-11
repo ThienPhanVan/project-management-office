@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-buttons>
+        <ion-back-button class="text-xs" defaultHref="/app-information" text=""></ion-back-button>
+      </ion-buttons>
+      <ion-title class="text-sm">
+        {{'PAGES.SUPPORT.TITLE' | translate}}</ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card-content>
+    <ion-item>
+      <ion-card-title class="text-sm">
+        {{'PAGES.SUPPORT.CARD_TITLE' | translate}}
+      </ion-card-title>
+    </ion-item>
+    <ion-item >
+      <ion-textarea class="text-sm" rows="10" placeholder="{{'PAGES.SUPPORT.INFORMATION_NEED_HELP' | translate}}"
+      auto-grow>
+      </ion-textarea>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-button slot="end">{{'BUTTON.SEND' | translate}}
+        <ion-icon name="send-outline" class="ml-2"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-card-content>
+</ion-content>

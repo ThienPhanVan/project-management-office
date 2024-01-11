@@ -1,0 +1,112 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="news-tabs">
+      <div class="flex items-center">
+        <ion-buttons>
+          <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </ion-button>
+
+        </ion-buttons>
+        <ion-searchbar class="search-news-tabs" placeholder="{{ 'PLACEHOLDER.SEARCH_PRODUCT' | translate }}"
+          [debounce]="1000" (ionFocus)="showSearchProductModel()" (ionClear)="clearSearchNewModel()"
+          [value]="searchValue"></ion-searchbar>
+        <ion-button fill="clear" class="right-0" routerLink="/carts">
+          <ion-icon name="cart-outline"></ion-icon>
+          <span class="cart-count" *ngIf="countCartItem !== 0">{{countCartItem}}</span>
+        </ion-button>
+        <div>
+          <!-- <ion-menu-button size="small"></ion-menu-button> -->
+        </div>
+      </div>
+
+      <ion-segment [scrollable]="true" [value]="query.status ?? ''" class="tabs" (ionChange)="changeSegment($event)"
+        *ngIf="!disabledSeg">
+        <ion-segment-button value="" (click)="onSegment($event)">
+          <ion-label>{{'TAB.COMMERCE.ORDER.CHILD.ALL' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="PENDING" (click)="onSegment($event)">
+          <ion-label>{{'TAB.COMMERCE.ORDER.CHILD.PENDING' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="AWAITING_SHIPMENT" (click)="onSegment($event)">
+          <ion-label>{{'TAB.COMMERCE.ORDER.CHILD.AWAITING_SHIPMENT' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="SHIPPED" (click)="onSegment($event)">
+          <ion-label>{{'TAB.COMMERCE.ORDER.CHILD.SHIPPED' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="CANCELED" (click)="onSegment($event)">
+          <ion-label>{{'TAB.COMMERCE.ORDER.CHILD.CANCELED' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="DECLINED" (click)="onSegment($event)">
+          <ion-label>{{'TAB.COMMERCE.ORDER.CHILD.DECLINED' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="COMPLETED" (click)="onSegment($event)">
+          <ion-label>{{'TAB.COMMERCE.ORDER.CHILD.COMPLETED' | translate}}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card class="w-full p-2 m-0 mt-2 rounded-none shadow-none bg-slate-50" *ngFor="let order of orders">
+    <!-- <div *ngFor="let item of order"> -->
+    <div class="flex items-center justify-between">
+      <div class="flex items-center" *ngIf="order?.seller?.username">
+        <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [data]="order?.seller" [isParticipate]="true"
+          class="scale-50"></app-avatar>
+        <div class="text-black font-bold" [routerLink]="['/tabs', 'users', order?.seller?.id]">{{
+          order?.seller?.username}}</div>
+      </div>
+      <div class="flex items-center" *ngIf="order?.seller?.name">
+        <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [data]="order?.seller" [isParticipate]="true"
+          class="scale-50"></app-avatar>
+        <div class="text-black font-bold" [routerLink]="['/tabs', 'organizations', order?.seller?.id]">{{
+          order?.seller?.name}}</div>
+      </div>
+      <div class="flex items-center text-black">
+        {{order?.status | translate}}
+      </div>
+    </div>
+    <div class="flex items-center w-full mt-4" (click)="directOrderDetail(order)" *ngFor="let item of order?.items">
+      <div class=" mr-2 ">
+        <img alt="" [src]="item?.product?.images[0]?.image_url" class="image-product" />
+      </div>
+      <div class="text-black w-full">
+        <div class="line-clamp-2">
+          {{item?.product?.description}}
+        </div>
+        <div class="text-gray-500">
+          {{item?.product?.product_category?.name}}
+        </div>
+        <div class="flex justify-between text-black font-bold bottom-0">
+          <div>
+            {{item?.product?.amount.toLocaleString("it-IT",
+            { style: "currency",
+            currency: "VND" }) }}
+          </div>
+          <div>
+            x{{item?.quantity}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-end text-black font-bold">
+      {{order?.items?.length}} {{'TAB.COMMERCE.ORDER.PRODUCT' | translate}}:
+      {{order?.total_amount.toLocaleString("it-IT",
+      { style: "currency",
+      currency: "VND" }) }}
+    </div>
+    <div class="flex justify-end mt-2">
+      <ion-button fill="outline" color="dark" class="rounded-none" (click)="repurchase(order)">
+        {{'TAB.COMMERCE.ORDER.REPURCHASE' | translate}}
+      </ion-button>
+      <ion-button fill="outline" color="dark" class="rounded-none" (click)="cancelOrder(order)"
+        *ngIf="order?.status === 'TAB.COMMERCE.ORDER.CHILD.PENDING'">
+        {{'TAB.COMMERCE.ORDER.CHILD.CANCELED' | translate}}
+      </ion-button>
+    </div>
+    <!-- </div> -->
+
+  </ion-card>
+</ion-content>

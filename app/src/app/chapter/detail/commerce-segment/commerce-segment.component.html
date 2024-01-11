@@ -1,0 +1,5 @@
+<app-product-two-column [data]="products" [isLoading]="isLoading" [me]="me"></app-product-two-column>
+
+<ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+</ion-infinite-scroll>

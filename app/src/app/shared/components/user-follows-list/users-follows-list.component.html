@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title *ngIf="resource_type === 'organization'">{{
+      "PAGES.ORGANIZATION.FOLLOWERS" | translate
+      }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="setCloseModal(false)" [strong]="true">{{
+        "BUTTON.CLOSE" | translate
+        }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-segment *ngIf="resource_type === 'user'" [value]="type" class="tabs" (ionChange)="changeSegment($event)">
+    <ion-segment-button value="follower">
+      <ion-label>{{ "PAGES.USER_INFO.FOLLOWERS" | translate }}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="following">
+      <ion-label>{{ "PAGES.USER_INFO.FOLLOWINGS" | translate }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="userFollows">
+    <ion-card *ngFor="let data of userFollows" class="cursor-pointer" class="card-modal-user">
+      <ion-card-content *ngIf="isLoading">
+        <ion-skeleton-text [animated]="true" style="height: 76px"></ion-skeleton-text>
+      </ion-card-content>
+      <ion-card-content *ngIf="!isLoading">
+        <app-avatar (getSrcImage)="getSrcImage($event)" [classNameAvatar]="'item'" [data]="
+          type === 'follower'
+            ? data.user
+            : data.user_following
+        " [isAvatar]="isAvatar"></app-avatar>
+        <div class="ml-3" *ngIf="type === 'follower'">
+          <ion-card-title class=" text-base font-extrabold" (click)="actionRedirect(data.user)">
+            <div>{{ data.user.username }}</div>
+          </ion-card-title>
+        </div>
+        <div class="ml-3" *ngIf="type === 'following'">
+          <ion-card-title class="text-base font-extrabold" (click)="actionRedirect(data.user)">
+            <div>{{ data.user_following.username }}</div>
+          </ion-card-title>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" *ngIf="userFollows.length">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <!-- </div> -->
+</ion-content>

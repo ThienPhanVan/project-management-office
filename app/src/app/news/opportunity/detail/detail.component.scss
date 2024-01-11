@@ -1,0 +1,80 @@
+.header {
+  color: #666666;
+}
+.detail-opportunity-pages {
+  margin: 0;
+  color: #666666;
+
+  .date-time {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .count {
+    margin-left:1px ;
+    .people {
+      margin-right: 6px;
+    }
+  }
+
+  .tabs {
+    margin: 8px 0 8px 0;
+  }
+
+  .list-user {
+    ion-card {
+      margin: 0 0 8px 0;
+      &:first-child {
+        margin-top: 8px;
+      }
+      ion-card-header {
+        padding: 8px;
+
+        ion-card-content {
+          padding: 0;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+
+          .username {
+            margin-left: 12px;
+
+            display: flex;
+            flex-direction: column;
+
+            div:nth-child(2) {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+      ion-card-content {
+        padding: 0px 8px 8px 8px;
+      }
+    }
+  }
+}
+
+
+::ng-deep {
+  .detail-opportunity-pages {
+    .action {
+      padding: 0px 16px 16px 16px !important;
+      border-bottom: 3px solid #f1f1f1;
+    }
+  }
+}
+
+ion-modal.modal-report {
+  --height: 90%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+
+.button-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}

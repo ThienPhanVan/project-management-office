@@ -1,0 +1,62 @@
+<div
+  class="mb-1 mx-1 w-full"
+  style="display: flex; justify-content: space-around"
+  *ngIf="isLoading"
+>
+  <ion-skeleton-text
+    [animated]="true"
+    style="width: 8%"
+    class="rounded-full mr-0.5 h-7"
+  ></ion-skeleton-text>
+  <ion-skeleton-text
+    [animated]="true"
+    class="rounded-full w-1/5 mr-0.5 h-7"
+  ></ion-skeleton-text>
+  <ion-skeleton-text
+    [animated]="true"
+    class="rounded-full w-1/5 mr-0.5 h-7"
+  ></ion-skeleton-text>
+  <ion-skeleton-text
+    [animated]="true"
+    class="rounded-full w-1/5 mr-0.5 h-7"
+  ></ion-skeleton-text>
+  <ion-skeleton-text
+    [animated]="true"
+    class="rounded-full w-1/5 mr-0.5 h-7"
+  ></ion-skeleton-text>
+  <ion-skeleton-text
+    [animated]="true"
+    class="rounded-full w-1/5 mr-0.5 h-7"
+  ></ion-skeleton-text>
+</div>
+
+<div
+  class="flex scroll-container hide-scrollbar m-2 mr-3"
+  [class.w-full]="!isShowFilter"
+  *ngIf="!isLoading"
+>
+  <ion-button
+    *ngIf="isShowFilter"
+    fill="clear"
+    (click)="setOpenModalFilter(true)"
+    ><ion-icon name="filter-outline"></ion-icon
+  ></ion-button>
+  <ion-segment
+    [scrollable]="true"
+    [value]="productCategoryId"
+    class="tabs w-full bg-transparent"
+    [ngClass]="isShowFilter ? '!overflow-x-scroll' : '!overflow-x-hidden'"
+    (ionChange)="changeSegment($event)"
+    *ngIf="!disabledSeg"
+  >
+    <ion-segment-button
+      [value]="category?.id"
+      *ngFor="let category of categories; index as i"
+      [id]="slideIndex === i ? 'active' : ''"
+      [class.active]="slideIndex === i"
+      (click)="activeCategory($event)"
+    >
+      <ion-label>{{ category.name }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</div>

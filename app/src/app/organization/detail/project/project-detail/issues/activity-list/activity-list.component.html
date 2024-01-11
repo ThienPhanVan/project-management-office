@@ -1,0 +1,21 @@
+<ion-item>
+  <div class="font-bold">Activities</div>
+</ion-item>
+<div  class="ion-item p-3" *ngFor="let activity of activities">
+  <div class="flex items-center w-full">
+    <app-avatar *ngIf="activity.user_activity" [classNameAvatar]="'thumbnail-2'" [isAvatar]="true"
+      [data]="activity.user_activity || {}"></app-avatar>
+    <div class="pl-1">
+      <div>
+        {{activity.user_activity?.username}}
+      </div>
+      <div class="text-xs">
+        {{activity.activity_name}} | 
+        {{activity.updated_date | date : 'hh:mm:ss dd/MM/yyyy'}}
+      </div>
+    </div>
+  </div>
+
+  <pre>{{(activity.detail_change | displayActivity)  || "Nothing changed" }}
+</pre>
+</div>

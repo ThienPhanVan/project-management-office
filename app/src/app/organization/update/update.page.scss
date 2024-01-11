@@ -1,0 +1,29 @@
+ion-modal {
+    &.bottom-end {
+        align-items: flex-end;
+        --height: auto;
+
+        .ion-page {
+            position: relative;
+            display: block;
+            contain: content;
+        }
+    }
+}
+
+.outer {
+    margin: auto;
+    border-radius: 100%;
+    position: relative;
+}
+
+.inner {
+    border-radius: 100%;
+    position: absolute;
+    top: 1vh;
+    right: 2vh;
+}
+
+.file-input {
+    display: none;
+}

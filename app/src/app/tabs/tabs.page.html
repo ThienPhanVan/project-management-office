@@ -1,0 +1,31 @@
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="my-issues" (click)="navigate('/tabs/my-issues')">
+      <ion-icon name="newspaper-outline"></ion-icon>
+      <!-- <ion-badge color="primary" *ngIf="receivedNumberUnread > 0">
+        {{ receivedNumberUnread > 99 ? '99+' : receivedNumberUnread }}
+      </ion-badge> -->
+      <ion-label>My Issues</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="projects" (click)="navigate('/tabs/projects')">
+      <ion-icon name="cube-outline"></ion-icon>
+      <ion-label>Projects</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="dashboard" (click)="navigate('/tabs/dashboard')">
+      <ion-icon name="analytics-outline"></ion-icon>
+      <ion-label>Dashboard</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="notification" (click)="navigate('/tabs/notification')">
+      <ion-icon name="notifications-outline"></ion-icon>
+      <ion-label>Notification</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="profile" (click)="navigate('/tabs/profile')">
+      <ion-icon name="person-circle-outline"></ion-icon>
+      <ion-label>{{'TAB.PROFILE.TITLE' | translate}}</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

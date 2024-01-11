@@ -1,0 +1,59 @@
+<ion-card class="w-full p-2 m-0 mt-2 rounded-none shadow-none bg-slate-50" *ngFor="let order of orders">
+  <!-- <div *ngFor="let item of order"> -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center" *ngIf="order?.buyer?.username">
+      <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [data]="order?.buyer" [isParticipate]="true"
+        class="scale-50"></app-avatar>
+      <div class="text-black font-bold" [routerLink]="['/tabs', 'users', order?.buyer?.id]">{{
+        order?.buyer?.username}}</div>
+    </div>
+    <!-- <div class="flex items-center" *ngIf="order?.seller?.name">
+      <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [data]="order?.seller" [isParticipate]="true"
+        class="scale-50"></app-avatar>
+      <div class="text-black font-bold" [routerLink]="['/tabs', 'organizations', order?.seller?.id]">{{
+        order?.seller?.name}}</div>
+    </div> -->
+    <div class="flex items-center text-black">
+      {{order?.status | translate}}
+    </div>
+  </div>
+  <div class="flex items-center w-full mt-4" (click)="directOrderDetail(order)" *ngFor="let item of order?.items">
+    <div class=" mr-2 ">
+      <img alt="" [src]="item?.product?.images[0]?.image_url" class="image-product" />
+    </div>
+    <div class="text-black w-full">
+      <div class="line-clamp-2">
+        {{item?.product?.description}}
+      </div>
+      <div class="text-gray-500">
+        {{item?.product?.product_category?.name}}
+      </div>
+      <div class="flex justify-between text-black font-bold bottom-0">
+        <div>
+          {{item?.product?.amount.toLocaleString("it-IT",
+          { style: "currency",
+          currency: "VND" }) }}
+        </div>
+        <div>
+          x{{item?.quantity}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-end text-black font-bold">
+    {{order?.items?.length}} {{'TAB.COMMERCE.ORDER.PRODUCT' | translate}}:
+    {{order?.total_amount.toLocaleString("it-IT",
+    { style: "currency",
+    currency: "VND" }) }}
+  </div>
+  <!-- <div class="flex justify-end mt-2">
+    <ion-button fill="outline" color="dark" class="rounded-none">
+      {{'TAB.COMMERCE.ORDER.REPURCHASE' | translate}}
+    </ion-button>
+    <ion-button fill="outline" color="dark" class="rounded-none">
+      {{'TAB.COMMERCE.ORDER.SEE_REVIEWS' | translate}}
+    </ion-button>
+  </div> -->
+  <!-- </div> -->
+
+</ion-card>

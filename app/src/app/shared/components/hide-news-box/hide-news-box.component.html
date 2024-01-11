@@ -1,0 +1,16 @@
+<ion-card class="card" *ngIf="data.hidden">
+  <ion-card-header>
+    <div class="flex container">
+      <div class="flex left">
+        <ion-icon name="backspace-outline"></ion-icon>
+        <div class="flex text">{{ "COMMON.HIDE_NEWS" | translate }}</div>
+      </div>
+
+      <div class="text-xs">
+        <ion-button size="small" (click)="handleUndo(data.hidden_id)">{{
+          "COMMON.UNDO" | translate
+        }}</ion-button>
+      </div>
+    </div>
+  </ion-card-header>
+</ion-card>

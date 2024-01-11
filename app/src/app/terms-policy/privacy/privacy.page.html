@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-buttons>
+        <ion-back-button class="text-xs" defaultHref="/terms-policy" text=""></ion-back-button>
+      </ion-buttons>
+      <ion-title class="text-sm">
+        {{'PAGES.TERM_SAND_POLICY.PRIVACY.TITLE' | translate}}</ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-card>
+    <ion-card-content>
+      <div class="ion-text-start text-sm">
+        <pre>{{ 'PRIVACY_CONTENT' | translate}}</pre>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

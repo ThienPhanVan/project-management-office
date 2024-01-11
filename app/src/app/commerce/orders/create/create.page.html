@@ -1,0 +1,200 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center w-full">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+      <div class="w-full text-center">
+        <p>{{'TAB.COMMERCE.REQUESt_SUMMARY' | translate}}</p>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-content class="flex justify-center" *ngIf="!address">
+      <ion-button color="dark" fill="outline" (click)="createAddress()">
+        <ion-icon name="add-outline" class="mr-2"></ion-icon>
+        {{'TAB.COMMERCE.ORDER.ADD_DELIVERY_ADDRESS' | translate}}
+      </ion-button>
+    </ion-card-content>
+    <ion-card-content *ngIf="address">
+      <div class="flex text-black text-sm items-center justify-between">
+        <div>
+          <ion-icon name="location-outline" class="p-0 text-left"></ion-icon>
+          <span class="ml-1 ">{{me?.username }}</span>
+          <span class="ml-1 ">(+84){{me?.phone }}</span>
+        </div>
+
+        <ion-icon name="chevron-forward-outline" routerLink="/orders/create/shipping-address"></ion-icon>
+      </div>
+      <div class="flex text-black text-sm items-center ml-0.5">
+        <span class="ml-4">{{
+          address?.address }}</span>
+      </div>
+
+    </ion-card-content>
+    <ion-modal [isOpen]="showCreateAddress" (didDismiss)="setOpenCreateAddress(false)" initialBreakpoint="0.85"
+      [breakpoints]="[0, 0.85]">
+      <ng-template>
+        <app-address-shipping-create (closeCreateAddress)="setOpenCreateAddress($event)"
+          (getAddress)="onDeliveryAddress($event)" [type]="type"></app-address-shipping-create>
+      </ng-template>
+    </ion-modal>
+
+  </ion-card>
+  <ion-card *ngFor="let orderPreview of orderPreviews">
+    <ion-card-content>
+      <div class="flex items-center">
+        <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [type]="'order'" [data]="orderPreview?.user_sell"
+          [isParticipate]="true" class="scale-75" *ngIf="orderPreview?.user_sell?.id"></app-avatar>
+        <div class="text-black font-bold" *ngIf="orderPreview?.user_sell?.id">{{
+          orderPreview?.user_sell?.username}}</div>
+        <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [type]="'order'"
+          [data]="orderPreview?.organization_sell" [isParticipate]="true" class="scale-75"
+          *ngIf="orderPreview.organization_sell?.id"></app-avatar>
+        <div class="text-black font-bold" *ngIf="orderPreview?.organization_sell?.id">{{
+          orderPreview?.organization_sell?.name}}</div>
+      </div>
+      <div class="w-full">
+        <div class="flex items-center w-full mt-4" *ngFor="let cartItem of orderPreview?.cartItems">
+          <div class=" mr-2">
+            <img alt="" [src]="cartItem?.product?.images[0].image_url " class="image-product" />
+          </div>
+          <div class="text-black w-full">
+            <div class="line-clamp-2">
+              {{cartItem?.product?.description}}
+
+            </div>
+            <div class="text-gray-500">
+              <span>{{cartItem?.product?.product_category?.name}}</span>
+            </div>
+            <div class="flex justify-between text-black bottom-0">
+              <div class="flex items-center font-bold">
+                {{cartItem?.amount.toLocaleString("it-IT",
+                { style: "currency",
+                currency: "VND" }) }}
+
+              </div>
+              <div class="flex items-center quantity">
+                <ion-button fill="outline" color="dark" size="small" class="m-0 rounded-none"
+                  (click)="reduceQuantity(cartItem)" [disabled]="cartItem.quantity === 1">
+                  <ion-icon name="remove-outline"></ion-icon>
+                </ion-button>
+                <input class="w-12 flex justify-center items-center text-center" type="number" min="1"
+                  [(ngModel)]="cartItem.quantity" (change)="onDiscount($event, cartItem)" />
+                <ion-button fill="outline" color="dark" size="small" class="m-0 rounded-none"
+                  (click)="addQuantity(cartItem)">
+                  <ion-icon name="add-outline"></ion-icon>
+                </ion-button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="flex justify-end mt-2">
+        <p>
+          <span>{{orderPreview?.cartItems?.length}} {{'TAB.COMMERCE.ORDER.PRODUCT' | translate}}, </span>
+          <span class="mr-0.5">{{'TAB.COMMERCE.ORDER.TOTAL_PRODUCT' | translate}} </span>
+          <span> {{orderPreview?.total_order_preview.toLocaleString("it-IT",
+            { style: "currency",
+            currency: "VND" })}}</span>
+        </p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <!-- <ion-card>
+    <ion-card-content>
+      <div class="flex text-sm font-bold items-center">
+        <ion-icon name="ticket" size="large" color="danger" class=" mr-2 rotate-45"></ion-icon>
+        <p>{{'TAB.COMMERCE.ORDER.DISCOUNT' | translate}}</p>
+      </div>
+
+    </ion-card-content>
+  </ion-card> -->
+  <ion-card>
+    <ion-card-content>
+      <div class="flex text-sm font-bold">
+        <p>{{'TAB.COMMERCE.REQUESt_SUMMARY' | translate}}</p>
+      </div>
+
+      <div class="text-xs text-gray-700">
+        <div class="flex justify-between items-center">
+          <p>{{'TAB.COMMERCE.ORDER.SUBTOTAL' | translate}}</p>
+          <p>{{subtotal.toLocaleString("it-IT",
+            { style: "currency",
+            currency: "VND" })}}</p>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <p>{{'TAB.COMMERCE.ORDER.DELIVERY' | translate}}</p>
+          <p>{{deliveryFee.toLocaleString("it-IT",
+            { style: "currency",
+            currency: "VND" })}}</p>
+        </div>
+        <div class="flex justify-between items-center" *ngIf="deliveryDiscount !==0">
+          <p>{{'TAB.COMMERCE.ORDER.DELIVERY_DISCOUNT' | translate}}</p>
+          <p class="text-red-500"><span>- </span> {{deliveryDiscount.toLocaleString("it-IT",
+            { style: "currency",
+            currency: "VND" })}}</p>
+        </div>
+        <div class="flex justify-between items-center">
+          <p>{{'TAB.COMMERCE.ORDER.TOTAL' | translate}}</p>
+          <p>{{total_amount.toLocaleString("it-IT",
+            { style: "currency",
+            currency: "VND" })}}</p>
+        </div>
+
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content>
+      <div class="text-sm text-black font-bold">
+        <p>{{'TAB.COMMERCE.ORDER.PAYMENT' | translate}}</p>
+      </div>
+      <ion-radio-group [value]="payment" (ionChange)="changePayment($event)">
+        <div class="flex justify-between items-center">
+          <p>{{'TAB.COMMERCE.ORDER.PAYMENT_TYPE.COD' | translate}}</p>
+          <ion-radio type="radio" value="COD" />
+        </div>
+
+        <!-- <div class="flex justify-between items-center">
+          <p>{{'TAB.COMMERCE.ORDER.PAYMENT_TYPE.MOMO' | translate}}</p>
+          <ion-radio type="radio" value="MOMO" />
+        </div> -->
+      </ion-radio-group>
+
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content>
+      <p>{{'TAB.COMMERCE.ORDER.PRIVACY_POLICY' | translate}}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer class="bg-white">
+  <div>
+    <div class="flex justify-between text-black pr-4 pl-4">
+      <p>{{'TAB.COMMERCE.ORDER.TOTAL' | translate}} <span>({{countProduct}}
+          {{'TAB.COMMERCE.ORDER.PRODUCT'
+          |
+          translate}})</span></p>
+      <p>{{total_amount.toLocaleString("it-IT",
+        { style: "currency",
+        currency: "VND" })}}</p>
+    </div>
+    <ion-button color="danger" class="w-full pr-4 pl-3" type="submit" expand="block" (click)="submit()"
+      [disabled]="isDeliveryAddress">
+      {{'TAB.COMMERCE.ORDER.ORDER' | translate}}
+    </ion-button>
+  </div>
+</ion-footer>

@@ -1,0 +1,25 @@
+<div class="page-news" #content>
+  <div *ngFor="let item of data; index as i">
+    <div *ngIf="item.type === 0">
+      <app-opportunity-item [data]="item" [isLoading]="isLoading" (heart)="clickHeart($event, 'news')"
+        [indexNews]="item.id + 'opp-timeline'" [me]="me" (actionSheet)="onActionSheet($event)"
+        (zoomImage)="onZoomImage($event)"></app-opportunity-item>
+    </div>
+    <div *ngIf="item.type === 2">
+      <app-news-item [data]="item" [isLoading]="isLoading" (heart)="clickHeart($event, 'news')"
+        (tagSearch)="onSearchTag($event)" [indexNews]="item.id + 'opp-timeline'" [me]="me"
+        (actionSheet)="onActionSheet($event)" (zoomImage)="onZoomImage($event)"></app-news-item>
+    </div>
+    <div *ngIf="item.type === 1">
+      <app-event-item [isLoading]="isLoading" [data]="item" (willParticipate)="setWillParticipate($event)"
+        (heart)="clickHeart($event, 'news')" [indexNews]="item.id + 'opp-timeline'" [me]="me"
+        (actionSheet)="onActionSheet($event)" (zoomImage)="onZoomImage($event)"></app-event-item>
+    </div>
+  </div>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <app-preview-image [showModal]="showModal" [images]="images" (closeModal)="closeModal($event)"></app-preview-image>
+</div>

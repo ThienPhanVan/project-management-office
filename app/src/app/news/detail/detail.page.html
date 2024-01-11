@@ -1,0 +1,173 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <ion-buttons class="mr-2">
+          <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+            <!-- <ion-icon name="chevron-back-outline"></ion-icon> -->
+          </ion-button>
+        </ion-buttons>
+        <div *ngIf="isLoading">
+          <ion-skeleton-text class="h-14" [animated]="true"></ion-skeleton-text>
+        </div>
+        <!-- <ion-text> {{ 'TAB.HOME.COMMENTS' | translate}} </ion-text> -->
+        <app-avatar [type]="'detail'" class="mr-4" [isAvatar]="isAvatar" [classNameAvatar]="'item'" [data]="data"
+          *ngIf="!isLoading"></app-avatar>
+        <div>
+          <div *ngIf="isLoading">
+            <ion-skeleton-text class="h-14" [animated]="true"></ion-skeleton-text>
+          </div>
+          <div *ngIf="!isLoading">
+            <div class="pr-3">
+              <a class="decoration-none font-bold text-sm"
+                [routerLink]="['/tabs', 'organization', data?.organization?.id]" *ngIf="data?.organization">
+                <h4>{{ data.organization.name }}</h4>
+              </a>
+              <p class="decoration-none font-bold" [class]="data?.organization ? 'text-xs' : 'text-sm'">
+                <a *ngIf="data?.organization" class="mr-2" [routerLink]="['/tabs', 'users', data?.author?.id]">{{
+                  data.username }}</a>
+
+                <span *ngIf="data?.organization && data?.feeling" class="mr-1 font-normal">{{'TAB.HOME.FEELING' |
+                  translate}}</span>
+                <span *ngIf="data?.organization && data?.feeling" class="mr-1 font-normal">{{data.feeling}}</span>
+                <span *ngIf="data?.organization && data?.mentions" class="mr-1 font-normal">{{'TAB.HOME.WITH' |
+                  translate}}</span>
+                <a *ngIf="data?.organization && data?.mentions" class="mr-1"
+                  [routerLink]="['/tabs', 'users', data?.mentions[0].id]">{{data.mentions[0].username}}</a>
+                <span *ngIf="data?.organization && data?.mentions?.length === 2"
+                  class="mr-1 font-normal">{{'TAB.HOME.AND' | translate}}</span>
+                <a *ngIf="data?.organization && data?.mentions?.length === 2"
+                  [routerLink]="['/tabs', 'users', data?.mentions[1].id]" class="mr-1">{{data.mentions[1].username}}</a>
+                <span *ngIf="data?.organization && data?.mentions?.length > 2" class="mr-1 font-normal">{{'TAB.HOME.AND'
+                  | translate}}</span>
+                <span *ngIf="data?.organization && data?.mentions?.length > 2" class="mr-1">{{data.mentions.length -
+                  1}}</span>
+                <span *ngIf="data?.organization && data?.mentions?.length > 2" class="mr-1">{{'TAB.HOME.OTHER' |
+                  translate}}</span>
+
+                <a *ngIf="!data?.organization" class="mr-1" [routerLink]="['/tabs', 'users', data?.author?.id]">{{
+                  data.username }}</a>
+
+                <span *ngIf="!data?.organization && data?.feeling" class="mr-1 font-normal">{{'TAB.HOME.FEELING' |
+                  translate}}</span>
+                <span *ngIf="!data?.organization && data?.feeling" class="mr-1 font-normal">{{data.feeling}}</span>
+                <span *ngIf="!data?.organization && data?.mentions" class="mr-1 font-normal">{{'TAB.HOME.WITH' |
+                  translate}}</span>
+                <a *ngIf="!data?.organization && data?.mentions" class="mr-1"
+                  [routerLink]="['/tabs', 'users', data?.mentions[0].id]">{{data.mentions[0].username}}</a>
+                <span *ngIf="!data?.organization && data?.mentions?.length === 2"
+                  class="mr-1 font-normal">{{'TAB.HOME.AND' | translate}}</span>
+                <a *ngIf="!data?.organization && data?.mentions?.length === 2" class="mr-1"
+                  [routerLink]="['/tabs', 'users', data?.mentions[1].id]">{{data.mentions[1].username}}</a>
+                <span *ngIf="!data?.organization && data?.mentions?.length > 2"
+                  class="mr-1 font-normal">{{'TAB.HOME.AND' | translate}}</span>
+                <button (click)="setOpen(true)">
+                  <span *ngIf="!data?.organization && data?.mentions?.length > 2" class="mr-1">{{data.mentions.length -
+                    1}}</span>
+                  <span *ngIf="!data?.organization && data?.mentions?.length > 2" class="mr-1">{{'TAB.HOME.OTHER' |
+                    translate}}</span>
+                </button>
+                <span *ngIf="data?.organization && !data?.feeling && !data?.mentions" class="text-xs font-normal">{{
+                  data.updated_date }}</span>
+              </p>
+
+              <p *ngIf="data?.organization && data?.feeling || data?.organization && data?.mentions"
+                class="text-xs font-normal">
+                {{ data.updated_date }}
+              </p>
+            </div>
+            <ion-modal initialBreakpoint="1" [breakpoints]="[1]" [isOpen]=" isShowListUser"
+              (didDismiss)="setOpen(false)">
+              <ng-template>
+                <app-users-favorites [mentions]="mentionOthers" (setOpen)="setOpen($event)"></app-users-favorites>
+              </ng-template>
+            </ion-modal>
+            <div *ngIf="!data?.organization" class="text-xs font-normal">
+              {{data.updated_date}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mr-4">
+        <span class="spacer"></span>
+        <ion-icon class="rotate-90" name="ellipsis-vertical-outline" (click)="setOpenActionSheet(true)"></ion-icon>
+        <ion-action-sheet [isOpen]="isActionSheetOpen" [buttons]="
+            me?.id !== data?.author?.id ? actionSheetGuests : actionSheetOwn
+          " (didDismiss)="setResult($event)" *ngIf="me?.super_admin !== 1"></ion-action-sheet>
+
+        <ion-action-sheet [isOpen]="isActionSheetOpen" [buttons]="
+        me?.id !== data?.author?.id ? actionSheetSuperAdmin : actionSheetOwn" (didDismiss)="setResult($event)"
+          *ngIf="me?.super_admin === 1"></ion-action-sheet>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="detail-news-pages">
+    <div *ngIf="isLoading">
+      <ion-skeleton-text class="h-10" [animated]="true"></ion-skeleton-text>
+      <ion-skeleton-text class="h-28" [animated]="true"></ion-skeleton-text>
+
+      <ion-skeleton-text class="h-14" [animated]="true"></ion-skeleton-text>
+
+      <ion-skeleton-text class="h-6" [animated]="true"></ion-skeleton-text>
+
+      <ion-skeleton-text class="h-6" [animated]="true"></ion-skeleton-text>
+
+      <div class="comments">
+        <app-comment-list [isLoading]="isLoadingComment" [me]="me" [authorId]="data?.author?.id" [comments]="comments"
+          (replies)="onRepliesComment($event)" (editComment)="onEditComment($event)"
+          (deleteComment)="onDeleteComment($event)"></app-comment-list>
+      </div>
+    </div>
+    <div *ngIf="!isLoading">
+      <div class="p-4 text-black">
+        <div class="text-sm font-bold">{{ data.name }}</div>
+        <p class="text-sm" [innerHTML]="data.content">
+          <!-- {{ data.content }} -->
+        </p>
+      </div>
+
+      <app-images-list [images]="data?.images" (zoom)="onZoom($event)"></app-images-list>
+
+      <div class="p-4" [class]="data?.listImages?.length === 0 ? 'pt-0' : ''">
+        <div *ngIf="data.tags" class="p-0 m-0 items-center">
+          <app-tags-list [tags]="data?.tags"></app-tags-list>
+        </div>
+      </div>
+
+      <app-reactions [data]="data" (heart)="onHeart($event)" [type]="'news'" [page]="'detail'"
+        (redirect)="redirect($event)" [hostNameLocation]="hostNameLocation"></app-reactions>
+
+      <div class="comments" #commentElement>
+        <app-comment-list [me]="me" [authorId]="data?.author?.id" [comments]="comments"
+          (replies)="onRepliesComment($event)" (editComment)="onEditComment($event)"
+          (deleteComment)="onDeleteComment($event)"></app-comment-list>
+      </div>
+    </div>
+  </div>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" *ngIf="comments?.length">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-modal [isOpen]="isShowReport" class="modal-report" (didDismiss)="onCloseReport(false)">
+    <ng-template>
+      <app-report-form (getValues)="onGetValueReport($event)" (close)="onCloseReport($event)"></app-report-form>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isModalUpload" class="modal-upload-image">
+    <ng-template>
+      <app-album-image [isUploadSuccess]="isUploadSuccess" [images]="data.images" [data]="data"
+        (addImage)="handleAddImage($event)" (removeImage)="handleRemoveImage($event)"
+        (closeModal)="handleCloseUpload($event)"></app-album-image>
+    </ng-template>
+  </ion-modal>
+
+  <app-preview-image [showModal]="showModal" [images]="images" (closeModal)="closeModal($event)"></app-preview-image>
+</ion-content>
+
+<app-send-comment (messageChange)="sendComments($event)" [replies]="repliesData" [data]="data"
+  (removeReply)="onRemoveReply($event)"
+  [message]="commentEdit?.parentName ?? commentEdit?.childrenName"></app-send-comment>

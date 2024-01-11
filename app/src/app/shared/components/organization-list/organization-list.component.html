@@ -1,0 +1,97 @@
+<ion-card *ngFor="let org of organizations" class="cursor-pointer hover:bg-slate-100">
+  <ion-card-content *ngIf="isLoading">
+    <div class="flex items-center list-organizations">
+      <ion-checkbox [indeterminate]="true" *ngIf="isSelectCheckbox"
+        (ionChange)="changeCheckbox($event, org.id)"></ion-checkbox>
+      <ion-thumbnail class="self-start pt-1">
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      </ion-thumbnail>
+      <div class="ml-3 left">
+        <ion-card-title class="text-base font-extrabold card-title">
+          <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text>
+        </ion-card-title>
+        <div class="text-xs">
+          <ion-skeleton-text [animated]="true" style="height: 16px"></ion-skeleton-text>
+        </div>
+        <div class="text-xs" *ngIf="org.industries">
+          <span *ngFor="let industry of org.industries">
+            <span>
+              <ion-skeleton-text [animated]="true" style="height: 16px"></ion-skeleton-text>
+            </span>
+          </span>
+        </div>
+        <div class="text-xs">
+          <ion-skeleton-text [animated]="true" style="height: 16px"></ion-skeleton-text>
+        </div>
+        <div class="text-xs">
+          <ion-skeleton-text [animated]="true" style="height: 16px"></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+    <p *ngIf="description.length > 0" class="text-xs">
+      <ion-skeleton-text [animated]="true" style="height: 16px"></ion-skeleton-text>
+    </p>
+  </ion-card-content>
+
+  <ion-card-content *ngIf="!isLoading" class="">
+    <div>
+      <div class="flex items-center list-organizations">
+        <ion-checkbox *ngIf="isSelectCheckbox" (ionChange)="changeCheckbox($event, org.id)"></ion-checkbox>
+        <app-avatar (getSrcImage)="getSrcImage($event)" [isLogo]="isLogo" [classNameThumbnail]="classNameThumbnail"
+          [data]="org"></app-avatar>
+
+        <div class="ml-3">
+          <ion-card-title class="text-base font-extrabold card-title">
+            <a *ngIf="org.id" [routerLink]="['/tabs', 'organizations', org.id]">{{
+              org.name
+              }}</a>
+            <a *ngIf="!org.id">{{ org.name }}</a>
+            <span *ngIf="isOwner && hasPermission('UPDATE_ORGANIZATION', org.id)">
+              <ion-icon name="create-outline" [routerLink]="['/tabs', 'organizations', 'update', org.id]"></ion-icon>
+            </span>
+          </ion-card-title>
+
+          <div class="text-xs">
+            <ion-icon name="call-outline" class="mr-1"></ion-icon>
+            <ion-text>{{ org.phone }}</ion-text>
+          </div>
+
+          <div class="text-xs" *ngIf="org.industries && org.industries.length">
+            <ion-icon name="golf-outline"></ion-icon>
+            <span *ngFor="let industry of org.industries">
+              <span *ngIf="
+                  industry.id === org.industries[org.industries.length - 1].id
+                ">
+                {{ industry.name }}
+              </span>
+              <span *ngIf="
+                  industry.id !== org.industries[org.industries.length - 1].id
+                ">
+                {{ industry.name + "," }}
+              </span>
+            </span>
+          </div>
+
+          <div class="text-xs" *ngIf="org.organization_user?.position?.name">
+            <ion-icon name="ribbon-outline"></ion-icon>
+            {{ org.organization_user?.position?.name }}
+          </div>
+
+          <div class="text-xs" *ngIf="getIAMGroupName(org.id || '')">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            {{ getIAMGroupName(org.id || "") }}
+          </div>
+          <div class="text-xs">
+            <ion-button *ngIf="!org.has_followed" class="text-xs m-0 h-6" size="small"
+              (click)="followOrganization(org.id)" [disable]="">
+              <ion-icon slot="start" name="duplicate-outline" class="ml-1"></ion-icon>
+              {{ 'PAGES.ORGANIZATION.FOLLOW' | translate}}
+            </ion-button>
+          </div>
+        </div>
+      </div>
+      <p *ngIf="description.length > 0" class="text-xs">{{ description }}</p>
+    </div>
+
+  </ion-card-content>
+</ion-card>

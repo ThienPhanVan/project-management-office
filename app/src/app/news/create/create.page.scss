@@ -1,0 +1,37 @@
+ion-label.label-text {
+  font-family: "Lexend Deca", sans-serif;
+}
+.image {
+  margin-top: 8px;
+  width: 100%;
+}
+
+::ng-deep {
+  /* to penetrate <ngx-editor> CSS styling */
+
+  .NgxEditor {
+    min-height: 10rem;
+  }
+
+  .NgxEditor__Content {
+    max-height: calc(10rem);
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+    }
+  }
+}
+
+.chooseOrg {
+  width: 90%;
+  margin-right: 6px;
+}

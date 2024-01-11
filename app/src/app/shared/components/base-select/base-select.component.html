@@ -1,0 +1,115 @@
+<div class="w-full" (click)="open()">
+  <div class="flex">
+    <ion-label
+      ><span
+        class="text-xs label-text-wrapper"
+        [ngClass]="{ 'label-required': required }"
+        >{{ label || "" }}</span
+      ></ion-label
+    >
+    <div class="flex items-center ml-auto" *ngIf="!disabled">
+      <div>
+        <span *ngIf="value; else placeHolderName">
+          <span *ngIf="!multiple">
+            <span class="font-bold text-green-500">
+              {{ getItemById(value).code }}
+            </span>
+            <span class="pl-1">{{ getItemById(value).name }}</span>
+          </span>
+        </span>
+
+        <ng-template #placeHolderName>
+          <span>{{ placeHolder }}</span>
+        </ng-template>
+      </div>
+      <ion-icon name="caret-down-outline" class="px-1"></ion-icon>
+      <ion-icon
+        *ngIf="!isNil(value) && removable"
+        class="text-xl"
+        color="dark"
+        name="close-sharp"
+        (click)="clear(); $event.stopPropagation()"
+      ></ion-icon>
+    </div>
+  </div>
+
+  <div *ngIf="multiple && !disabled" class="pl-2 text-sm">
+    <div
+      *ngFor="let item of value; let i = index"
+      [ngClass]="{ 'mb-1': i === value.length - 1 }"
+    >
+      -
+      <span class="font-bold text-green-500">
+        {{ getItemById(item).code }}
+      </span>
+      <span class="pl-1">{{ getItemById(item).name }}</span>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="disabled">
+  <span *ngIf="!multiple">{{ getItemById(value).name }}</span>
+  <div *ngIf="multiple">
+    <div
+      *ngFor="let item of value; let i = index"
+      [ngClass]="{ 'mb-1': i === value.length - 1 }"
+    >
+      -
+      <span class="font-bold text-green-500">
+        {{ getItemById(item).code }}
+      </span>
+      <span class="pl-1">{{ getItemById(item).name }}</span>
+    </div>
+  </div>
+</div>
+
+<ion-modal [isOpen]="isOpen" class="popup-modal" (didDismiss)="cancel()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()" class="normal-case">{{
+            "BUTTON.CANCEL" | translate
+          }}</ion-button>
+        </ion-buttons>
+
+        <ion-title class="text-center">{{ title }}</ion-title>
+
+        <ion-buttons slot="end">
+          <ion-button
+            (click)="confirmChanges()"
+            class="normal-case"
+            [disabled]="multiple ? !selectedItems?.length : !value"
+            >{{ "BUTTON.CHOICE" | translate }}</ion-button
+          >
+        </ion-buttons>
+      </ion-toolbar>
+
+      <ion-toolbar *ngIf="searchable">
+        <ion-searchbar
+          (ionInput)="searchbarInput($event)"
+          placeholder="Tìm kiếm"
+        ></ion-searchbar>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content color="light" class="ion-padding">
+      <ion-list id="modal-list">
+        <div *ngFor="let item of itemsFiltered">
+          <ion-item *ngIf="!item.disabled" lines="none">
+            <ion-checkbox
+              [value]="item"
+              [checked]="isChecked(item)"
+              (ionChange)="checkboxChange($event)"
+            >
+              <span *ngIf="item.code" class="font-bold text-green-500">
+                {{ item.code }}
+              </span>
+              <span class="pl-1">{{ item.name }}</span>
+            </ion-checkbox>
+          </ion-item>
+        </div>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>

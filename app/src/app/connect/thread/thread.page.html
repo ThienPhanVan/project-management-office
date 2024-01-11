@@ -1,0 +1,58 @@
+<div class="ion-page" id="main-content">
+
+    <ion-header [translucent]="true">
+        <ion-toolbar class="max-h-14 flex">
+            <ion-button fill="clear" color="dark" (click)="back()" slot="start">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+            </ion-button>
+            <ion-title>
+                <div class="text-sm font-bold text-left">Thread</div>
+                <div class="text-xs font-thin text-left">Message in <a target="_blank"
+                        href={{originGroup.href}}>#{{originGroup.name}}</a></div>
+
+            </ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+        <ion-grid>
+            <ion-row>
+                <ion-item class="w-full" lines="none">
+                    <app-avatar [classNameAvatar]="'thumbnail-2'" [isAvatar]="true"></app-avatar>
+                    <div class="ml-3">
+                        <div class="text-sm font-bold">Tayv</div>
+                        <div class="text-sm font-thin">8/9/2022 at 8:30AM</div>
+                    </div>
+                </ion-item>
+                <ion-item lines="none" ion-button long-press (press)="messageActionList.open()">
+                    <ion-text class="text-sm">Thread Khi bạn gặp khó khăn, hãy tìm cách vượt qua chúng và đừng bao giờ
+                        bỏ
+                        cuộc</ion-text>
+                </ion-item>
+            </ion-row>
+            <ion-row>
+                <ion-item class="w-full" lines="full">
+                    <div class="text-sm">22 replies</div>
+                    <div class="ml-auto">
+                        <ion-button fill="clear">
+                            <ion-icon color="dark" name="arrow-redo-outline"></ion-icon>
+                        </ion-button>
+                    </div>
+                </ion-item>
+            </ion-row>
+            <ion-row>
+                <app-message-list-thread [messages]="messages"
+                    (imageClicked)="onImageClicked($event)"></app-message-list-thread>
+            </ion-row>
+        </ion-grid>
+    </ion-content>
+
+    <ion-footer>
+        <app-message-input (messageChange)="sendMessage($event)"></app-message-input>
+    </ion-footer>
+
+    <app-zoom [showModal]="showZoomModal" [dataImage]="showDataImage.images" [indexCurrent]="showDataImage.index"
+        [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>
+</div>
+
+<app-message-action-list #messageActionList></app-message-action-list>

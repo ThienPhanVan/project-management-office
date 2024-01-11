@@ -1,0 +1,102 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-searchbar class="!py-0" [debounce]="1000" (ionInput)="handleSearch($event)"
+        placeholder="{{ 'PLACEHOLDER.SEARCH' | translate }}"></ion-searchbar>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <!-- <div class="w-full" slot="content"> -->
+  <ion-segment *ngIf="showAllSegments" value="members" (ionChange)="changeSegment($event)">
+    <ion-segment-button value="members">
+      <ion-label>{{'PAGES.SEARCH.MEMBERS' | translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="organizations">
+      <ion-label>{{'PAGES.SEARCH.ORGANIZATIONS' | translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="chapters">
+      <ion-label>{{'PAGES.SEARCH.CHAPTERS' | translate}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="segmentStatus === 'members'">
+    <app-user-list (getThumbnail)="getImageSrc($event)" [users]="users" [isLoading]="isLoadingUser"></app-user-list>
+
+    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+    <!-- <div *ngIf="isLoadingUser">
+          <ion-skeleton-text [animated]="true" style="height: 40px;"></ion-skeleton-text>
+        </div>
+        <div *ngIf="remainingUser.length + litmitUser.length > 5 && !isLoadingUser" class="show">
+          <button (click)="handleShowMore()">
+            <div *ngIf="!isClickMoreUser" class="more">
+              <span class="text">{{'PAGES.SEARCH.SHOW_MORE' | translate}}</span>
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+            </div>
+            <div *ngIf="isClickMoreUser" class="less">
+              <span class="text">{{'PAGES.SEARCH.SHOW_LESS' | translate}}</span>
+              <ion-icon name="chevron-back-outline"></ion-icon>
+            </div>
+          </button>
+        </div> -->
+  </div>
+
+  <div *ngIf="segmentStatus === 'organizations'">
+    <app-organization-list (getThumbnail)="getImageSrc($event)" (getThumbnail)="getImageSrc($event)"
+      [organizations]="organizations" [isLoading]="isLoadingOrg"></app-organization-list>
+
+    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+    <!-- <div *ngIf="isLoadingUser">
+          <ion-skeleton-text [animated]="true" style="height: 40px;"></ion-skeleton-text>
+        </div>
+        <div *ngIf="remainingOrg.length + litmitOrg.length > 5 && !isLoadingOrg" class="show">
+          <button (click)="handleShowMore()">
+            <div *ngIf="!isClickMoreOrg" class="more">
+              <span class="text">{{'PAGES.SEARCH.SHOW_MORE' | translate}}</span>
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+            </div>
+            <div *ngIf="isClickMoreOrg" class="less">
+              <span class="text">{{'PAGES.SEARCH.SHOW_LESS' | translate}}</span>
+              <ion-icon name="chevron-back-outline"></ion-icon>
+            </div>
+          </button>
+        </div> -->
+  </div>
+
+  <div *ngIf="segmentStatus === 'chapters'">
+    <app-chapter-list [chapters]="chapters" [isLoading]="isLoadingChapter"></app-chapter-list>
+
+    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <!-- <div *ngIf="isLoadingChapter">
+          <ion-skeleton-text [animated]="true" style="height: 40px;"></ion-skeleton-text>
+        </div>
+        <div *ngIf="remainingChapter.length + litmitChapter.length > 5 && !isLoadingChapter" class="show">
+          <button (click)="handleShowMore()">
+            <div *ngIf="!isClickMoreChapter" class="more">
+              <span class="text">{{'PAGES.SEARCH.SHOW_MORE' | translate}}</span>
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+            </div>
+            <div *ngIf="isClickMoreChapter" class="less">
+              <span class="text">{{'PAGES.SEARCH.SHOW_LESS' | translate}}</span>
+              <ion-icon name="chevron-back-outline"></ion-icon>
+            </div>
+          </button>
+        </div> -->
+  </div>
+
+  <!-- </div> -->
+  <app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>
+</ion-content>

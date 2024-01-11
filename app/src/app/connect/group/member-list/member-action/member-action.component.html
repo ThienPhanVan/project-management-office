@@ -1,0 +1,32 @@
+<ion-modal [isOpen]="isOpen" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.25, 0.5, 0.75]" (didDismiss)="close()">
+  <ng-template>
+    <ion-content>
+      <div class="flex items-center w-full h-16 my-3">
+        <app-avatar class="ml-4" [classNameAvatar]="'thumbnail-3'" [isAvatar]="true" [data]="user"></app-avatar>
+        <span class="text-lg font-extrabold px-3">{{user.username}}</span>
+        <span class="spacer"></span>
+      </div>
+
+      <hr class="h-0.5 background-medium-dark">
+
+      <ion-list>
+        <ion-item lines="none"(click)="redirectUserDetail()">
+          Xem trang cá nhân
+        </ion-item>
+        <ion-item lines="none" (click)="updateUsertoAdmin()">
+          Bổ nhiệm làm trưởng nhóm
+        </ion-item>
+        <ion-item lines="none" *ngIf="user.id !== getMyId()" (click)="onBlock(user)" style="color: red;">
+          Chặn thành viên
+        </ion-item>
+        <ion-item *ngIf="user.id !== getMyId() && user.role === 'MEMBER'" lines="none" (click)="onDeleteMember()" style="color: red;">
+          Xoá khỏi nhóm
+        </ion-item>
+        <ion-item  *ngIf="user.id == getMyId()" lines="none" (click)="leaveGroup()" style="color: red;">
+          Rời nhóm
+        </ion-item>
+      </ion-list>
+
+    </ion-content>
+  </ng-template>
+</ion-modal>

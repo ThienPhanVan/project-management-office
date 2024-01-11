@@ -1,0 +1,44 @@
+<ion-modal [isOpen]="isModalOpen" (didDismiss)="setOpen(false)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar class="text-sm">
+        <ion-buttons slot="start">
+          <ion-button (click)="cancelChanges()" class="normal-case">{{
+            "BUTTON.CANCEL" | translate
+            }}</ion-button>
+        </ion-buttons>
+
+        <ion-title class="text-center text-base">{{
+          title | translate
+          }}</ion-title>
+
+        <ion-buttons slot="end">
+          <ion-button (click)="confirmChanges()" class="normal-case" [disabled]="!categories.length">{{
+            "BUTTON.CHOICE"
+            | translate }}</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-toolbar>
+      <div class="flex">
+        <ion-searchbar [debounce]="1500" placeholder="{{ 'PLACEHOLDER.SEARCH' | translate }}" class="mt-1"
+          (ionInput)="handleSearch($event)"></ion-searchbar>
+      </div>
+    </ion-toolbar>
+
+
+    <ion-content color="light" [fullscreen]="true">
+      <ion-checkbox-group>
+        <ion-item *ngFor="let item of categories; trackBy: trackItems" lines="none">
+          <ion-checkbox [value]="item.id" [(ngModel)]="item.has_user_favorite"
+            (ionChange)="ionChangeCategory(item, item.has_user_favorite)">
+            {{ item.name }}</ion-checkbox>
+        </ion-item>
+      </ion-checkbox-group>
+
+      <!-- <ion-infinite-scroll *ngIf="isScroll" (ionInfinite)="loadCategories($event)">
+          <ion-infinite-scroll-content> </ion-infinite-scroll-content>
+        </ion-infinite-scroll> -->
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -1,0 +1,11 @@
+<ion-item *ngFor="let message of messages" class="w-full mt-3" lines="none" ion-button long-press (press)="messageActionList.open()">
+  <app-avatar class="self-start" [classNameAvatar]="'thumbnail-2'" [isAvatar]="true"></app-avatar>
+  <div class="self-start ml-3">
+    <div class="text-sm"><span class="font-bold" [innerHTML]="user?.username"></span><span class="font-thin">{{message.time}}</span></div>
+    <div class="text-sm">{{message.content}}</div>
+    <app-attachment-list *ngIf="message.attachments" [attachments]="message.attachments"
+    (onImageClicked)="onImageClicked($event)"></app-attachment-list>
+  </div>
+</ion-item>
+
+<app-message-action-list #messageActionList></app-message-action-list>

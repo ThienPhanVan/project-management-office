@@ -1,0 +1,23 @@
+<ion-modal class="version-modal" (didDismiss)="close()" [isOpen]="isOpen">
+  <ng-template>
+    <ion-header [translucent]="true">
+      <ion-toolbar>
+        <ion-button fill="clear" color="dark" (click)="close()" slot="start">
+          Close
+        </ion-button>
+        <ion-title>Wiki Version</ion-title>
+        <ion-button fill="clear" color="dark" (click)="actionSubmit();close()" slot="end">
+          <ion-icon *ngIf="!isCreating" size="medium" color="dark" name="add-outline"></ion-icon>
+          <ion-spinner *ngIf="isCreating" name="circular" class="text-xs"></ion-spinner>
+          Save
+        </ion-button>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="flex items-center">
+      <ion-item lines="none">
+        <ion-input [clearInput]="true" type="text" label="Version" [(ngModel)]="version"></ion-input>
+      </ion-item>
+    </ion-content>
+  </ng-template>
+</ion-modal>

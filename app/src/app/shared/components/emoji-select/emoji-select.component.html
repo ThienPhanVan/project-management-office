@@ -1,0 +1,26 @@
+<ion-modal [isOpen]="isOpen" [initialBreakpoint]="0.5"
+  [breakpoints]="[0, 0.25, 0.5, 0.75]" (didDismiss)="close()">
+  <ng-template>
+    <ion-content>
+      <div class="sticky top-0 background-base-color">
+        <ion-searchbar class="mt-1" animated="true" placeholder="Tìm kiếm"></ion-searchbar>
+        <div class="w-full grid grid-cols-10 px-2 justify-items-center">
+          <ion-button fill="clear" color="dark" size="small" *ngFor="let icon of emojiGroupsIcons;let i = index"
+            (click)="scrollIntoGroup(i)" id="button-{{i}}">
+            <ion-icon name="{{icon}}"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+      <div class="w-full px-3 mt-1 h-5/6 overflow-y-auto">
+        <div *ngFor="let emojiGroup of emojiGroups;let i = index" id="icon-group-{{i+1}}">
+          <div class="text-sm font-bold d-flex">{{emojiGroup.group}}</div>
+          <div class="grid grid-cols-6 gap-3 my-2 justify-items-center">
+            <ion-button size="medium" fill="clear" *ngFor="let emoji of emojiGroup.emojis" (click)="emojiChange(emoji);close()">
+              {{emoji.char}}
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>

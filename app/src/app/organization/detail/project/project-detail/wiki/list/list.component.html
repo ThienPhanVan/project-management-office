@@ -1,0 +1,23 @@
+<div *ngFor="let wiki of wikis" class="block ml-6">
+  <div class="flex items-center">
+    <ion-button size="small" fill="clear" (click)="toggleChildren(wiki)">
+      <ion-icon *ngIf="!wiki.visible" color="dark" name="add-circle"></ion-icon>
+      <ion-icon *ngIf="wiki.visible" color="dark" name="remove-circle"></ion-icon>
+    </ion-button>
+    <div class="text-lg" [routerLink]="[wiki.id]" tappable>
+      {{wiki.name}}
+    </div>
+  </div>
+
+  <ion-button *ngIf="wiki.visible && currentLevel<levelRange" fill="clear" class="flex items-center max-w-fit ml-7"
+    size="small" (click)="redirectChildCreatePage(wiki.id)">
+    <ion-icon name="add-outline" size="medium"></ion-icon>
+    <div class="ml-1">
+      Add child
+    </div>
+  </ion-button>
+
+  <app-wiki-list *ngIf="wiki.children && wiki.children.length && wiki.visible" [wikis]="wiki.children"
+    [currentLevel]="currentLevel+1"></app-wiki-list>
+
+</div>

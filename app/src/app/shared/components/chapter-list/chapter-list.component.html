@@ -1,0 +1,38 @@
+<ion-card *ngFor="let item of chapters" class="cursor-pointer hover:bg-slate-100">
+  <ion-card-content *ngIf="isLoading">
+    <div class="flex">
+      <div class="ml-3" style="width: 100%">
+        <ion-card-title class="text-base font-extrabold">
+          <ion-skeleton-text [animated]="true" style="height: 24px;"></ion-skeleton-text>
+        </ion-card-title>
+        <div class="text-xs">
+          <ion-skeleton-text [animated]="true" style="height: 16px;"></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+  </ion-card-content>
+
+  <ion-card-content *ngIf="!isLoading" class="flex justify-between items-center">
+    <div class="flex" (click)="routerChapterDetail(item)">
+      <div class="ml-3">
+        <ion-card-title class="text-base font-extrabold"> {{item.name}}</ion-card-title>
+        <div class="text-xs" *ngIf="getIAMGroupName(item.id || '')">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          {{ getIAMGroupName(item.id || '') }}
+        </div>
+      </div>
+    </div>
+    <div class="text-xs" *ngIf="isShowButton">
+      <ion-button *ngIf="!item.is_member &&  !item.is_requested" class="text-xs m-0 h-6" size="small"
+        (click)="joinChapter(item.id)">
+        <ion-icon size="small" name="person-add-outline" class="mr-1"></ion-icon>
+        {{ 'PAGES.CHAPTER.JOIN' | translate}}
+      </ion-button>
+      <ion-button *ngIf="!item.is_member &&  item.is_requested" class="text-xs m-0 h-6" size="small"
+        (click)="rejectJoinChapter(item)">
+        <ion-icon size="small" name="checkmark-circle" class="mr-1"></ion-icon>
+        {{ 'PAGES.CHAPTER.WAITING' | translate}}
+      </ion-button>
+    </div>
+  </ion-card-content>
+</ion-card>

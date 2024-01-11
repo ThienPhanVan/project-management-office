@@ -1,0 +1,30 @@
+<ion-item-group>
+  <ion-item class="font-bold">
+    Comments
+  </ion-item>
+
+  <ion-item *ngFor="let comment of comments; let i = index">
+    <div class="flex my-1">
+      <app-avatar [classNameAvatar]="'thumbnail-2'" [isAvatar]="true" class="pt-1"
+        [data]="getUser(comment.created_by) || {}"></app-avatar>
+      <div class="ml-2">
+        <div>
+          <span class="text-base font-bold">{{getUser(comment.created_by)?.username}}</span>
+          <span class="text-xs medium-light-color font-thin pl-1">{{ comment.updated_date | date: 'hh:mm:ss dd/MM/yyyy'}}</span>
+        </div>
+        <div class="text-sm">
+          {{comment.description || 'comment'}}
+        </div>
+      </div>
+    </div>
+  </ion-item>
+
+  <ion-item>
+    <app-avatar [classNameAvatar]="'thumbnail-15'" [isAvatar]="true" [data]="getMyDetail()"></app-avatar>
+    <ion-textarea class="text-sm ml-2" placeholder="Input your comment..." [(ngModel)]="text"></ion-textarea>
+    <ion-button fill="clear" (click)="createComment()">
+      <ion-icon name="return-down-back-outline"></ion-icon>
+    </ion-button>
+  </ion-item>
+
+</ion-item-group>

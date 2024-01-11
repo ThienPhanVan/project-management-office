@@ -1,0 +1,90 @@
+<ion-modal class="popup-modal" [isOpen]="isOpen" (didDismiss)="close()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="close()" class="normal-case">{{'BUTTON.CANCEL' | translate}}</ion-button>
+        </ion-buttons>
+        <ion-title class="text-center">Issues filter</ion-title>
+
+        <ion-buttons slot="end">
+          <ion-button (click)="submit();close()" class="normal-case">Apply</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <form [formGroup]="formGroup" novalidate>
+        <div>
+          <ion-item>
+            <app-select class="w-full" title="Type" [items]="issueTypes" [removable]="true" [multiple]="true"
+              label="Type" (valueChange)="formChange('type',$event)" [value]="formGroup.value.type"
+              formControlName="type" ngDefaultControl>
+            </app-select>
+          </ion-item>
+
+          <div class="error-container"
+            *ngIf="(formGroup.get('type')?.invalid && formGroup.get('type')?.touched) || formGroup.get('type')?.dirty">
+            <div class="text-rose-600	text-sm pl-4 pr-4">
+              <span *ngIf="formGroup.get('type')?.errors?.['required']">
+                {{'FORM.VALID.REQUIRED' | translate}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-input label="Name" formControlName="name" [clearInput]="true" type="text" labelPlacement="stacked"
+            placeholder="">
+          </ion-input>
+        </ion-item>
+
+        <ion-item><ion-textarea label="Description" formControlName="description" labelPlacement="stacked"
+            [autoGrow]="true" placeholder=""></ion-textarea></ion-item>
+
+        <ion-item>
+          <app-select class="w-full" title="Assignee" [items]="users" [removable]="true" [multiple]="true"
+            label="Assignee" (valueChange)="formChange('assignee_id',$event)" [value]="formGroup.value.assignee_id"
+            formControlName="assignee_id" ngDefaultControl #assignee>
+          </app-select>
+        </ion-item>
+
+        <ion-item>
+          <app-select class="w-full" title="Status" [items]="statuses" [removable]="true" [multiple]="true"
+            label="Status" (valueChange)="formChange('status_id',$event)" [value]="formGroup.value.status_id"
+            formControlName="status_id" ngDefaultControl #status>
+          </app-select>
+        </ion-item>
+
+        <ion-item>
+          <app-select class="w-full" title="Priority" [items]="priorities" [removable]="true" [multiple]="true"
+            label="Priority" (valueChange)="formChange('priority_id',$event)" [value]="formGroup.value.priority_id"
+            formControlName="priority_id" ngDefaultControl #priority>
+          </app-select>
+        </ion-item>
+
+        <ion-item>
+          <app-select class="w-full" title="Version" [items]="versions" [removable]="true" [multiple]="true"
+            label="Version" (valueChange)="formChange('parent_id',$event)" [value]="formGroup.value.parent_id"
+            formControlName="parent_id" ngDefaultControl #version>
+          </app-select>
+        </ion-item>
+
+
+        <ion-item lines="none">
+          <app-select class="w-full" title="Milestone" [items]="milestones" [removable]="true" [multiple]="true"
+            label="Milestone" (valueChange)="formChange('milestone_id',$event)" [value]="formGroup.value.milestone_id"
+            formControlName="milestone_id" ngDefaultControl #milestone>
+          </app-select>
+
+        </ion-item>
+      </form>
+      <ion-button class="w-full m-0 mt-1" expand="full" (click)="clear()">
+        Clear Options
+      </ion-button>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-toast [isOpen]="toastMessage!==''" [message]="toastMessage" [duration]="1500"
+  (didDismiss)="closeToast()"></ion-toast>

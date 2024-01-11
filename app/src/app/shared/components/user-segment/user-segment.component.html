@@ -1,0 +1,25 @@
+<div class="flex" *ngIf="me?.id !== user?.id">
+  <!-- btn add friend -->
+  <div class="text-xs mr-1" *ngIf="user.has_friend !== undefine">
+    <ion-button fill="clear" *ngIf="!user.has_friend && !user.has_requested" class="text-xs m-0 h-6 normal-case"
+      size="small" [disabled]="isButtonFriend" (click)="request(user.id)">
+      <ion-icon slot="start" name="person-add" class="ml-1"></ion-icon>
+      <!-- <span class="mr-1">{{ 'PAGES.USER_INFO.ADD_FRIEND' | translate}}</span> -->
+    </ion-button>
+  </div>
+  <!-- btn follow -->
+  <div class="text-xs mr-1" *ngIf="user.has_friend !== undefine">
+    <ion-button *ngIf="!user.has_followed && user.has_friend" class="text-xs normal-case m-0 h-6" color="danger"
+      size="small" fill="outline" (click)="followUser(user.id)" [disabled]="isFollowing">
+      <ion-icon slot="start" name="duplicate-outline" class="ml-1"></ion-icon>
+      <span class="mr-1">{{ "PAGES.USER_INFO.FOLLOW" | translate }}</span>
+    </ion-button>
+  </div>
+  <!-- btn message -->
+  <div class="text-xs mr-1">
+    <ion-button class="text-xs normal-case m-0 h-6" size="small" fill="outline" (click)="sendMessage(user)">
+      <ion-icon name="chatbubble-ellipses" class="mr-1 text-right text-xs"></ion-icon>
+      <span class="mr-1">{{ "COMMON.MESSAGE" | translate }}</span>
+    </ion-button>
+  </div>
+</div>

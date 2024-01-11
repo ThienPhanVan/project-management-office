@@ -1,0 +1,10 @@
+<div class="flex items-center">
+    <div *ngFor="let avatar of filterAvatars(); let i = index" class="list-avatars">
+    <app-avatar [data]="avatar" class="ml-1"
+        [classNameAvatar]="'thumbnail-09'" [isAvatar]="true"></app-avatar>
+        <div *ngIf="i === filterAvatars().length-1" class="avatar-remain-count">
+            +{{data.length - avatarShowNumber}}
+        </div>
+    </div>
+
+</div>

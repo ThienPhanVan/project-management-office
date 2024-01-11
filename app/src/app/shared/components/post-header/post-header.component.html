@@ -1,0 +1,118 @@
+<div *ngIf="isLoading">
+  <ion-skeleton-text [animated]="true" class="h-24"></ion-skeleton-text>
+</div>
+<ion-card-header *ngIf="!isLoading">
+  <div class="flex">
+    <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [data]="data"></app-avatar>
+    <div class="w-full ml-4">
+      <div class="flex" style="justify-content: space-between; align-items: flex-start">
+        <div>
+          <a [routerLink]="['/tabs', 'organizations', data?.organization?.id]" *ngIf="data?.organization">
+            <span class="text-sm decoration-none font-bold">{{ data.organization.name }}</span>
+          </a>
+          <p class="text-sm decoration-none font-bold">
+            <a *ngIf="data?.organization" class="text-xs mr-1" [routerLink]="['/tabs', 'users', data?.author?.id]">{{
+              data.username
+              }} </a>
+
+            <!-- <span *ngIf="data?.organization && data?.feeling" class="text-xs font-normal">{{ "TAB.HOME.FEELING" |
+              translate
+              }} </span>
+            <span *ngIf="data?.organization && data?.feeling" class="text-xs font-normal">{{ data.feeling }} </span>
+            <span *ngIf="data?.organization && data?.mentions" class="text-xs font-normal">{{ "TAB.HOME.WITH" |
+              translate
+              }} </span>
+            <a *ngIf="data?.organization && data?.mentions" class="text-xs"
+              [routerLink]="['/tabs', 'users', data?.mentions[0].id]">{{ data.mentions[0].username }} </a>
+            <span *ngIf="data?.organization && data?.mentions?.length === 2" class="text-xs font-normal">{{
+              "TAB.HOME.AND" |
+              translate }} </span>
+            <a *ngIf="data?.organization && data?.mentions?.length === 2"
+              [routerLink]="['/tabs', 'users', data?.mentions[1].id]" class="text-xs">{{ data.mentions[1].username
+              }} </a>
+            <span *ngIf="data?.organization && data?.mentions?.length > 2" class="text-xs font-normal">{{
+              "TAB.HOME.AND" |
+              translate }} </span>
+            <span *ngIf="data?.organization && data?.mentions?.length > 2" class="text-xs">{{ data.mentions.length
+              - 1
+              }} </span>
+            <span *ngIf="data?.organization && data?.mentions?.length > 2" class="text-xs">{{ "TAB.HOME.OTHER" |
+              translate
+              }} </span> -->
+            <span *ngIf="data?.organization" class="text-xs font-normal">{{
+              data.updated_date
+              }}</span>
+
+            <a *ngIf="!data?.organization" [routerLink]="['/tabs', 'users', data?.author?.id]"><span class="text-sm">{{
+                data.username
+                }} </span></a>
+
+            <span *ngIf="!data?.organization && data?.feeling" class="font-normal">{{
+              "TAB.HOME.FEELING" | translate
+              }} </span>
+            <span *ngIf="!data?.organization && data?.feeling" class="font-normal">{{
+              data.feeling}} </span>
+            <span *ngIf="!data?.organization && data?.mentions" class="font-normal">{{
+              "TAB.HOME.WITH" | translate
+              }} </span>
+            <a *ngIf="!data?.organization && data?.mentions" [routerLink]="['/tabs', 'users', data?.mentions[0].id]">{{
+              data.mentions[0].username }} </a>
+            <span *ngIf="!data?.organization && data?.mentions?.length === 2" class="font-normal">{{ "TAB.HOME.AND"
+              | translate
+              }} </span>
+            <a *ngIf="!data?.organization && data?.mentions?.length === 2"
+              [routerLink]="['/tabs', 'users', data?.mentions[1].id]">{{ data.mentions[1].username }}</a>
+            <span *ngIf="!data?.organization && data?.mentions?.length > 2" class="font-normal">{{ "TAB.HOME.AND" |
+              translate
+              }} </span>
+            <button (click)="setOpen(true)">
+              <span *ngIf="!data?.organization && data?.mentions?.length > 2">{{
+                data.mentions.length - 1
+                }} </span>
+              <span *ngIf="!data?.organization && data?.mentions?.length > 2">{{
+                "TAB.HOME.OTHER" | translate
+                }} </span>
+            </button>
+
+          </p>
+          <p *ngIf="!data?.organization" class="text-xs font-normal mt-1">{{ data.updated_date }}</p>
+          <!-- <p *ngIf="(data?.organization && data?.feeling) || (data?.organization && data?.mentions)"
+            class="text-xs font-normal ">
+            {{ data.updated_date }}
+          </p> -->
+        </div>
+
+        <ion-modal [isOpen]="isShowListUser" initialBreakpoint="1" [breakpoints]="[1]" (didDismiss)="setOpen(false)">
+          <ng-template>
+            <app-users-favorites [mentions]="mentionOthers" [data]="data"
+              (setOpen)="setOpen($event)"></app-users-favorites>
+          </ng-template>
+        </ion-modal>
+
+        <div style="display: flex; align-items: center" class="-mr-2">
+          <div class="ion-activatable ripple-parent circle rounded-rectangle rotate-90 -mr-2 ">
+            <ion-icon slot="icon-only" name="ellipsis-vertical-outline"
+              [id]="'open-action-sheet' + indexNews"></ion-icon>
+            <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+          </div>
+
+          <ion-action-sheet [trigger]="'open-action-sheet' + indexNews" [buttons]="
+              me?.id !== data?.author?.id ? actionSheetGuests : actionSheetOwn
+            " (didDismiss)="setResult($event, data)" *ngIf="me?.super_admin !== 1"></ion-action-sheet>
+
+          <ion-action-sheet [trigger]="'open-action-sheet' + indexNews" [buttons]="
+            me?.id !== data?.author?.id ? actionSheetSuperAdmin : actionSheetOwn
+          " (didDismiss)="setResult($event, data)" *ngIf="me?.super_admin === 1"></ion-action-sheet>
+
+          <div class="ion-activatable ripple-parent circle">
+            <ion-icon slot="icon-only" name="close-outline" (click)="handleHidden(data)"
+              style="font-size: 20px;"></ion-icon>
+            <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</ion-card-header>

@@ -1,0 +1,69 @@
+<ion-footer collapse="fade" class="bg-white">
+  <div *ngIf="isShowMention">
+    <ion-card *ngFor=" let data of mentions" class="cursor-pointer" class="m-0 p-1">
+      <ion-card-content class=" p-0 m-0 h-10">
+        <div class="flex items-center" (click)="chooseMention(data)">
+          <app-avatar (getSrcImage)="getSrcImage($event)" [classNameAvatar]="'item'" [data]="data" [isAvatar]="true"
+            class="scale-75"></app-avatar>
+          <div class="ml-3">
+            <ion-card-title class="text-sm font-extrabold">
+              <div>
+                {{ data.username }}
+              </div>
+            </ion-card-title>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <div *ngIf="replies !== undefined">
+    <div class="flex justify-between p-2">
+      <div class="text-base " *ngIf="replies.author.id === user.id">{{'COMMON.REPLY_ME' | translate }}</div>
+      <div class="text-base " *ngIf="replies.author.id !== user.id">{{'COMMON.RESPONDING' | translate }}
+        <span class="font-bold" (click)="redirectUser(replies.author.id)">{{replies.author.username}}</span>
+      </div>
+      <ion-icon name="close-circle-outline" (click)="removeReplies()"></ion-icon>
+    </div>
+  </div>
+  <div class="m-2 ml-8 flex" *ngIf="images?.length !== 0">
+
+    <img [src]="images[0]?.image_url" alt="" class="w-20 h-20 mr-2">
+    <div class="remove-icon" (click)="handleRemoveImage()">
+      <ion-icon name="trash-outline"></ion-icon>
+    </div>
+    <!-- <app-attachment-chip [attachments]="selectedAttachments"
+      (attachmentRemoved)="attachmentRemoved($event)"></app-attachment-chip> -->
+  </div>
+  <div class="mr-2 flex items-center">
+    <!-- <app-attachment-select (attachmentSelected)="attachmentSelected($event)"></app-attachment-select> -->
+    <div class="ant-upload ant-upload-select mr-2" (click)="newsThumbnail.click()">
+      <span class="ant-upload">
+        <input type="file" multiple="multiple" accept="" style="display: none" #newsThumbnail
+          (change)="handleAddImageComment($event)" />
+        <div>
+          <ion-icon color="primary" name="image-outline"></ion-icon>
+        </div>
+      </span>
+    </div>
+
+    <div>
+      <textarea autofocus class="auto-resize" [placeholder]="placeholder" (input)="onChange($event)"
+        [(ngModel)]="displayMessage" #inputComment></textarea>
+    </div>
+    <div class="flex">
+      <ion-button class="w-10" fill="clear" size="small" (click)="emoji.open()">
+        <ion-icon name="happy-outline"></ion-icon>
+      </ion-button>
+
+      <app-emoji-select (onEmojiChange)="onEmojiChange($event)" #emoji></app-emoji-select>
+
+      <ion-button class="w-10" fill="clear" size="small">
+        <ion-icon name="at-circle-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button class="w-10" fill="clear" size="small" (click)="sendMessage()" [disabled]="isDisable">
+        <ion-icon slot="icon-only" size="small" name="send"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+</ion-footer>

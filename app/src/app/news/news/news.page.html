@@ -1,0 +1,143 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="news-tabs items-center">
+      <div class="flex justify-between items-center">
+        <div class="flex m-1 items-center">
+          <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [data]="me"></app-avatar>
+        </div>
+        <div class="flex justify-end w-full">
+          <ion-searchbar class="search-news-tabs" placeholder="{{ 'PLACEHOLDER.SEARCH' | translate }}" [debounce]="1000"
+            (ionFocus)="showSearchNewModel()" (ionClear)="clearSearchNewModel()" [value]="searchValue"></ion-searchbar>
+          <ion-button fill="clear" class="right-0" routerLink="/tabs/notification">
+            <ion-icon name="notifications-outline"></ion-icon>
+            <ion-badge *ngIf="badge > 10" class="-ml-3 -mt-4">10+</ion-badge>
+            <ion-badge *ngIf="11 > badge && badge > 0 " class="-ml-3 -mt-4">{{ badge }}</ion-badge>
+          </ion-button>
+        </div>
+      </div>
+      <app-categories-slide class="flex" [isShowFilter]="false" [categories]="categories"
+        (segment)="changeSegment($event)"></app-categories-slide>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="page-news">
+    <div *ngFor="let item of data; index as i" class="shadow-md">
+      <div *ngIf="item.type === 0">
+        <app-opportunity-item [data]="item" [isLoading]="isLoading" (heart)="clickHeart($event, 'news')"
+          (tagSearch)="onSearchTag($event)" [me]="me" [indexNews]="item.id" (hidden)="onHidden($event)"
+          (undo)="onUndo($event)" (actionSheet)="onActionSheet($event)" (dataPost)="onDataPostBided($event)"
+          [hostNameLocation]="hostNameLocation + '/tabs/opportunities'"
+          (zoomImage)="onZoomImage($event)"></app-opportunity-item>
+      </div>
+      <div *ngIf="item.type === 2">
+        <app-news-item [data]="item" [isLoading]="isLoading" (heart)="clickHeart($event, 'news')"
+          (tagSearch)="onSearchTag($event)" [me]="me" [indexNews]="item.id" (hidden)="onHidden($event)"
+          (undo)="onUndo($event)" (actionSheet)="onActionSheet($event)"
+          [hostNameLocation]="hostNameLocation + '/tabs/news'" (zoomImage)="onZoomImage($event)"></app-news-item>
+      </div>
+      <div *ngIf="item.type === 1">
+        <!-- casi nay cua event -->
+        <app-event-item [data]="item" (willParticipate)="setWillParticipate($event)"
+          (heart)="clickHeart($event, 'news')" (tagSearch)="onSearchTag($event)" [me]="me" [indexNews]="item.id"
+          (hidden)="onHidden($event)" (undo)="onUndo($event)" (actionSheet)="onActionSheet($event)"
+          [hostNameLocation]="hostNameLocation + '/tabs/events'" (zoomImage)="onZoomImage($event)"></app-event-item>
+      </div>
+      <div *ngIf="item.type === 4" class="mt-1">
+        <ion-card class="card-welcome" *ngIf="!item.hidden">
+          <div *ngIf="isLoading">
+            <ion-skeleton-text [animated]="true" class="h-40"></ion-skeleton-text>
+          </div>
+          <div *ngIf="!isLoading">
+            <div class="flex justify-end mr-2 text-black">
+              <div class="ion-activatable ripple-parent circle ">
+                <ion-icon slot="icon-only" name="close-outline" (click)="onHidden(item)"
+                  style="font-size: 20px;"></ion-icon>
+                <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+              </div>
+            </div>
+
+            <ion-card-content class="p-4">
+              <img [src]="textWelcome.image" alt="" class="mb-1">
+              <p>
+                <span>🎉🎉🎉 {{textWelcome.name}} 🎉🎉🎉</span>
+              </p>
+              <p class="mt-1">
+                <span *ngIf="item?.description">{{item?.description}} </span>
+              </p>
+
+              <ion-chip class="mt-2 flex items-center h-20 w-auto bg-slate-100 p-4" (click)="userClick(item?.user)">
+                <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [data]="item?.user"></app-avatar>
+                <div class="ml-3">
+                  <span class="font-bold ml-2" [routerLink]="['/tabs', 'users', item?.user?.id]">
+                    {{item?.user?.username}}</span>
+                  <div class="text-xs mt-1" *ngIf="item?.user?.is_public_phone">
+                    <ion-icon name="call-outline"></ion-icon> {{ item?.user?.phone }}
+                  </div>
+                  <div class="mt-1 ml-2">
+                    <app-user-segment [user]="item?.user"></app-user-segment>
+                  </div>
+                </div>
+              </ion-chip>
+            </ion-card-content>
+
+          </div>
+
+          <div *ngIf="isLoading">
+            <ion-skeleton-text [animated]="true" class="h-5"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" class="h-6"></ion-skeleton-text>
+          </div>
+          <!-- <app-reactions *ngIf="!isLoading" [data]="item" (heart)="onHeart($event)" [type]="'news'" [page]="'list'"
+            (redirect)="clickRedirectDetail($event)" [hostNameLocation]="hostNameLocation"></app-reactions> -->
+        </ion-card>
+      </div>
+    </div>
+
+    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+    <app-preview-image [showModal]="showModal" [images]="images" (closeModal)="closeModal($event)"></app-preview-image>
+  </div>
+
+  <ion-modal [isOpen]="isModalUpload" class="modal-upload-image">
+    <ng-template>
+      <app-album-image [isUploadSuccess]="isUploadSuccess" [images]="uploadData.images" [data]="uploadData"
+        (addImage)="handleAddImage($event)" (removeImage)="handleRemoveImage($event)"
+        (closeModal)="handleCloseUpload($event)"></app-album-image>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isShowReport" class="modal-report" (didDismiss)="onCloseReport(false)">
+    <ng-template>
+      <app-report-form (getValues)="onGetValueReport($event)" (close)="onCloseReport($event)"></app-report-form>
+    </ng-template>
+  </ion-modal>
+
+  <!-- <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button>
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="onClickCreate('2')">
+        <ion-icon name="newspaper-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="onClickCreate('1')">
+        <ion-icon name="calendar-number-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="onClickCreate('0')">
+        <ion-icon name="bulb-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab> -->
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" #fab>
+    <ion-fab-button size="small" (click)="toggleFabList()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top" class="right-0 -bottom-3 mr-3" *ngIf="fabListOpen">
+      <app-fab-list [buttons]="buttonNews" (type)="onClickCreate($event)">
+      </app-fab-list>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>

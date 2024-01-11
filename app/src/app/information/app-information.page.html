@@ -1,0 +1,107 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-button
+        fill="clear"
+        color="dark"
+        routerLink="/tabs/profile"
+        slot="start"
+      >
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title class="text-sm">
+        {{'PAGES.APP_INFO.TITLE' | translate}}</ion-title
+      >
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center">
+          <ion-icon name="layers-outline"></ion-icon>
+          <div class="ml-2">
+            <span class="">{{'PAGES.APP_INFO.VERSION' | translate}} </span
+            ><span>{{appVersion}}</span>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center">
+          <ion-icon name="business-outline"></ion-icon>
+          <div class="ml-2">
+            <div class="">{{'PAGES.APP_INFO.COOPERATED' | translate}}</div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <app-organization-list
+      (getThumbnail)="getImageSrc($event)"
+      [isLoading]="false"
+      [organizations]="appOrganizations"
+    ></app-organization-list>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center" id="open-support">
+          <ion-icon name="help-circle-outline"></ion-icon>
+          <div class="ml-2" routerLink="/support">
+            <div class="">{{'PAGES.APP_INFO.SUPPORT' | translate}}</div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          <div class="ml-2" routerLink="/terms-policy">
+            <div class="">{{'PAGES.APP_INFO.PRIVACY_POLICY' | translate}}</div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <!-- <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center">
+          <ion-icon name="cube-outline"></ion-icon>
+          <div class="ml-2">
+            <div class="">{{'PAGES.APP_INFO.APPLICATION' | translate}}</div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-card>
+        <ion-card-subtitle class="flex capitalize">
+          <ion-button fill="clear" color="dark" class="w-full">
+            <ion-icon name="cart-outline" class="mr-2"></ion-icon>
+            <a target="_blank" href="https://tstmart.com/home"
+              >{{'PAGES.APP_INFO.PLATFORM' | translate}}</a
+            >
+          </ion-button>
+        </ion-card-subtitle>
+      </ion-card>
+    </ion-card-content>
+  </ion-card> -->
+  <app-zoom
+    [showModal]="showModal"
+    [image]="imagesString"
+    (closeModal)="closeModal($event)"
+  ></app-zoom>
+</ion-content>

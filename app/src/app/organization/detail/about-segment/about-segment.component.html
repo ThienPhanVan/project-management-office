@@ -1,0 +1,206 @@
+<div>
+
+
+  <ion-card class="px-0" *ngIf="organization.description">
+    <ion-card-header>
+      <ion-card-subtitle>{{ 'PAGES.ORGANIZATION.ABOUT' |
+        translate}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <pre class="text-sm break-words whitespace-pre-wrap" style="font-family: 'Open Sans', sans-serif">
+{{organization.description}}</pre>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="px-0" *ngIf="organization.vision">
+    <ion-card-header>
+      <ion-card-subtitle>{{ 'PAGES.ORGANIZATION.VISION' |
+        translate}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <pre class="text-sm">{{organization.vision}}</pre>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="px-0" *ngIf="organization.mission">
+    <ion-card-header>
+      <ion-card-subtitle>{{ 'PAGES.ORGANIZATION.MISSION' |
+        translate}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <pre class="text-sm">{{organization.mission}}</pre>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="px-0" *ngIf="organization.core_values">
+    <ion-card-header>
+      <ion-card-subtitle>{{ 'PAGES.ORGANIZATION.CORE_VALUE' |
+        translate}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <pre class="text-sm break-words whitespace-pre-wrap" style="font-family: 'Open Sans', sans-serif">
+{{organization.core_values}}</pre>
+    </ion-card-content>​
+  </ion-card>
+
+  <ion-card class="px-0" *ngIf="organization.services && organization.services.length > 0">
+    <ion-card-header>
+      <ion-card-subtitle>{{ 'PAGES.ORGANIZATION.SERVICES' |
+        translate}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="text-sm" *ngFor="let service of organization.services" style="font-family: 'Open Sans', sans-serif">
+        - {{service.name}}
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="showActivity">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center" [routerLink]="['/tabs', organizationId, 'activity']">
+          <ion-icon name="refresh-circle-outline" class="transform -scale-x-100"></ion-icon>
+          <div class="ml-2">
+            <div class="">
+              {{'PAGES.ACTIVITY_ORGANIZATION.TITLE' | translate}}
+            </div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card class="px-0" *ngIf="hasPermission('UPDATE_ORGANIZATION') || organization.children">
+    <ion-accordion-group>
+      <ion-accordion>
+        <ion-item slot="header" color="light">
+          <ion-icon name="business-outline" class="text-xs"></ion-icon>
+          <ion-card-subtitle class="pl-2">{{ "PAGES.ORGANIZATION.LIST_BRAND" | translate }}
+            {{ organization.children | displayTotal }}</ion-card-subtitle>
+        </ion-item>
+        <div class="w-full" slot="content">
+          <app-organization-list (getThumbnail)="getSrcImage($event)" [isLoading]="isLoading"
+            *ngIf="organization.children && organization.children.length" class="my-0 p-0"
+            [organizations]="organization.children" [isOwner]="true"></app-organization-list>
+          <ion-button *ngIf="hasPermission('UPDATE_ORGANIZATION')" fill="clear" class="text-xs" expand="block"
+            [routerLink]="[
+              '/tabs',
+              'organizations',
+              'create-branch',
+              organization.id
+            ]">
+            <ion-icon name="add-circle-outline" class="mr-1"></ion-icon>
+            {{ "BUTTON.ADD" | translate }}
+          </ion-button>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card>
+
+  <ion-card class="px-0" *ngIf="organization.chapters &&
+organization.chapters.length">
+    <ion-accordion-group>
+      <ion-accordion>
+        <ion-item slot="header" color="light">
+          <ion-icon name="shapes-outline" class="text-xs"></ion-icon>
+          <ion-card-subtitle class="pl-2">{{ 'PAGES.ORGANIZATION.CHAPTERS' | translate}} {{
+            organization.chapters | displayTotal}}</ion-card-subtitle>
+        </ion-item>
+        <div class="w-full" slot="content">
+          <app-chapter-list [isLoading]="isLoading" [chapters]="organization.chapters"></app-chapter-list>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card>
+
+  <ion-card class="px-0" *ngIf="organization.users && organization.users.length > 0">
+    <ion-accordion-group>
+      <ion-accordion>
+        <ion-item slot="header" color="light">
+          <ion-icon name="people-circle-outline" class="text-base"></ion-icon>
+          <ion-card-subtitle class="pl-2">
+            {{ 'PAGES.ORGANIZATION.MEMBERS' | translate}}
+            {{getOrganizationMembers() | displayTotal}}</ion-card-subtitle>
+        </ion-item>
+
+        <div class="w-full" slot="content">
+          <div *ngIf="getIAMGroup()" class="px-3 pt-2">
+            <ion-segment [value]="segmentStatus" (ionChange)="changeSegment($event)">
+              <ion-segment-button value="0">
+                <ion-label>{{ 'PAGES.ORGANIZATION.MEMBERS' | translate}}</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="1">
+                <ion-label>{{ 'PAGES.ORGANIZATION.WAITING' | translate}}</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </div>
+          <div class="flex">
+            <ion-searchbar [debounce]="1500" placeholder="{{ 'PLACEHOLDER.SEARCH' | translate }}" class="mt-2"
+              (ionInput)="handleSearch($event)" *ngIf="this.segmentStatus === 0"></ion-searchbar>
+          </div>
+          <app-user-list-organization (getThumbnail)="getSrcImage($event)" [isLoading]="isLoading" [users]="users"
+            [iamGroups]="iamGroups" (changeUserOrganization)="changeUserOrganization($event)"
+            class="my-0"></app-user-list-organization>
+          <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+          <div *ngIf="hasPermission('INVITE_ORGANIATION_USER')">
+            <ion-button class="text-sm ion-margin-top" fill="clear" expand="block" (click)="openInviteUserModal(true)">
+              <ion-icon name="add-circle-outline" class="mr-1"></ion-icon>
+              {{ 'PAGES.ORGANIZATION.INVITE_MEMBER' | translate}}
+            </ion-button>
+            <ion-modal [isOpen]="isInviteUserModalOpen" #modalInviteUser [presentingElement]="page">
+              <ng-template>
+                <ion-header>
+                  <ion-toolbar>
+                    <ion-title></ion-title>
+                    <ion-buttons slot="end">
+                      <ion-button (click)="openInviteUserModal(false)">{{ 'BUTTON.CLOSE' | translate}}</ion-button>
+                    </ion-buttons>
+                  </ion-toolbar>
+                </ion-header>
+                <ion-content class="ion-padding">
+                  <app-invite-user-organization (getThumbnail)="getSrcImage($event)" [isLoading]="isLoading"
+                    [organization]="organization"></app-invite-user-organization>
+                </ion-content>
+              </ng-template>
+            </ion-modal>
+          </div>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card>
+
+  <!-- <ion-card class="px-0">
+    <ion-accordion-group>
+      <ion-accordion>
+        <ion-item slot="header" color="light">
+          <ion-icon name="settings-outline" class="text-xs"></ion-icon>
+          <ion-card-subtitle class="pl-2">{{
+            "PAGES.ORGANIZATION.SETTINGS" | translate
+            }}</ion-card-subtitle>
+        </ion-item>
+        <div class="w-full" slot="content">
+          <ng-template *ngIf="hasPermission('DELETE_ORGANIZATION')">
+            <ion-button fill="clear" class="text-xs" expand="block" (click)="handleDeleteOrganization()">
+              <ion-icon name="trash-outline" color="danger" class="mr-1"></ion-icon>
+              <ion-text color="danger">{{
+                "PAGES.ORGANIZATION.DELETE_ORGANIZATION" | translate
+                }}</ion-text>
+            </ion-button>
+          </ng-template>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card> -->
+
+  <ion-card class="px-0">
+    <ion-segment value="project">
+      <ion-segment-button value="project">
+        <ion-label>Project</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+    <app-project-list [organizationId]="organization.id"></app-project-list>
+  </ion-card>
+
+</div>

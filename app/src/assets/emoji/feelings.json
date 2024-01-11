@@ -1,0 +1,101 @@
+[{
+    "id": "1",
+    "char": "🙂",
+    "name": "FEELINGS.HAPPY"
+  },
+  {
+    "id": "2",
+    "char": "😇",
+    "name": "FEELINGS.BLESSED"
+  },
+  {
+    "id": "3",
+    "char": "🥰",
+    "name": "FEELINGS.LOVED"
+  },
+  {
+    "id": "4",
+    "char": "☹️",
+    "name": "FEELINGS.SAD"
+  },
+  {
+    "id": "5",
+    "char": "🥰",
+    "name": "FEELINGS.LOVELY"
+  },
+  {
+    "id": "6",
+    "char": "😀",
+    "name": "FEELINGS.THANKFUL"
+  },
+  {
+    "id": "7",
+    "char": "🤪",
+    "name": "FEELINGS.EXCITED"
+  },
+  {
+    "id": "8",
+    "char": "🥰",
+    "name": "FEELINGS.IN_LOVE"
+  },
+  {
+    "id": "9",
+    "char": "🤪",
+    "name": "FEELINGS.CRAZY"
+  },
+  {
+    "id": "10",
+    "char": "🤗",
+    "name": "FEELINGS.GRATEFUL"
+  },
+  {
+    "id": "11",
+    "char": "😊",
+    "name": "FEELINGS.BLISSFUL"
+  },
+  {
+    "id": "12",
+    "char": "🤩",
+    "name": "FEELINGS.FANTASTIC"
+  },
+  {
+    "id": "13",
+    "char": "🤪",
+    "name": "FEELINGS.SILLY"
+  },
+  {
+    "id": "14",
+    "char": "😀",
+    "name": "FEELINGS.FESTIVE"
+  },
+  {
+    "id": "15",
+    "char": "😎",
+    "name": "FEELINGS.COOL"
+  },
+  {
+    "id": "16",
+    "char": "😌",
+    "name": "FEELINGS.CHILL"
+  },
+  {
+    "id": "17",
+    "char": "🤒",
+    "name": "FEELINGS.SICK"
+  },
+  {
+    "id": "18",
+    "char": "😞",
+    "name": "FEELINGS.ALONE"
+  },
+  {
+    "id": "19",
+    "char": "😴",
+    "name": "FEELINGS.SLEEPY"
+  },
+  {
+    "id": "20",
+    "char": "🤕",
+    "name": "FEELINGS.HURT"
+  }
+]

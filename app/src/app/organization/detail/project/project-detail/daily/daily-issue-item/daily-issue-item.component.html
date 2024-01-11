@@ -1,0 +1,20 @@
+<div>
+  <div class="flex">
+    <span class="font-bold text-green-500"> {{issue.code }} </span>
+    <div class="pl-1"> {{issue.name}} </div>
+  </div>
+</div>
+
+<div>
+  <ion-chip *ngIf="issue.milestone?.name" class="text-right text-xs h-[1.4rem]">{{'Milestone: ' + issue.milestone?.name
+    }}
+  </ion-chip>
+</div>
+<div>
+  <ion-chip class="text-right text-xs h-[1.4rem]">{{issue.start_date | date: 'dd/MM/yyyy' }} -
+    {{issue.due_date | date: 'dd/MM/yyyy'}}
+  </ion-chip>
+  <ion-chip class="text-right text-xs h-[1.4rem]">{{ 'Est: ' + issue.estimate_hours }} - {{ 'Act: ' +
+    issue.actual_hours || '' }}
+  </ion-chip>
+</div>

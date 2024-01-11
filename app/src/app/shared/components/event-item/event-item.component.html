@@ -1,0 +1,159 @@
+<ion-card class="mx-0 my-1 event-pages" *ngIf="!data.hidden">
+  <app-post-header [data]="data" [me]="me" [indexNews]="indexNews" (hidden)="handleHidden($event)"
+    (actionSheet)="setResult($event)" [isLoading]="isLoading"></app-post-header>
+  <div *ngIf="isLoading">
+    <ion-skeleton-text [animated]="true" class="h-40"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-6"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-16"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-5"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-5"></ion-skeleton-text>
+  </div>
+
+  <div *ngIf="!isLoading">
+    <app-images-list [images]="data.images" (zoom)="onZoom($event)"></app-images-list>
+
+    <ion-card-content [class]="data?.images.length !==0 ? 'p-4' : 'px-4 py-4 pb-4 pt-1'">
+      <div>
+        <div class="date-time" (click)="clickRedirectDetail($event)">
+          {{ data?.event_date_start }}
+          <span *ngIf="data?.event_date_end"> - </span>
+          {{ data?.event_date_end }}
+        </div>
+
+        <div>
+          <div (click)="clickRedirectDetail($event)" class="title">
+            {{ data.name }}
+          </div>
+          <p (click)="clickRedirectDetail($event)" class="content-news"
+            [innerHTML]="isShowMore ? data.content :  (data.content | slice:0:200).length >= 200 ? (data.content | slice:0:200) + '...' : (data.content | slice:0:200)">
+          </p>
+          <p *ngIf="(data.content | slice:0:200).length >= 200" class="text-blue-500 content-news-more">
+            <a *ngIf="isShowMore" (click)="isShowMore = !isShowMore">{{ "TAB.HOME.SHOW_LESS" | translate }}</a>
+            <a *ngIf="!isShowMore" (click)="isShowMore = !isShowMore">{{ "TAB.HOME.SHOW_MORE" | translate }}</a>
+          </p>
+        </div>
+        <div [class]="data?.fee_type !== 0 ? 'action-events fee' : 'action-events'"
+          (click)="clickRedirectDetail($event)">
+          <div *ngIf="data?.fee_type !== 0" class="flex mt-1 mb-1 mr-1">
+            <ion-icon name="cash-outline" class="mr-1"></ion-icon>
+            <span class="mr-1 text-red-600 text-xs">{{ "TAB.HOME.FEE" | translate }}:</span>
+            <span class="mr-1 text-red-600 text-xs" *ngIf="data?.fee_type === -1">{{ "COMMON.CONTACT" | translate
+              }}</span>
+            <span class="mr-1 text-red-600 text-xs" *ngIf="data?.fee_type > 0">{{
+              data?.fee_type.toLocaleString("it-IT", {
+              style: "currency",
+              currency: "VND"
+              })
+              }}</span>
+          </div>
+        </div>
+        <div class="location" *ngIf="data?.location" class="mt-1 mb-1 mr-1 flex" (click)="clickRedirectDetail($event)">
+          <ion-icon name="location-outline" class="p-0 text-left"></ion-icon><span class="ml-1 text-xs">{{
+            data?.location }}</span>
+        </div>
+        <div class="type m-1" (click)="clickRedirectDetail($event)">
+          <span [class]="
+              data?.event_type === 'online' ? 'icon-online' : 'icon-offline'
+            "></span>
+          <span class="text">{{
+            data?.event_type === "online" ? "Online" : "Offline"
+            }}</span>
+        </div>
+
+        <div class="type m-1" *ngIf="data?.link" class="mt-1 mb-1 mr-1 flex" (click)="clickRedirectDetail($event)">
+          <ion-icon name="link-outline" class="p-0 text-left"></ion-icon>
+          <a class="ml-1 text-xs" [href]="data?.link" target="_blank">{{data?.link }}</a>
+        </div>
+
+        <div class="text-xs italic items-center count mt-1 mb-1 mr-1 flex" (click)="clickRedirectDetail($event)">
+          <ion-icon name="people-outline" class="people"></ion-icon>
+          <span *ngIf="data?.summary?.number_of_participates < 2">
+            {{ data?.summary?.number_of_participates || 0 }} {{
+            "PAGES.EVENTS.PERSON" | translate }} {{
+            "PAGES.EVENTS.WILL_PARTICIPATE" | translate }}
+          </span>
+          <span *ngIf="data?.summary?.number_of_participates >= 2">
+            {{ data?.summary?.number_of_participates || 0 }} {{
+            "PAGES.EVENTS.PERSONS" | translate }} {{
+            "PAGES.EVENTS.WILL_PARTICIPATE" | translate }}
+          </span>
+        </div>
+      </div>
+      <div class="p-0 m-0 items-center" *ngIf="data.tags">
+        <app-tags-list [tags]="data.tags"></app-tags-list>
+      </div>
+
+      <!-- <div *ngIf="data && data?.children" class="children-event">
+        <div
+          *ngFor="let child of data.children; index as inx"
+          class="event-item"
+          (click)="handleEventChild(child)"
+        >
+          <span>{{ child.event_date_start }}</span>
+          <span *ngIf="child.event_date_end">- {{ child.event_date_end }}</span>
+        </div>
+      </div> -->
+    </ion-card-content>
+  </div>
+
+  <div *ngIf="isLoading">
+    <ion-skeleton-text [animated]="true" class="h-5"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-6"></ion-skeleton-text>
+  </div>
+
+  <app-reactions *ngIf="!isLoading" [data]="data" (heart)="onHeart($event)" (practice)="onWillParticipate($event)"
+    [type]="'events'" [page]="'list'" (redirect)="clickRedirectDetail($event)"
+    [hostNameLocation]="hostNameLocation"></app-reactions>
+
+  <div class="events-child" *ngIf="data?.children">
+    <ion-accordion-group>
+      <ion-accordion>
+        <ion-item slot="header" color="light">
+          <ion-label>{{ "TAB.HOME.DETAIL_EVENT" | translate }}</ion-label>
+          <ion-note slot="end">{{ data?.children.length }}</ion-note>
+        </ion-item>
+        <div class="w-full" slot="content">
+          <ion-list>
+            <ion-item *ngFor="let child of data.children; index as inx">
+              <ion-label (click)="handleEventChild(child)">
+                <span>{{ child.event_date_start }}</span>
+                <span *ngIf="child.event_date_end">
+                  - {{ child.event_date_end }}</span>
+              </ion-label>
+              <button shape="round" fill="outline" slot="end" *ngIf="child?.has_participated"
+                class="participated-children" (click)="onWillParticipate(child, 'delete')">
+                <span class="text">
+                  {{ "PAGES.EVENTS.CANCEL_WILL_PARTICIPATE" | translate }}</span>
+              </button>
+              <button shape="round" fill="outline" slot="end" *ngIf="!child?.has_participated"
+                (click)="onWillParticipate(child, 'join')">
+                <span class="text">
+                  {{ "PAGES.EVENTS.WILL_PARTICIPATE" | translate }}</span>
+              </button>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </div>
+
+  <!-- <div [class]="
+          data?.has_participated
+            ? 'action-participated active'
+            : 'action-participated'
+        ">
+        <div class="button">
+          <ion-icon name="star" *ngIf="data?.has_participated"></ion-icon>
+          <span class="text" *ngIf="data?.has_participated" (click)="onWillParticipate(data, 'delete')">
+            {{ "PAGES.EVENTS.CANCEL_WILL_PARTICIPATE" | translate }}</span>
+          <ion-icon name="star-outline" *ngIf="!data?.has_participated"></ion-icon>
+          <span class="text" *ngIf="!data?.has_participated" (click)="onWillParticipate(data, 'join')">
+            {{ "PAGES.EVENTS.WILL_PARTICIPATE" | translate }}</span>
+        </div>
+      </div> -->
+</ion-card>
+
+<app-hide-news-box [data]="data" (undo)="handleUndo($event)"></app-hide-news-box>
+
+<!-- <app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"
+  (redirect)="clickRedirectDetail($event)"></app-zoom> -->

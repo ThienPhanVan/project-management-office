@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title>Daily Update</ion-title>
+    <ion-button fill="clear" color="dark" (click)="actionSubmit()" slot="end">
+      <ion-icon *ngIf="!isUpdating" size="medium" color="dark" name="add-outline"></ion-icon>
+      <ion-spinner *ngIf="isUpdating" name="circular" class="text-xs"></ion-spinner>
+      Lưu
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="formGroup" novalidate>
+    <div>
+      <div class="p-3 font-bold">Yesterday</div>
+      <ion-textarea class="pl-4" formControlName="note_yesterday" label="Note" labelPlacement="stacked"
+        [autoGrow]="true" placeholder="..."></ion-textarea>
+      <ion-item>
+        <app-select class="w-full" title="Issues" label="Issues" [items]="issues" [removable]="true"
+          [value]="formGroup.value.issues_yesterday_ids" (valueChange)="valueChange('issues_yesterday_ids', $event)"
+          [searchable]="true" [multiple]="true" ngDefaultControl>
+        </app-select>
+      </ion-item>
+    </div>
+    <div>
+      <div class="p-3 font-bold">Today</div>
+      <ion-textarea class="pl-4" formControlName="note_today" label="Note" labelPlacement="stacked" [autoGrow]="true"
+        placeholder="..."></ion-textarea>
+      <ion-item>
+        <app-select class="w-full" title="Issues" label="Issues" [items]="issues" [removable]="true"
+          [value]="formGroup.value.issues_today_ids" (valueChange)="valueChange('issues_today_ids', $event)"
+          [searchable]="true" formControlName="issues_today_ids" [multiple]="true" ngDefaultControl>
+        </app-select>
+      </ion-item>
+    </div>
+    <div>
+      <div class="p-3 font-bold">Issues</div>
+      <ion-textarea class="pl-4" formControlName="note_issue_today" label="Note" labelPlacement="stacked"
+        [autoGrow]="true" placeholder="..."></ion-textarea>
+    </div>
+  </form>
+</ion-content>
+
+<ion-toast [isOpen]="toastMessage!==''" [message]="toastMessage" [duration]="2000"
+  (didDismiss)="closeToast()"></ion-toast>

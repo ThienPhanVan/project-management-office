@@ -1,0 +1,141 @@
+<ion-menu side="end" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title class="text-sm"
+        >{{'PAGES.TERM_SAND_POLICY.MENU_TITLE' | translate}}</ion-title
+      >
+    </ion-toolbar>
+    <ion-accordion-group class="mt-4 mb-4">
+      <ion-accordion value="second">
+        <ion-item slot="header" color="light">
+          <ion-label
+            >{{'PAGES.TERM_SAND_POLICY.BASIC_PRIVACY' | translate}}</ion-label
+          >
+        </ion-item>
+        <div
+          class="ion-padding text-sm"
+          slot="content"
+          routerLink="/terms-policy/privacy"
+        >
+          {{'PAGES.TERM_SAND_POLICY.VIEW_PRIVACY' | translate}}
+        </div>
+      </ion-accordion>
+      <ion-accordion value="third">
+        <ion-item slot="header" color="light">
+          <ion-label
+            >{{'PAGES.TERM_SAND_POLICY.POLICY_COOKIES' | translate}}</ion-label
+          >
+        </ion-item>
+        <div
+          class="ion-padding text-sm"
+          slot="content"
+          routerLink="/terms-policy/policy-cookie"
+        >
+          {{'PAGES.TERM_SAND_POLICY.VIEW_COOKIE_POLICY' | translate}}
+        </div>
+      </ion-accordion>
+      <ion-accordion value="four">
+        <ion-item slot="header" color="light">
+          <ion-label
+            >{{'PAGES.TERM_SAND_POLICY.DATA_POLICY' | translate}}</ion-label
+          >
+        </ion-item>
+        <div
+          class="ion-padding text-sm"
+          slot="content"
+          routerLink="/terms-policy/data-policy"
+        >
+          {{'PAGES.TERM_SAND_POLICY.VIEW_DATA_POLICY' | translate}}
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-header>
+</ion-menu>
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-button
+        fill="clear"
+        color="dark"
+        routerLink="/tabs/profile/security"
+        slot="start"
+      >
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title class="text-sm"
+        >{{'PAGES.TERM_SAND_POLICY.TITLE' | translate}}</ion-title
+      >
+
+      <ion-buttons slot="end">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content [fullscreen]="true" class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <h3 class="mt-1">
+          {{'PAGES.TERM_SAND_POLICY.INTRODUCE_MISSION' | translate}}:
+        </h3>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="ion-text-start text-sm mt-1 mb-3">
+          <pre>{{ 'TERMS_CONTENT' | translate}}</pre>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          <div class="flex items-center" id="open-support">
+            <div class="ml-2" routerLink="/terms-policy/services-provide">
+              <div class="">
+                {{'PAGES.TERM_SAND_POLICY.SERVICES_WE_PROVIDE' | translate}}
+              </div>
+            </div>
+          </div>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          <div class="flex items-center" id="open-support">
+            <div class="ml-2" routerLink="/terms-policy/maintain-service">
+              <div class="">
+                {{'PAGES.TERM_SAND_POLICY.MAINTAIN_SERVICE.TITLE' | translate}}
+              </div>
+            </div>
+          </div>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          <div class="flex items-center" id="open-support">
+            <div class="ml-2" routerLink="/terms-policy/commitment">
+              <div class="">
+                {{'PAGES.TERM_SAND_POLICY.COMMITMENT.TITLE' | translate}}
+              </div>
+            </div>
+          </div>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          <div class="flex items-center" id="open-support">
+            <div class="ml-2" routerLink="/terms-policy/additional-regulations">
+              <div class="">
+                {{'PAGES.TERM_SAND_POLICY.ADDITIONAL_REGULATIONS.TITLE' |
+                translate}}
+              </div>
+            </div>
+          </div>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+  </ion-content>
+</div>

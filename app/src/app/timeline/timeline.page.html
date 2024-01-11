@@ -1,0 +1,141 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-segment value="all">
+      <ion-segment-button value="all">
+        <ion-label>Tất cả</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="news">
+        <ion-label>Tin tức </ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="event">
+        <ion-label>Sự kiện</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="opportunity">
+        <ion-label>Cơ hội</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <ion-card>
+    <ion-card-header class="">
+      <div class="flex">
+        <ion-avatar class="w-12 h-auto">
+          <img class="h-8 w-8" alt="Silhouette of a person's head"
+            src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+        <div class="w-full">
+          <div class="flex ">
+            <div>
+              <a class="text-sm decoration-none font-bold" [routerLink]="['/user', 'detail', 1]"> Đình Trung </a>
+            </div>
+            <span class="spacer"></span>
+            <ion-icon name="ellipsis-vertical-outline" id="open-action-sheet"></ion-icon>
+            <ion-action-sheet trigger="open-action-sheet" header="Actions"
+              [buttons]="actionSheetButtons"></ion-action-sheet>
+          </div>
+          <div class="text-xs">1 giờ</div>
+        </div>
+      </div>
+    </ion-card-header>
+    <img class="rounded-lg" alt="Silhouette of mountains"
+      src="https://ionicframework.com/docs/img/demos/card-media.png" />
+
+    <ion-card-content class="pb-0">
+      <p class="text-xs">
+        Chuẩn bị cho sự kiện kết nối với 20 start-up tiêu biểu năm 2023 và gặp gỡ, kết nối với các nhà đầu tư thiên thần
+      </p>
+      <div>
+        <ion-chip size="small" color="primary" class=" text-xs">#connect</ion-chip>
+      </div>
+    </ion-card-content>
+    <div class="flex pr-3">
+      <ion-button fill="clear" class="normal-case text-xs  rounded-full">
+        <ion-icon slot="icon-only" color="danger" name="heart-outline"></ion-icon>
+
+      </ion-button>
+      <ion-button fill="clear" class="normal-case	text-xs  rounded-full" (click)="openModalDetail()">
+        <ion-icon slot="icon-only" name="chatbubble-outline"></ion-icon>
+      </ion-button>
+
+      <div class="spacer"></div>
+      <div>
+        <ion-label fill="clear" class="normal-case text-xs items-center  " size="small">
+          <ion-icon name="heart" color="danger" class="items-center"></ion-icon>
+          <span class="text-red-500">500 </span>
+        </ion-label>
+      </div>
+      <div>
+        <ion-label fill="clear" class="normal-case text-xs ml-2" size="small">
+          <ion-icon color="primary" name="chatbubble"></ion-icon>
+          <span class="text-blue-500">500 </span>
+        </ion-label>
+      </div>
+    </div>
+  </ion-card>
+
+  <ion-card *ngFor="let item of [1,2,3,4,5,6,7,8,9,0]">
+    <ion-card-header class="">
+      <div class="flex">
+        <ion-avatar class="w-12 h-auto">
+          <img class="" alt="Silhouette of a person's head"
+            src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+        <div class="w-full">
+          <div class="flex ">
+            <div>
+              <a class="text-sm decoration-none font-bold" [routerLink]="['/user', 'detail', 1]"> Đình Trung </a>
+            </div>
+            <span class="spacer"></span>
+            <ion-icon name="ellipsis-vertical-outline" id="open-action-sheet"></ion-icon>
+            <ion-action-sheet trigger="open-action-sheet" header="Actions"
+              [buttons]="actionSheetButtons"></ion-action-sheet>
+          </div>
+          <div class="text-xs">1 giờ</div>
+        </div>
+      </div>
+    </ion-card-header>
+    <div class="flex friends">
+      <img class="rounded-lg friend-item" alt="Silhouette of mountains"
+        src="https://ionicframework.com/docs/img/demos/card-media.png" />
+      <img class="rounded-lg friend-item" alt="Silhouette of mountains"
+        src="https://ionicframework.com/docs/img/demos/card-media.png" />
+    </div>
+    <ion-card-content class="pb-0">
+      <p class="text-xs">
+        Chuẩn bị cho sự kiện kết nối với 20 start-up tiêu biểu năm 2023 và gặp gỡ, kết nối với các nhà đầu tư thiên thần
+      </p>
+      <div>
+        <ion-chip size="small" color="primary" class=" text-xs">#connect</ion-chip>
+      </div>
+    </ion-card-content>
+    <div class="flex pr-3">
+
+      <ion-button fill="clear" class="normal-case text-xs  rounded-full">
+        <ion-icon slot="icon-only" color="danger" name="heart-outline"></ion-icon>
+
+      </ion-button>
+      <ion-button fill="clear" class="normal-case	text-xs  rounded-full" (click)="openModalDetail()">
+        <ion-icon slot="icon-only" name="chatbubble-outline"></ion-icon>
+      </ion-button>
+
+      <div class="spacer"></div>
+      <div>
+        <ion-label fill="clear" class="normal-case text-xs items-center  " size="small">
+          <ion-icon name="heart" color="danger" class="items-center"></ion-icon>
+          <span class="text-red-500">500 </span>
+        </ion-label>
+      </div>
+      <div>
+        <ion-label fill="clear" class="normal-case text-xs ml-2" size="small">
+          <ion-icon color="primary" name="chatbubble"></ion-icon>
+          <span class="text-blue-500">500 </span>
+        </ion-label>
+      </div>
+    </div>
+  </ion-card>
+</ion-content>

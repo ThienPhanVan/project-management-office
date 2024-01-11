@@ -1,0 +1,41 @@
+.edit-profile-page {
+    .avatar {
+        margin: 0 auto;
+    }
+    .outer {
+        margin: auto;
+        border-radius: 100%;
+        position: relative;
+    }
+    
+    .inner {
+        border-radius: 100%;
+        position: absolute;
+        top: 1vh;
+        right: 2vh;
+    }
+    
+    .file-input {
+        display: none;
+    }
+
+    
+    ion-avatar {
+
+        .img-avatar.error {
+            border: 1px solid red;
+        }
+
+        .img-avatar {
+            height: 64px;
+        }
+    }
+}
+
+.birthday-template{
+    --max-height: 26rem;
+    --width: 20rem;
+    --border-radius: 6px;
+}
+
+

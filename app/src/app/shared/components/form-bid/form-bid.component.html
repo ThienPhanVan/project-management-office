@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ titlePage }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCloseModal(false)">{{
+        "BUTTON.CLOSE" | translate
+        }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-item lines="none" class="user">
+    <app-avatar (getSrcImage)="getSrcImage($event)" [isAvatar]="true" [classNameAvatar]="'item'" [type]="'user-detail'"
+      [data]="user"></app-avatar>
+    <ion-label>{{ user.username }}</ion-label>
+    <ion-icon size="small" name="ellipsis-vertical-outline" (click)="setOpenActionSheet(true)"
+      *ngIf="newsDetail?.price !== null"></ion-icon>
+    <ion-action-sheet [isOpen]="isActionSheetOpen" [buttons]="actionSheetButtons"
+      (didDismiss)="setResult($event)"></ion-action-sheet>
+  </ion-item>
+
+  <form [formGroup]="form" novalidate *ngIf="isUpdate || !newsDetail">
+    <ion-item>
+      <app-price-input class="w-full" [label]="'FORM.FIELD.PRICE'" [priceEdit]="newsDetail?.price"
+        (price)="onPrice($event)"></app-price-input>
+      <!-- <ion-input name="price" formControlName="price" type="number" [label]="'FORM.FIELD.PRICE' | translate"
+        labelPlacement="floating" [placeholder]="'ENTER' | translate" class="required"
+        [disabled]="!isUpdate || !newsDetail"></ion-input> -->
+    </ion-item>
+
+    <div style="padding: 16px">
+      <ion-label position="fixed" class="label-required">{{
+        "FORM.FIELD.INTRODUCE" | translate
+        }}</ion-label>
+      <div class="NgxEditor__Wrapper mt-2">
+        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" class="sticky top-0 z-50">
+        </ngx-editor-menu>
+        <ngx-editor [editor]="editor" formControlName="description" [placeholder]="'ENTER' | translate"
+          (ngModelChange)="editorChange($event)"></ngx-editor>
+      </div>
+    </div>
+
+    <ion-row>
+      <ion-col>
+        <ion-button class="px-2" type="submit" expand="block" (click)="submit()" [disabled]="isNotCanSave">
+          <ion-icon name="reload-outline" [hidden]="form.invalid" class=" mr-3"></ion-icon>
+          <span *ngIf="!newsDetail">{{ "BUTTON.CREATE" | translate }}</span>
+          <span *ngIf="newsDetail">{{ "BUTTON.UPDATE" | translate }}</span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+  <div *ngIf="!isUpdate && newsDetail" class="view-detail">
+    <div class="item ios item-lines-default item-fill-none ion-untouched ion-pristine ion-valid item-has-value hydrated"
+      style="padding: 4px 16px 4px 16px; height: 56px">
+      <!-- <app-price-input class="w-full" [label]="'FORM.FIELD.PRICE'" [priceEdit]="newsDetail?.price"
+        (price)="onPrice($event)"></app-price-input> -->
+      <div style="border-bottom: 1px solid #e5e5e7">
+        <label class="sc-ion-input-ios">{{
+          "FORM.FIELD.PRICE" | translate
+          }}</label>
+        <div>{{ form.value.price.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND"
+          }) }}</div>
+      </div>
+    </div>
+    <div class="item ios item-lines-default item-fill-none ion-untouched ion-pristine ion-valid item-has-value hydrated"
+      style="padding: 4px 16px 4px 16px; height: 292px">
+      <div style="border-bottom: 1px solid #e5e5e7">
+        <label class="sc-ion-input-ios">{{
+          "FORM.FIELD.CONTENT_REQUEST" | translate
+          }}</label>
+        <p [innerHTML]="form.value.description"></p>
+      </div>
+    </div>
+  </div>
+
+  <app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>
+</ion-content>

@@ -1,0 +1,30 @@
+<div class="page-news">
+  <div *ngFor="let item of data; index as i">
+    <div *ngIf="item.type === 0">
+      <app-opportunity-item [data]="item" [isLoading]="isLoading" (heart)="clickHeart($event, 'news')"
+        (tagSearch)="onSearchTag($event)" [me]="me" [indexNews]="item.id" (hidden)="onHidden($event)"
+        (undo)="onUndo($event)" (actionSheet)="onActionSheet($event)" (dataPost)="onDataPostBided($event)"
+        [hostNameLocation]="hostNameLocation + '/tabs/opportunities'"
+        (zoomImage)="onZoomImage($event)"></app-opportunity-item>
+    </div>
+    <div *ngIf="item.type === 2">
+      <app-news-item [data]="item" [isLoading]="isLoading" (heart)="clickHeart($event, 'news')"
+        (tagSearch)="onSearchTag($event)" [me]="me" [indexNews]="item.id" (hidden)="onHidden($event)"
+        (undo)="onUndo($event)" (actionSheet)="onActionSheet($event)"
+        [hostNameLocation]="hostNameLocation + '/tabs/news'" (zoomImage)="onZoomImage($event)"></app-news-item>
+    </div>
+    <div *ngIf="item.type === 1">
+      <!-- casi nay cua event -->
+      <app-event-item [data]="item" (willParticipate)="setWillParticipate($event)" (heart)="clickHeart($event, 'news')"
+        (tagSearch)="onSearchTag($event)" [me]="me" [indexNews]="item.id" (hidden)="onHidden($event)"
+        (undo)="onUndo($event)" (actionSheet)="onActionSheet($event)"
+        [hostNameLocation]="hostNameLocation + '/tabs/events'" (zoomImage)="onZoomImage($event)"></app-event-item>
+    </div>
+  </div>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <app-preview-image [showModal]="showModal" [images]="images" (closeModal)="closeModal($event)"></app-preview-image>
+</div>

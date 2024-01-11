@@ -1,0 +1,149 @@
+<ion-card *ngIf="showActivity">
+  <ion-card-header>
+    <ion-card-subtitle>
+      <div class="flex items-center" [routerLink]="['/tabs/chapters', chapterId, 'activity']">
+        <ion-icon name="refresh-circle-outline" class="transform -scale-x-100"></ion-icon>
+        <div class="ml-2">
+          <div class="">{{'PAGES.ACTIVITY_CHAPTER.TITLE' | translate}}</div>
+        </div>
+      </div>
+    </ion-card-subtitle>
+  </ion-card-header>
+</ion-card>
+
+<ion-card class="px-0"
+  *ngIf="hasPermission('INVITE_CHAPTER_ORGANIZATION') || (chapter.organizations && chapter.organizations.length)">
+  <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header" color="light">
+        <ion-card-header class="p-0">
+          <ion-card-subtitle>
+            <ion-icon aria-hidden="true" name="business-outline"></ion-icon>
+            {{ 'PAGES.CHAPTER.ORGANIZATION' | translate}}
+            {{chapter.organizations | displayTotal}}
+          </ion-card-subtitle>
+        </ion-card-header>
+      </ion-item>
+
+      <div class="w-full" slot="content">
+        <div class="flex items-center">
+          <ion-searchbar [debounce]="1500" placeholder="{{ 'PLACEHOLDER.SEARCH' | translate }}" class="mt-2"
+            (ionInput)="handleSearchOrg($event)"></ion-searchbar>
+          <div class="delete-icon " *ngIf="hasPermission('INVITE_CHAPTER_ORGANIZATION')">
+            <ion-button *ngIf="chapter.organizations?.length" size="small"
+              [disabled]="!selectedOrganizationIds.length || organizationDeleting" color="danger"
+              (click)="actionDelete('delete_organizations')">
+              {{'BUTTON.DELETE' | translate}}
+              <ion-spinner *ngIf="organizationDeleting" name="circular" class="ml-1 text-xs"></ion-spinner>
+            </ion-button>
+          </div>
+        </div>
+
+
+        <app-organization-list (getThumbnail)="getSrcImage($event)" class="my-0 p-0" [isLoading]="isLoading"
+          [organizations]="chapter.organizations" [isOwner]="true"
+          [isSelectCheckbox]="hasPermission('INVITE_CHAPTER_ORGANIZATION')"
+          (arrayOrganizationIdChecked)="arrayOrganizationIdChecked($event)">
+        </app-organization-list>
+
+        <ion-button *ngIf="hasPermission('INVITE_CHAPTER_ORGANIZATION')" expand="block"
+          (click)="openModalInviteOrganization()">
+          <ion-icon name="add-circle-outline" class="mr-1"></ion-icon>
+          {{ 'PAGES.CHAPTER.ADD_ORGANIZATION' | translate}}
+        </ion-button>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-card>
+
+<ion-modal [isOpen]="isOpenModalInviteOrganization" [canDismiss]="canDismiss">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title></ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="openModalInviteOrganization(false)">{{ 'BUTTON.CLOSE' | translate}}</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <app-invite-organization-chapter></app-invite-organization-chapter>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-card class="px-0" *ngIf="hasPermission('INVITE_CHAPTER_USER') || (chapter.users && chapter.users.length)">
+  <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header" color="light">
+        <ion-card-header class="p-0">
+          <ion-card-subtitle>
+            <ion-icon aria-hidden="true" name="people-outline"></ion-icon>
+            {{ 'PAGES.CHAPTER.MEMBERS' | translate}} {{chapter.users |
+            displayTotal}}
+          </ion-card-subtitle>
+        </ion-card-header>
+      </ion-item>
+
+      <div class="p-0 m-2" slot="content">
+        <ion-segment [value]="selectedSegment" (ionChange)="changeSegment($event)">
+          <ion-segment-button value="members">
+            <ion-label> {{ 'PAGES.CHAPTER.MEMBERS' | translate}}</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="request" *ngIf="chapter?.role_admin === 'CHAPTER_ADMIN'">
+            <ion-label> {{ 'PAGES.CHAPTER.REQUEST' | translate}}</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+
+
+      <div class="w-full" slot="content" *ngIf="selectedSegment === 'members'">
+        <div class="flex items-center">
+          <ion-searchbar [debounce]="1500" placeholder="{{ 'PLACEHOLDER.SEARCH' | translate }}" class="mt-2"
+            (ionInput)="handleSearch($event)"></ion-searchbar>
+          <div class="delete-icon" *ngIf="hasPermission('INVITE_CHAPTER_USER')">
+            <ion-button *ngIf="chapter.users && chapter.users.length > 0"
+              [disabled]="!selectedUserIds.length || userDeleting" size="small" color="danger"
+              (click)="actionDelete('delete_users')">
+              {{'BUTTON.DELETE' | translate}}
+              <ion-spinner *ngIf="userDeleting" name="circular" class="ml-1 text-xs"></ion-spinner>
+            </ion-button>
+          </div>
+        </div>
+        <app-user-list-chapter-detail [isLoading]="isLoading" [users]="users" class="my-0"
+          [isSelectCheckbox]="hasPermission('INVITE_CHAPTER_USER')" (arrayUserIdChecked)="arrayUserIdChecked($event)"
+          (changeUserChapter)="changeUserChapter($event)"></app-user-list-chapter-detail>
+        <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+          <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+        <ion-button *ngIf="hasPermission('INVITE_CHAPTER_USER')" expand="block" (click)="openModalInviteUser()">
+          <ion-icon name="add-circle-outline" class="mr-1"></ion-icon>
+          {{ 'PAGES.CHAPTER.ADD_MEMBER' | translate}}
+        </ion-button>
+      </div>
+
+      <div slot="content" *ngIf="selectedSegment === 'request'">
+        <app-user-request [users]="usersRequest"></app-user-request>
+      </div>
+
+
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-card>
+
+<ion-modal [isOpen]="isOpenModalInviteUser">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title></ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="openModalInviteUser(false)">{{ 'BUTTON.CLOSE' | translate}}</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <app-invite-user-chapter></app-invite-user-chapter>
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -1,0 +1,59 @@
+.post-comment {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+
+  .reply {
+    background-color: #00000015;
+    font-weight: bold;
+    padding: 8px;
+    position: relative;
+
+    .remove {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      color: red;
+    }
+  }
+  .form {
+    display: flex;
+    align-items: center;
+    background-color: #00000015;
+
+    .input-comment {
+      margin-left: 8px;
+      margin-right: 8px;
+      background-color: #ffffff;
+    }
+  }
+}
+
+.list-image {
+  display: flex;
+  flex-flow: wrap;
+  .image {
+    width: 33%;
+    padding-top: 8px;
+    text-align: center;
+    position: relative;
+    margin: 0 auto;
+    img {
+      width: 72px;
+      height: 72px;
+    }
+
+    .remove {
+      position: absolute;
+      top: 8px;
+      right: 0;
+      width: 100%;
+
+      &::after {
+        content: "X";
+        color: red;
+      }
+    }
+  }
+}

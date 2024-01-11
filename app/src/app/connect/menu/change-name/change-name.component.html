@@ -1,0 +1,42 @@
+<ion-button
+  shape="round"
+  fill="clear"
+  size="small"
+  color="dark"
+  id="change-name"
+>
+  <div class="flex items-center">
+    <ion-text class="justify-self-center text-sm font-bold">
+      {{ name }}
+    </ion-text>
+    <ion-icon name="pencil-outline" class="text-xs pl-1"></ion-icon>
+  </div>
+</ion-button>
+
+<ion-modal class="modal-dialog" trigger="change-name" #modal>
+  <ng-template>
+    <div>
+      <ion-item lines="full">
+        <ion-text class="text-lg font-bold">{{"TAB.MESSAGE.CHANGE_GROUP_NAME" | translate}}</ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-input
+          maxlength="100"
+          [(ngModel)]="name"
+          class="text-sm"
+        ></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <span class="spacer"></span>
+        <ion-button fill="clear" (click)="actionSubmit()">
+          <ion-text color="primary" class="text-sm">{{"BUTTON.SAVE" | translate}}</ion-text>
+        </ion-button>
+        <ion-button fill="clear"
+          ><ion-text color="primary" class="text-sm" (click)="actionDismiss()"
+            >{{"BUTTON.CANCEL" | translate}}</ion-text
+          ></ion-button
+        >
+      </ion-item>
+    </div>
+  </ng-template>
+</ion-modal>

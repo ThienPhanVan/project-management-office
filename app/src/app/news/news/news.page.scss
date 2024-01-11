@@ -1,0 +1,68 @@
+.news-tabs {
+  width: 100%;
+
+  ion-searchbar.search-news-tabs {
+    margin: auto;
+    padding-top: 1rem;
+  }
+
+  .tabs {
+    margin: 0;
+    width: 100%;
+    padding: 4px;
+  }
+}
+
+::ng-deep {
+  .page-news {
+    app-zoom {
+      .close {
+        top: 30px;
+      }
+    }
+  }
+  .list-images {
+    .one-image {
+      img {
+        height: 100% !important;
+      }
+    }
+  }
+
+  .content-news-show-more {
+    h2,
+    p,
+    span {
+      font-size: 14px;
+    }
+  }
+}
+
+.create-news {
+  position: sticky;
+  color: green;
+  z-index: 9999;
+  right: 0;
+  bottom: 0;
+  text-align: right;
+
+  ion-icon {
+    width: 36px;
+    height: 36px;
+    margin-right: 8px;
+  }
+}
+
+ion-modal.modal-report {
+  --height: 90%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.card-welcome {
+  margin: 0px;
+  border-radius: 15px;
+  border: 1px solid #ccc;
+
+}

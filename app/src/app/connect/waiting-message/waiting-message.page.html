@@ -1,0 +1,124 @@
+
+<ion-content [fullscreen]="true">
+   <!-- <div *ngIf="currentSegment !== 'friends'" class="flex"> -->
+     <!-- <ion-searchbar
+       placeholder="{{ 'PLACEHOLDER.SEARCH' | translate }}"
+     ></ion-searchbar> -->
+   <!-- </div> -->
+   <div>
+     <ion-item-sliding
+       *ngFor="let item of waitings"
+       no-margin
+       #slidingItem
+       (tap)="slidingItem.close()"
+       class="custom-sliding-item border-b-2"
+     >
+       <ion-item detail="false" lines="none" class="ion-no-padding">
+         <ion-card class="m-0">
+           <ion-card-content class="flex items-center">
+             <app-avatar
+               [data]="(item.is_private === 0) ? 
+             ((getMyId() === item.group_users[0].id) ? 
+             (item.group_users[1] ? item.group_users[1] : null) 
+             : (item.group_users[0] ? item.group_users[0] : null)) 
+             : item"
+               [isAvatar]="true"
+               [classNameAvatar]="'thumbnail-logo'"
+               [isOnline]="true"
+               class="rounded-full"
+             ></app-avatar>
+             <div
+               class="ml-3 flex-grow"
+               [button]
+               [routerLink]="['/','group', item.id]"
+               button
+               [state]="{ item: item }"
+             >
+               <div class="flex justify-between">
+                 <div class="max-w-48 line-clamp-1">
+                   <ion-card-title
+                     class="text-base font-bold line-clamp-1"
+                     *ngIf="item.is_private === 1"
+                   >
+                     {{ item.name }}
+                   </ion-card-title>
+                   <ion-card-title
+                     class="text-base font-bold line-clamp-1"
+                     *ngIf="item.is_private === 0 && item.group_users && item.group_users.length === 2"
+                   >
+                     {{ getMyId() === item.group_users[0].id ?
+                     item.group_users[1].username : item.group_users[0].username
+                     }}
+                   </ion-card-title>
+                 </div>
+                 <div
+                   *ngIf="item.message.updated_date !== null"
+                   class="text-base"
+                 >
+                   {{ formatUpdateTime(item.message.updated_date) }}
+                 </div>
+               </div>
+               <div
+                 *ngIf="item.message.user.name || item.message.description"
+                 class="mt-1 justify-between flex max-w-50 line-clamp-1"
+               >
+                 <div
+                   class="text-sm"
+                   [ngClass]="{'font-bold': item.number_unread > 0}"
+                 >
+                   <span *ngIf="item.message.user.name && item.is_private !== 0">
+                     {{ getFirstName(item.message.user.name) }} :
+                   </span>
+                   <span
+                     *ngIf="item.message.description !== null; else showImagePlaceholder"
+                     class="max-w-xs"
+                   >
+                     {{ truncateMessage(item.message.description) }}
+                   </span>
+                 </div>
+                 <div>
+                   <ion-badge color="danger" *ngIf="item?.number_unread > 0">
+                     {{ item?.number_unread }}
+                   </ion-badge>
+                 </div>
+                 <ng-template #showImagePlaceholder class="italic"
+                   >[Hình ảnh]</ng-template
+                 >
+               </div>
+             </div>
+           </ion-card-content>
+         </ion-card>
+       </ion-item>
+ 
+       <ion-item-options
+         side="end"
+         [hidden]="!item.id"
+         (click)="closeSlide(slidingItem)"
+       >
+         <ion-item-option id="open-action-sheet" (click)="openActionSheet(item)"
+           ><ion-icon size="large" name="ellipsis-horizontal-outline"></ion-icon
+         ></ion-item-option>
+         <ion-item-option color="danger" (click)="hiddenGroup(item)"
+           ><ion-icon size="large" name="archive-outline"></ion-icon
+         ></ion-item-option>
+       </ion-item-options>
+     </ion-item-sliding>
+ 
+     <ion-action-sheet
+       [isOpen]="isActionSheetOpen"
+       (didDismiss)="setOpen(false)"
+     ></ion-action-sheet>
+ 
+     <div *ngIf="isLoading">Loading...</div>
+ 
+    
+     <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+     </ion-infinite-scroll>
+     <app-user-list></app-user-list>
+   </div>
+   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+       <ion-fab-button size="small" routerLink="create">
+         <ion-icon name="add"></ion-icon>
+       </ion-fab-button>
+     </ion-fab>
+ </ion-content>

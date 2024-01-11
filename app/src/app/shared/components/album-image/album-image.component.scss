@@ -1,0 +1,253 @@
+// .tab {
+//   overflow: hidden;
+
+//   // background-color: #f1f1f1;
+//   margin-top: 8px;
+//   margin-bottom: 8px;
+//   display: flex;
+//   justify-content: center;
+// }
+
+// /* Style the buttons that are used to open the tab content */
+// .tab button {
+//   background-color: inherit;
+//   float: left;
+//   border: none;
+//   outline: none;
+//   cursor: pointer;
+//   padding: 0 16px;
+//   transition: 0.3s;
+//   border: 1px solid #ccc;
+//   border-radius: 8px;
+//   font-size: 12px;
+// }
+
+// .tab button:nth-child(2) {
+//   margin-left: 8px;
+//   margin-right: 8px;
+// }
+
+// /* Change background color of buttons on hover */
+// .tab button:hover {
+//   background-color: #ddd;
+// }
+
+// /* Create an active/current tablink class */
+// .tab button#active {
+//   background-color: #ccc;
+// }
+
+.container {
+  margin-top: 16px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.25rem;
+
+  & div {
+    & img {
+      width: 100%;
+      object-fit: cover;
+    }
+
+    // &:not(.main) {
+    //   cursor: pointer;
+    // }
+  }
+
+  & .main {
+    grid-column: span 2;
+    grid-row: span 2;
+    img {
+      max-height: 200px;
+      object-fit: contain;
+    }
+  }
+
+  & .none {
+    display: none;
+  }
+
+  & .block {
+    display: block;
+  }
+}
+
+.select-image {
+  padding: 8px;
+
+  .ant-upload.ant-upload-select {
+    width: 100%;
+    height: 100px;
+    margin-inline-end: 8px;
+    // margin-bottom: 8px;
+    text-align: center;
+    vertical-align: top;
+    background-color: rgba(0, 0, 0, 0.02);
+    border: 1px dashed #d9d9d9;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+
+      .anticon {
+        display: inline-flex;
+        align-items: center;
+        color: inherit;
+        font-style: normal;
+        line-height: 0;
+        text-align: center;
+        text-transform: none;
+        vertical-align: -0.125em;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+      }
+    }
+  }
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 6%;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+
+  img {
+    height: 250px;
+    object-fit: contain;
+  }
+}
+
+.modal-show {
+  display: block !important;
+  z-index: 99999;
+}
+
+#modal-zoom {
+  .container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+  }
+}
+
+/* Modal Content (Image) */
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 100%;
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 20px;
+}
+
+/* Add Animation - Zoom in the Modal */
+.modal-content,
+#caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.image-item.is-active {
+  display: block;
+}
+
+.image-item {
+  display: none;
+}
+
+.content-image {
+  position: relative;
+}
+
+.prev-img,
+.next-img {
+  color: #fff;
+  position: absolute;
+  top: 40%;
+  transform: translate(0);
+  z-index: 9999;
+
+  ion-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  &#none {
+    display: none;
+  }
+}
+
+.prev-img.disabled,
+.next-img.disabled {
+  opacity: 0.15;
+}
+
+.prev-img {
+  left: 0;
+}
+
+.next-img {
+  right: 0;
+}
+
+//   /* 100% Image Width on Smaller Screens */
+//   @media only screen and (max-width: 700px){
+//     .modal-content {
+//       width: 100%;
+//     }
+//   }
+.one-image {
+  width: 100% !important;
+}

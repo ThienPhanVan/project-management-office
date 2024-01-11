@@ -1,0 +1,126 @@
+.card {
+  width: 47% !important;
+  .type {
+    padding: 8px;
+
+    > span {
+      &:last-child {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .type-product {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    text-transform: capitalize;
+    color: #050505;
+  }
+
+  .image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
+
+  ion-card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    // height: 32px;
+    line-height: 1;
+
+  }
+
+  ion-card-content {
+    padding: 8px;
+  }
+
+  .card-footer {
+
+    bottom: 0;
+    width: 100%;
+  }
+
+  .price {
+    // text-align: right;
+    // height: 24px;
+    p {
+      font-weight: bold;
+      padding: 4px;
+      padding-left: 0px;
+      // background-color: #f1f1f1;
+      color: red;
+      border-radius: 8px;
+      font-size: 14px;
+      .text {
+        // margin-right: 8px;
+        text-transform: capitalize;
+      }
+    }
+  }
+.description-container {
+//   .description {
+//     margin-bottom: 4px;
+//     font-weight: 100;
+//     text-transform: lowercase;
+//     font-size: 14px;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//     display: -webkit-box;
+//     -webkit-line-clamp: 2;
+//     -webkit-box-orient: vertical;
+//     // margin-top: 8px;
+//     // height: 32px;
+//     white-space: nowrap;
+//     color: #050505;
+//   }
+
+  .content-news-more {
+    font-size: 14px;
+    color: blue;
+    text-align: right;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    text-transform: initial;
+
+  }
+}
+
+  .location {
+    font-weight: 100;
+    text-transform: lowercase;
+    font-size: 14px;
+    font-style: italic;
+  }
+}
+
+::ng-deep {
+  .commerce-tab {
+    app-reactions {
+      .action {
+        padding:0px;
+
+        ion-label {
+          flex-direction: column;
+          float: left;
+          margin-bottom: 8px;
+          margin-top: 0;
+
+          p {
+            margin-top: 4px;
+          }
+        }
+      }
+    }
+
+    app-avatar {
+      img {
+        object-fit: cover !important;
+        height: 100px !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,249 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-button
+        fill="clear"
+        color="dark"
+        [routerLink]="['/', 'tabs', 'profile', 'security']"
+        slot="start"
+      >
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title class="text-sm"
+        >{{'PAGES.SECURITY.UPDATE_PROFILE' | translate}}</ion-title
+      >
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="isLoading">
+  <form [formGroup]="form" novalidate>
+    <div class="edit-profile-page">
+      <ion-item lines="none" class="ion-margin-top ion-margin-bottom">
+        <ion-skeleton-text
+          [animated]="true"
+          style="height: 73px"
+        ></ion-skeleton-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-skeleton-text
+          [animated]="true"
+          style="height: 44px"
+        ></ion-skeleton-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-skeleton-text
+          [animated]="true"
+          style="height: 44px"
+        ></ion-skeleton-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-skeleton-text
+          [animated]="true"
+          style="height: 44px"
+        ></ion-skeleton-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-skeleton-text
+          [animated]="true"
+          style="height: 44px"
+        ></ion-skeleton-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-skeleton-text
+          [animated]="true"
+          style="height: 44px"
+        ></ion-skeleton-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-skeleton-text
+          [animated]="true"
+          style="height: 44px"
+        ></ion-skeleton-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-skeleton-text
+          [animated]="true"
+          style="height: 57px"
+        ></ion-skeleton-text>
+      </ion-item>
+    </div>
+  </form>
+</ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="!isLoading">
+  <form [formGroup]="form" novalidate>
+    <div class="edit-profile-page">
+      <ion-item lines="none" class="ion-margin-top ion-margin-bottom">
+        <img src="../../../assets/logo/gcec.png" />
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          label="{{ 'FORM.FIELD.FULL_NAME' | translate}}"
+          formControlName="username"
+          class="text-sm required"
+        />
+      </ion-item>
+
+      <div
+        class="error-container"
+        *ngIf="(form.get('username')?.invalid && form.get('username')?.touched) || form.get('username')?.dirty"
+      >
+        <div class="text-rose-600 text-xs pl-4 pr-4">
+          <span *ngIf="form.get('username')?.errors?.['required']">
+            {{ 'FORM.VALID.FULL_NAME.REQUIRED' | translate}}
+          </span>
+        </div>
+      </div>
+      <ion-item>
+        <ion-checkbox formControlName="is_public_phone" labelPlacement="end"
+          > {{ 'FORM.FIELD.IS_PUBLIC_PHONE'  | translate }}</ion-checkbox
+        >
+      </ion-item>
+      <ion-item (click)="countrySelect.open()">
+        <ion-label
+          ><span class="text-sm label-text-wrapper label-required"
+            >{{'SELECT.LABEL.COUNTRY' | translate}}</span
+          ></ion-label
+        >
+        <app-country-select
+          [countries]="countries"
+          [selectedCountry]="selectedCountry"
+          (selectionChange)="countrySelectionChanged($event)"
+          formControlName="country_id"
+          #countrySelect
+          ngDefaultControl
+        ></app-country-select>
+      </ion-item>
+
+      <div
+        class="error-container"
+        *ngIf="(form.get('country_id')?.invalid && form.get('country_id')?.touched) || form.get('country_id')?.dirty"
+      >
+        <div class="text-rose-600 text-sm pl-4 pr-4">
+          <span *ngIf="form.get('country_id')?.errors?.['required']">
+            {{'FORM.VALID.COUNTRY.REQUIRED' | translate}}
+          </span>
+        </div>
+      </div>
+
+      <ion-item (click)="citySelect.open()">
+        <ion-label
+          ><span class="text-sm label-text-wrapper label-required"
+            >{{'SELECT.LABEL.CITY' | translate}}</span
+          ></ion-label
+        >
+        <app-city-select
+          class="text-sm"
+          [selectedCity]="selectedCity"
+          [selectedCountryId]="selectedCountry.id"
+          (selectionChange)="citySelectionChanged($event)"
+          formControlName="city_id"
+          #citySelect
+          ngDefaultControl
+        ></app-city-select>
+      </ion-item>
+
+      <div
+        class="error-container"
+        *ngIf="(form.get('city_id')?.invalid && form.get('city_id')?.touched) || form.get('city_id')?.dirty"
+      >
+        <div class="text-rose-600 text-sm pl-4 pr-4">
+          <span *ngIf="form.get('city_id')?.errors?.['required']">
+            {{'FORM.VALID.CITY.REQUIRED' | translate}}
+          </span>
+        </div>
+      </div>
+
+      <ion-item>
+        <ion-input
+          label="{{ 'FORM.FIELD.ADDRESS' | translate}}"
+          formControlName="address"
+          class="text-sm required"
+        />
+      </ion-item>
+
+      <ion-item>
+        <span class="text-sm">{{'FORM.FIELD.BIRTHDAY' | translate}}</span>
+        <ion-text
+          id="open-birthday"
+          class="text-sm hover:text-blue-600 ml-auto pr-2"
+        >
+          {{ (form.value.birthday | date:'dd/MM/yyyy')}}
+        </ion-text>
+        <ion-icon name="chevron-expand-outline" class="text-lg"></ion-icon>
+      </ion-item>
+
+      <ion-modal trigger="open-birthday" class="birthday-template">
+        <ng-template>
+          <ion-datetime
+            presentation="date"
+            size="cover"
+            formControlName="birthday"
+            [showDefaultButtons]="true"
+            doneText="{{'BUTTON.CHOICE' | translate}}"
+            cancelText="{{ 'BUTTON.CANCEL' | translate}}"
+          ></ion-datetime>
+        </ng-template>
+      </ion-modal>
+
+      <ion-item>
+        <ion-select
+          label="{{'SELECT.LABEL.GENDER' | translate}}"
+          placeholder="{{'MODAL.USER.CHOICE_GENDER' | translate}}"
+          class="text-sm min-h-0"
+          formControlName="gender"
+        >
+          <ion-select-option [value]="0"
+            >{{ 'SELECT.OPTION.GENDER.FEMALE' | translate }}</ion-select-option
+          >
+          <ion-select-option [value]="1"
+            >{{ 'SELECT.OPTION.GENDER.MALE' | translate }}</ion-select-option
+          >
+          <ion-select-option [value]="2"
+            >{{ 'SELECT.OPTION.GENDER.OTHER' | translate }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-textarea
+          label="{{ 'FORM.FIELD.ABOUT' | translate}}"
+          [autoGrow]="true"
+          formControlName="description"
+          class="text-sm"
+        >
+        </ion-textarea>
+      </ion-item>
+
+      <ion-button
+        class="px-2"
+        (click)="actionSubmit()"
+        expand="block"
+        [disabled]="form.invalid || isSubmitting"
+      >
+        <span>{{ 'BUTTON.UPDATE' | translate}}</span></ion-button
+      >
+      <ion-spinner
+        name="circular"
+        [hidden]="!isSubmitting"
+        class="max-h-5 pl-1"
+      ></ion-spinner>
+    </div>
+  </form>
+</ion-content>
+
+<ion-toast
+  [isOpen]="toastMessage!==''"
+  [message]="toastMessage"
+  [duration]="1000"
+  (didDismiss)="closeToast()"
+></ion-toast>

@@ -1,0 +1,11 @@
+::ng-deep {
+  detail-organization-info {
+    app-avatar {
+      .outer-background {
+        img {
+          object-fit: cover !important;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,517 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title class="text-sm"
+      >{{'PAGES.COMMUNITY.UPDATE_COMMUNITY' | translate}}</ion-title
+    >
+    <ion-button
+      fill="clear"
+      color="dark"
+      class="text-base"
+      id="openActionSheet"
+      slot="end"
+    >
+      <ion-icon name="menu"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+
+  <ion-action-sheet
+    trigger="openActionSheet"
+    [buttons]="getActionSheetButtons()"
+    (didDismiss)="onActionSheet($event)"
+  ></ion-action-sheet>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="organizationFormUpdate" novalidate>
+    <app-avatar
+      (getSrcImage)="getSrcImage($event)"
+      [isUploadImageBg]="isUploadImageBg"
+      [isBackground]="isBackground"
+      [form]="organizationFormUpdate"
+      (setCoverImageBackgroundEvent)="setCoverImage($event)"
+    ></app-avatar>
+
+    <ion-card class="-mt-10 my-1 cursor-pointer text-xs" color="light">
+      <ion-card-content>
+        <div class="flex">
+          <app-avatar
+            (getSrcImage)="getSrcImage($event)"
+            [isUploadImageLogo]="isUploadImageLogo"
+            [isLogo]="isLogo"
+            [form]="organizationFormUpdate"
+            (setThumbnailLogoEvent)="setThumbnail($event)"
+          ></app-avatar>
+          <div class="ml-3 w-full">
+            <ion-item>
+              <ion-input
+                class="required"
+                label="{{'FORM.FIELD.ORGANIZATION_NAME' | translate}}"
+                formControlName="name"
+                [clearInput]="true"
+                type="text"
+                labelPlacement="stacked"
+                placeholder=""
+              >
+              </ion-input>
+            </ion-item>
+            <div
+              class="error-container"
+              *ngIf="(organizationFormUpdate.get('name')?.invalid && organizationFormUpdate.get('name')?.touched) || organizationFormUpdate.get('name')?.dirty || isDisplayError"
+            >
+              <div class="text-rose-600 text-sm pl-4 pr-4">
+                <span
+                  *ngIf="organizationFormUpdate.get('name')?.errors?.['required']"
+                >
+                  {{'FORM.VALID.ORGANIZATION_NAME.REQUIRED' | translate}}
+                </span>
+              </div>
+            </div>
+
+            <ion-item>
+              <ion-input
+                class="required"
+                label="{{'FORM.FIELD.TAX_CODE' | translate}}"
+                formControlName="code"
+                [clearInput]="true"
+                type="text"
+                labelPlacement="stacked"
+                placeholder=""
+              >
+              </ion-input>
+            </ion-item>
+            <div
+              class="error-containe"
+              *ngIf="(organizationFormUpdate.get('code')?.invalid && organizationFormUpdate.get('code')?.touched) || organizationFormUpdate.get('code')?.dirty || isDisplayError"
+            >
+              <div class="text-rose-600 text-sm pl-4 pr-4">
+                <span
+                  *ngIf="organizationFormUpdate.get('code')?.errors?.['required']"
+                >
+                  {{'FORM.VALID.TAX_CODE.REQUIRED' | translate}}
+                </span>
+                <span
+                  *ngIf="organizationFormUpdate.get('code')?.errors?.['pattern']"
+                >
+                  {{'FORM.VALID.TAX_CODE.FORMAT' | translate}}
+                </span>
+              </div>
+            </div>
+
+            <ion-item>
+              <ion-input
+                class="required"
+                label="{{'FORM.FIELD.PHONE' | translate}}"
+                formControlName="phone"
+                [clearInput]="true"
+                type="text"
+                labelPlacement="stacked"
+                placeholder=""
+              >
+              </ion-input>
+            </ion-item>
+            <div
+              class="error-container"
+              *ngIf="(organizationFormUpdate.get('phone')?.invalid && organizationFormUpdate.get('phone')?.touched) || organizationFormUpdate.get('phone')?.dirty || isDisplayError"
+            >
+              <div class="text-rose-600 text-sm pl-4 pr-4">
+                <span
+                  *ngIf="organizationFormUpdate.get('phone')?.errors?.['required']"
+                >
+                  {{'FORM.VALID.PHONE.REQUIRED' | translate}}
+                </span>
+                <span
+                  *ngIf="organizationFormUpdate.get('phone')?.errors?.['pattern']"
+                >
+                  {{'FORM.VALID.PHONE.CORRECT_FORMAT' | translate}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div>
+            <ion-item
+              [button]="true"
+              [detail]="false"
+              id="select-industries"
+              [lines]="selectedIndustries.length > 0 ? 'none' : 'inset'"
+            >
+              <span class="text-xs label-required"
+                >{{'FORM.FIELD.INDUSTRIES' | translate}}</span
+              >
+              <ion-icon
+                slot="end"
+                class="text-sm"
+                name="chevron-down-outline"
+              ></ion-icon>
+            </ion-item>
+            <ion-item
+              class="text-sm py-0"
+              *ngFor="let selectedIndustry of selectedIndustries; let i = index"
+              [lines]="i === selectedIndustries.length-1 ? 'inset': 'none'"
+            >
+              <span class="pl-2">- {{selectedIndustry.name}}</span>
+            </ion-item>
+          </div>
+
+          <ion-modal trigger="select-industries" #modalIndustry>
+            <ng-template>
+              <app-industry-select
+                [selectedIndustries]="selectedIndustries"
+                class="ion-page"
+                (selectionChange)="industrySelectionChanged($event)"
+                formControlName="industries"
+                (selectionCancel)="modalIndustry.dismiss()"
+                ngDefaultControl
+              ></app-industry-select>
+            </ng-template>
+          </ion-modal>
+
+          <div
+            class="error-container"
+            *ngIf="(organizationFormUpdate.get('industries')?.invalid && organizationFormUpdate.get('industries')?.touched) || organizationFormUpdate.get('industries')?.dirty || isDisplayError"
+          >
+            <div class="text-rose-600 text-sm pl-4 pr-4">
+              <span
+                *ngIf="organizationFormUpdate.get('industries')?.errors?.['required']"
+              >
+                {{'FORM.VALID.INDUSTRIES.REQUIRED' | translate}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div>
+            <ion-item
+              [button]="true"
+              [detail]="false"
+              id="select-service"
+              [lines]="selectedServices.length > 0 ? 'none' : 'inset'"
+            >
+              <span class="text-xs label-required"
+                >{{'FORM.FIELD.SERVICES' | translate}}</span
+              >
+              <ion-icon
+                slot="end"
+                class="text-sm"
+                name="chevron-down-outline"
+              ></ion-icon>
+            </ion-item>
+            <ion-item
+              [lines]="i === selectedServices.length-1 ? 'inset': 'none'"
+              *ngFor="let selectedService of selectedServices; let i = index"
+            >
+              <span class="text-sm pl-2">- {{selectedService.name}}</span>
+            </ion-item>
+          </div>
+
+          <ion-modal trigger="select-service" #modalService>
+            <ng-template>
+              <app-service-select
+                [selectedServices]="selectedServices"
+                class="ion-page"
+                (selectionChange)="serviceSelectionChanged($event)"
+                formControlName="services"
+                (selectionCancel)="modalService.dismiss()"
+                ngDefaultControl
+              ></app-service-select>
+            </ng-template>
+          </ion-modal>
+
+          <div
+            class="error-container"
+            *ngIf="(organizationFormUpdate.get('services')?.invalid && organizationFormUpdate.get('services')?.touched) || organizationFormUpdate.get('services')?.dirty || isDisplayError"
+          >
+            <div class="text-rose-600 text-sm pl-4 pr-4">
+              <span
+                *ngIf="organizationFormUpdate.get('services')?.errors?.['required']"
+              >
+                {{'FORM.VALID.SERVICES.REQUIRED' | translate}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <ion-list *ngIf="isDisplayWorkingTime">
+          <ion-item>
+            <span class="text-xs"
+              >{{'FORM.FIELD.OPERATING_TIME' | translate}}</span
+            >
+            <div class="ml-12">
+              <ion-text
+                id="open-working-start"
+                class="text-sm text-slate-500 hover:text-blue-600"
+                >{{workingTimeStart | date: 'HH:mm'}}</ion-text
+              >
+              <ion-text class="text-sm ion-margin-start ion-margin-end"
+                >-</ion-text
+              >
+              <ion-text
+                id="open-working-end"
+                class="text-sm text-slate-500 hover:text-blue-600"
+                >{{workingTimeEnd | date: 'HH:mm'}}</ion-text
+              >
+            </div>
+          </ion-item>
+          <ion-modal trigger="open-working-start" [cssClass]="'bottom-end'">
+            <ng-template>
+              <ion-datetime
+                presentation="time"
+                size="cover"
+                [showDefaultButtons]="true"
+                doneText="{{'BUTTON.CHOICE' | translate}}"
+                cancelText="{{'BUTTON.CANCEL' | translate}}"
+              ></ion-datetime>
+            </ng-template>
+          </ion-modal>
+          <ion-modal trigger="open-working-end" [cssClass]="'bottom-end'">
+            <ng-template>
+              <ion-datetime
+                presentation="time"
+                size="cover"
+                formControlName="time_end"
+                [showDefaultButtons]="true"
+              ></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-list>
+
+        <div>
+          <ion-item (click)="countrySelect.open()">
+            <ion-label
+              ><span class="text-xs label-text-wrapper label-required"
+                >{{'SELECT.LABEL.COUNTRY' | translate}}</span
+              ></ion-label
+            >
+            <app-country-select
+              [countries]="countries"
+              [selectedCountry]="selectedCountry"
+              (selectionChange)="countrySelectionChanged($event)"
+              formControlName="country_id"
+              #countrySelect
+              ngDefaultControl
+            ></app-country-select>
+          </ion-item>
+
+          <div
+            class="error-container"
+            *ngIf="organizationFormUpdate.get('country_id')?.invalid || isDisplayError"
+          >
+            <div class="text-rose-600 text-sm pl-4 pr-4">
+              <span
+                *ngIf="organizationFormUpdate.get('country_id')?.errors?.['required']"
+              >
+                {{'FORM.VALID.COUNTRY.REQUIRED' | translate}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <ion-item (click)="citySelect.open()">
+            <ion-label
+              ><span class="text-xs label-text-wrapper"
+                >{{'SELECT.LABEL.CITY' | translate}}</span
+              ></ion-label
+            >
+            <app-city-select
+              [selectedCity]="selectedCity"
+              [selectedCountryId]="selectedCountry.id"
+              (selectionChange)="citySelectionChanged($event)"
+              formControlName="city_id"
+              #citySelect
+              ngDefaultControl
+            ></app-city-select>
+          </ion-item>
+
+          <div
+            class="error-container"
+            *ngIf="organizationFormUpdate.get('city_id')?.invalid || isDisplayError"
+          >
+            <div class="text-rose-600 text-sm pl-4 pr-4">
+              <span
+                *ngIf="organizationFormUpdate.get('city_id')?.errors?.['required']"
+              >
+                {{'FORM.VALID.CITY.REQUIRED' | translate}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <ion-item>
+            <ion-input
+              label="{{ 'FORM.FIELD.ADDRESS' | translate}}"
+              formControlName="address"
+              [clearInput]="true"
+              type="text"
+              labelPlacement="stacked"
+              placeholder=""
+              class="required"
+              #address
+            >
+            </ion-input>
+          </ion-item>
+          <div
+            class="error-container"
+            *ngIf="(organizationFormUpdate.get('address')?.invalid && organizationFormUpdate.get('address')?.touched) || organizationFormUpdate.get('address')?.dirty || isDisplayError"
+          >
+            <div class="text-rose-600 text-sm pl-4 pr-4">
+              <span
+                *ngIf="organizationFormUpdate.get('address')?.errors?.['required']"
+              >
+                {{'FORM.VALID.ADDRESS.REQUIRED' | translate}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <ion-item
+          ><ion-textarea
+            label="{{'FORM.FIELD.ABOUT' | translate}}"
+            formControlName="description"
+            labelPlacement="stacked"
+            [autoGrow]="true"
+            placeholder=""
+          ></ion-textarea
+        ></ion-item>
+
+        <ion-item>
+          <ion-icon name="link-outline" size="small" slot="start"></ion-icon>
+          <ion-input
+            label="Website"
+            [clearInput]="true"
+            type="url"
+            formControlName="websites"
+            labelPlacement="stacked"
+            placeholder=""
+          >
+          </ion-input>
+        </ion-item>
+        <div class="error-container" *ngIf="isWebsiteError">
+          <div class="text-rose-600 text-sm pl-4 pr-4">
+            <span> {{'FORM.VALID.WEBSITE.FORMAT' | translate}} </span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-icon name="logo-facebook" size="small" slot="start"></ion-icon>
+          <ion-input
+            label="Facebook"
+            [(ngModel)]="socials.facebook"
+            [ngModelOptions]="{standalone: true}"
+            [clearInput]="true"
+            type="url"
+            labelPlacement="stacked"
+            placeholder=""
+          >
+          </ion-input>
+        </ion-item>
+        <div class="error-container" *ngIf="isFacebookError">
+          <div class="text-rose-600 text-sm pl-4 pr-4">
+            <span> {{'FORM.VALID.FACEBOOK.FORMAT' | translate}} </span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-input
+            label="Instagram"
+            [(ngModel)]="socials.instagram"
+            [ngModelOptions]="{standalone: true}"
+            [clearInput]="true"
+            type="url"
+            labelPlacement="stacked"
+            placeholder=""
+          >
+          </ion-input>
+          <ion-icon name="logo-instagram" size="small" slot="start"></ion-icon>
+        </ion-item>
+        <div class="error-container" *ngIf="isInstagramError">
+          <div class="text-rose-600 text-sm pl-4 pr-4">
+            <span> {{'FORM.VALID.INSTAGRAM.FORMAT' | translate}} </span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-input
+            label="Youtube"
+            [(ngModel)]="socials.youtube"
+            [ngModelOptions]="{standalone: true}"
+            [clearInput]="true"
+            type="url"
+            labelPlacement="stacked"
+            placeholder=""
+          >
+          </ion-input>
+          <ion-icon name="logo-youtube" size="small" slot="start"></ion-icon>
+        </ion-item>
+
+        <div class="error-container" *ngIf="isYoutubeError">
+          <div class="text-rose-600 text-sm pl-4 pr-4">
+            <span> {{'FORM.VALID.YOUTUBE.FORMAT' | translate}} </span>
+          </div>
+        </div>
+
+        <ion-item
+          ><ion-textarea
+            label="{{'FORM.FIELD.VISION' | translate}}"
+            formControlName="vision"
+            labelPlacement="stacked"
+            [autoGrow]="true"
+            placeholder=""
+          ></ion-textarea
+        ></ion-item>
+
+        <ion-item
+          ><ion-textarea
+            label="{{'FORM.FIELD.MISSION' | translate}}"
+            formControlName="mission"
+            labelPlacement="stacked"
+            [autoGrow]="true"
+            placeholder=""
+          ></ion-textarea
+        ></ion-item>
+
+        <ion-item lines="none"
+          ><ion-textarea
+            label="{{'FORM.FIELD.CORE_VALUE' | translate}}"
+            formControlName="core_values"
+            labelPlacement="stacked"
+            [autoGrow]="true"
+            placeholder=""
+          ></ion-textarea
+        ></ion-item>
+        <div class="flex justify-between">
+          <ion-button
+            class="text-sm ion-margin-top w-full"
+            expand="block"
+            (click)="actionSubmit()"
+            [disabled]="isUpdating || organizationFormUpdate.invalid"
+          >
+            {{ 'BUTTON.UPDATE' | translate}}
+            <!-- <ion-spinner name="circular" [hidden]="!isUpdating" class="max-h-5 pl-1"></ion-spinner> -->
+          </ion-button>
+          <!-- 
+          <ion-button class="text-sm ion-margin-top w-full" color="danger" expand="block" (click)="deleteOrg()">
+            {{ 'BUTTON.DELETE' | translate}}
+          </ion-button> -->
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-toast
+      [isOpen]="toastMessage!==''"
+      [message]="toastMessage"
+      [duration]="2000"
+      (didDismiss)="closeToast()"
+    ></ion-toast>
+  </form>
+  <app-zoom
+    [showModal]="showModalImageZoom"
+    [image]="imagesString"
+    (closeModal)="closeModal($event)"
+  ></app-zoom>
+</ion-content>

@@ -1,0 +1,250 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center w-full">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+      <div class="w-full text-center">
+        <p>{{'TAB.COMMERCE.ORDER.ORDER_DETAIL' | translate}}</p>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card class="w-full p-2 m-0 mt-2 rounded-none shadow-none bg-slate-50">
+    <ion-card-content>
+
+      <div class=" text-black text-sm ">
+        <div class="flex  items-center">
+          <ion-icon name="location-outline" class="p-0 text-left"></ion-icon>
+          <span class="ml-1 line-clamp-1">{{
+            order?.delivery_address }}</span>
+        </div>
+        <div class="flex text-black text-sm items-center ml-0.5">
+          <span class="ml-4 ">(+84){{me?.phone }}</span>
+        </div>
+      </div>
+      <!-- <div class="flex text-black text-sm items-center ml-0.5">
+        <span class="ml-4">{{
+          order?.delivery_address }}</span>
+      </div> -->
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="w-full p-2 m-0 mt-2 rounded-none shadow-none bg-slate-50">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center" *ngIf="order?.seller?.username && me?.id !== order?.seller?.id">
+        <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [data]="order?.seller" [isParticipate]="true"
+          class="scale-50"></app-avatar>
+        <div class="text-black font-bold" [routerLink]="['/tabs', 'users', order?.seller?.id]">{{
+          order?.seller?.username}}</div>
+      </div>
+      <div class="flex items-center" *ngIf="order?.seller?.username && me?.id === order?.seller?.id">
+        <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [data]="order?.buyer" [isParticipate]="true"
+          class="scale-50"></app-avatar>
+        <div class="text-black font-bold" [routerLink]="['/tabs', 'users', order?.buyer?.id]">{{
+          order?.buyer?.username}}</div>
+      </div>
+      <div class="flex items-center" *ngIf="order?.seller?.name && orgId !== order?.seller?.id">
+        <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [data]="order?.seller" [isParticipate]="true"
+          class="scale-50"></app-avatar>
+        <div class="text-black font-bold" [routerLink]="['/tabs', 'organizations', order?.seller?.id]">{{
+          order?.seller?.name}}</div>
+      </div>
+
+      <div class="flex items-center" *ngIf="order?.seller?.name && orgId === order?.seller?.id">
+        <app-avatar [isAvatar]="true" [classNameAvatar]="'item'" [data]="order?.buyer" [isParticipate]="true"
+          class="scale-50"></app-avatar>
+        <div class="text-black font-bold" [routerLink]="['/tabs', 'organizations', order?.buyer?.id]">{{
+          order?.buyer?.username}}</div>
+      </div>
+      <div class="flex items-center text-black">
+        {{order?.status | translate}}
+      </div>
+    </div>
+    <div class="flex items-center w-full mt-4" (click)="directOrderDetail(order)" *ngFor="let item of order?.items">
+      <div class=" mr-2 ">
+        <img alt="" [src]="item?.product?.images[0]?.image_url" class="image-product" />
+      </div>
+      <div class="text-black w-full">
+        <div class="line-clamp-2">
+          {{item?.product?.description}}
+        </div>
+        <div class="text-gray-500">
+          {{item?.product?.product_category?.name}}
+        </div>
+        <div class="flex justify-between text-black font-bold bottom-0">
+          <div>
+            {{item?.product?.amount?.toLocaleString("it-IT",
+            { style: "currency",
+            currency: "VND" }) }}
+          </div>
+          <div>
+            x{{item?.quantity}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-end text-black font-bold">
+      {{order?.items?.length}} {{'TAB.COMMERCE.ORDER.PRODUCT' | translate}}:
+      {{order?.total_amount?.toLocaleString("it-IT",
+      { style: "currency",
+      currency: "VND" }) }}
+    </div>
+    <!-- <div class="flex justify-end mt-2" *ngIf="me?.id !== order?.seller?.id && orgId !== order?.seller?.id">
+      <ion-button fill="outline" color="dark" class="rounded-none">
+        {{'TAB.COMMERCE.ORDER.REPURCHASE' | translate}}
+      </ion-button>
+      <ion-button fill="outline" color="dark" class="rounded-none">
+        {{'TAB.COMMERCE.ORDER.SEE_REVIEWS' | translate}}
+      </ion-button>
+    </div> -->
+  </ion-card>
+
+  <ion-card class="w-full p-2 m-0 mt-2 rounded-none shadow-none bg-slate-50">
+    <ion-card-content>
+      <div class="flex text-black text-sm items-center justify-between">
+        <div>
+          <ion-icon name="chatbubble-ellipses-outline" class="p-0 text-left"></ion-icon>
+          <span class="ml-1 ">{{
+            'TAB.COMMERCE.ORDER.CONTACT_THE_SELLER' | translate }}</span>
+
+        </div>
+        <div>
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </div>
+      </div>
+      <div class="flex text-black text-sm items-center ml-0.5">
+        <span class="ml-4">{{
+          'TAB.COMMERCE.ORDER.CONTENT_CONTACT' | translate }}</span>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+  <ion-card class="w-full p-2 m-0 mt-2 rounded-none shadow-none bg-slate-50">
+    <ion-card-content>
+      <div class="flex text-sm font-bold">
+        <p>{{'TAB.COMMERCE.ORDER.ORDER_OVERVIEW' | translate}}</p>
+      </div>
+
+      <div class="text-xs text-gray-700">
+        <div class="flex justify-between items-center">
+          <p>{{'TAB.COMMERCE.ORDER.SUBTOTAL' | translate}}</p>
+          <p>{{order?.total_amount?.toLocaleString("it-IT",
+            { style: "currency",
+            currency: "VND" })}}</p>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <p>{{'TAB.COMMERCE.ORDER.DELIVERY' | translate}}</p>
+          <p>{{deliveryFee.toLocaleString("it-IT",
+            { style: "currency",
+            currency: "VND" })}}</p>
+        </div>
+        <div class="flex justify-between items-center" *ngIf="deliveryDiscount !==0">
+          <p>{{'TAB.COMMERCE.ORDER.DELIVERY_DISCOUNT' | translate}}</p>
+          <p class="text-red-500"><span>- </span> {{deliveryDiscount.toLocaleString("it-IT",
+            { style: "currency",
+            currency: "VND" })}}</p>
+        </div>
+        <div class="flex justify-between items-center">
+          <p>{{'TAB.COMMERCE.ORDER.TOTAL' | translate}}</p>
+          <p>{{order?.total_amount?.toLocaleString("it-IT",
+            { style: "currency",
+            currency: "VND" })}}</p>
+        </div>
+
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <ion-card class="w-full p-2 m-0 mt-2 rounded-none shadow-none bg-slate-50">
+    <ion-card-content>
+      <div class="flex text-sm font-bold">
+        <p>{{'TAB.COMMERCE.ORDER.ORDER_DETAIL' | translate}}</p>
+      </div>
+      <div class="flex text-sm justify-between">
+        <p>{{'TAB.COMMERCE.ORDER.ORDER_NUMBER' | translate}}</p>
+        <p>{{order?.id}}</p>
+      </div>
+
+      <div class="flex text-sm justify-between">
+        <p>{{'TAB.COMMERCE.ORDER.DAY_ORDER' | translate}}</p>
+        <p>{{order?.updated_date}}</p>
+      </div>
+      <div class="flex text-sm justify-between">
+        <p>{{'TAB.COMMERCE.ORDER.PAYMENT' | translate}}</p>
+        <!-- <p>{{order?.payment}}</p> -->
+      </div>
+      <div class="flex text-sm justify-between">
+        <p>{{'TAB.COMMERCE.ORDER.TIME_PAYMENT' | translate}}</p>
+        <!-- <p>{{order?.id}}</p> -->
+      </div>
+      <div class="flex text-sm justify-between">
+        <p>{{'TAB.COMMERCE.ORDER.DAY_SHIPPING' | translate}}</p>
+        <!-- <p>{{order?.id}}</p> -->
+      </div>
+      <div class="flex text-sm justify-between">
+        <p>{{'TAB.COMMERCE.ORDER.FOLLOW_PACKAGE' | translate}}</p>
+        <!-- <p>{{order?.id}}</p> -->
+      </div>
+      <div class="flex text-sm justify-between">
+        <p>{{'TAB.COMMERCE.ORDER.DATE_DELIVERY' | translate}}</p>
+        <!-- <p>{{order?.id}}</p> -->
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer class="bg-white">
+  <div class="flex justify-between" *ngIf="order?.seller?.username && me?.id !== order?.seller?.id">
+    <ion-button color="dark" fill="outline" class="mr-1 w-full" (click)="repurchase(order)">
+      {{'TAB.COMMERCE.ORDER.REPURCHASE' | translate}}
+    </ion-button>
+    <ion-button fill="outline" color="dark" class="rounded-none w-full" (click)="cancelOrder(order)"
+      *ngIf="order.status === 'TAB.COMMERCE.ORDER.CHILD.PENDING'">
+      {{'TAB.COMMERCE.ORDER.CHILD.CANCELED' | translate}}
+    </ion-button>
+    <!-- <ion-button color="dark" fill="outline" class="ml-1 w-1/2">
+      {{'TAB.COMMERCE.ORDER.SEE_REVIEWS' | translate}}
+    </ion-button> -->
+  </div>
+  <div class="flex justify-center " *ngIf="order?.seller?.username && me?.id === order?.seller?.id">
+    <ion-button color="dark" fill="outline" class=" w-full"
+      [disabled]="order.status === 'TAB.COMMERCE.ORDER.CHILD.CANCELED' || order.status === 'TAB.COMMERCE.ORDER.CHILD.DECLINED' || order.status === 'TAB.COMMERCE.ORDER.CHILD.COMPLETED'">
+      <span class="pl-2">{{'TAB.COMMERCE.ORDER.UPDATE_STATUS' | translate}} :</span>
+      <ion-select label-placement="floating" okText="{{ 'BUTTON.CHOICE' | translate}}"
+        cancelText="{{ 'BUTTON.CANCEL' | translate}}" [value]="statusOrders[0].id" (ionChange)="confirmOrder($event)">
+        <ion-select-option *ngFor="let status of statusOrders" [value]="status.id">{{status.name |
+          translate}}</ion-select-option>
+      </ion-select>
+    </ion-button>
+  </div>
+  <div class="flex justify-between" *ngIf="order?.seller?.name && orgId !== order?.seller?.id">
+    <ion-button color="dark" fill="outline" class="mr-1 w-full" (click)="repurchase(order)">
+      {{'TAB.COMMERCE.ORDER.REPURCHASE' | translate}}
+    </ion-button>
+    <ion-button fill="outline" color="dark" class="rounded-none w-full" (click)="cancelOrder(order)"
+      *ngIf="order.status === 'TAB.COMMERCE.ORDER.CHILD.PENDING'">
+      {{'TAB.COMMERCE.ORDER.CHILD.CANCELED' | translate}}
+    </ion-button>
+    <!-- <ion-button color="dark" fill="outline" class="ml-1 w-1/2">
+      {{'TAB.COMMERCE.ORDER.SEE_REVIEWS' | translate}}
+    </ion-button> -->
+  </div>
+  <div class="flex justify-center " *ngIf="order?.seller?.name && orgId === order?.seller?.id">
+    <ion-button color="dark" fill="outline" class=" w-full"
+      [disabled]="order.status === 'TAB.COMMERCE.ORDER.CHILD.CANCELED' || order.status === 'TAB.COMMERCE.ORDER.CHILD.DECLINED' || order.status === 'TAB.COMMERCE.ORDER.CHILD.COMPLETED'">
+      <span class="pl-2">{{'TAB.COMMERCE.ORDER.UPDATE_STATUS' | translate}} :</span>
+      <ion-select label-placement="floating" okText="{{ 'BUTTON.CHOICE' | translate}}"
+        cancelText="{{ 'BUTTON.CANCEL' | translate}}" [value]="statusOrders[0].id" (ionChange)="confirmOrder($event)">
+        <ion-select-option *ngFor="let status of statusOrders" [value]="status.id">{{status.name |
+          translate}}</ion-select-option>
+      </ion-select>
+    </ion-button>
+  </div>
+</ion-footer>

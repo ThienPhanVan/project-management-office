@@ -1,0 +1,55 @@
+ion-card {
+  padding: 0px;
+  margin: 0;
+  margin-bottom: 4px;
+  border-radius: 0%;
+  ion-card-content {
+    padding: 16px 8px 16px 8px;
+  }
+}
+
+ion-card-content {
+  ion-checkbox {
+    --size: 16px;
+  }
+}
+ion-footer {
+  ion-checkbox {
+    --size: 20px;
+  }
+}
+
+.image-product {
+  width: 80px !important;
+  height: 80px !important;
+  object-fit: cover;
+}
+
+input[type=number]{
+  border: 1px solid #c9c9c9;
+  background-color: white;
+  color: #cf3c4f;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+margin: 0;
+border: none;
+}
+
+
+.quantity {
+  ion-button {
+
+    height: 24px;
+  }
+  ion-button::part(native) {
+    border-color : #c9c9c9 !important;
+    border-radius: 0px;
+    width: 24px;
+    height: 24px;
+  }
+}
+

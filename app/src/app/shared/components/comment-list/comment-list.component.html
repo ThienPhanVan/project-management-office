@@ -1,0 +1,133 @@
+<div class="comments-container m-2">
+  <ul id="comments-list" class="comments-list">
+    <li *ngFor="let item of comments; index as i">
+      <div class="comment-main-level" *ngIf="isLoading">
+        <ion-skeleton-text class="h-8" [animated]="true"></ion-skeleton-text>
+
+        <div class="comment-box">
+          <ion-skeleton-text class="h-24" [animated]="true"></ion-skeleton-text>
+        </div>
+      </div>
+      <div class="comment-main-level" *ngIf="!isLoading">
+
+        <div class="comment-avatar mr-2">
+          <app-avatar (getSrcImage)="getSrcImage($event)" [classNameAvatar]="'item'" [data]="item.author"
+            [isAvatar]="isAvatar"></app-avatar>
+        </div>
+
+        <div class="comment-box">
+          <ion-card class="comment-head p-2 m-0" long-press (press)="setOpenActionSheet(item, 'me')"
+            *ngIf="me?.id === item?.author?.id">
+            <h6 [class]="
+                me?.id === item?.author?.id
+                  ? 'comment-name by-author'
+                  : 'comment-name'
+              ">
+              <a [routerLink]="['/tabs', 'users', item?.author?.id]">{{
+                item.author.username
+                }}</a>
+            </h6>
+
+            <p class="text-black" [innerHTML]="item?.name" (mouseup)="redirectUser($event)"></p>
+            <a *ngIf="item?.metadata" class="flex items-center mt-2" [href]="item?.metadata?.url">
+              <img [src]="item?.metadata?.image_url" alt="" class="w-20 h-20 mr-2">
+              <div>
+                <p>{{item?.metadata?.name}}</p>
+                <p class="line-clamp-1">{{item?.metadata?.description}}</p>
+              </div>
+            </a>
+            <img [src]="item?.images[0]?.image_url" alt="" *ngIf="item?.images">
+          </ion-card>
+          <ion-card class="comment-head p-2 m-0" *ngIf="me?.id !== item?.author?.id" long-press
+            (press)="setOpenActionSheet(item, 'other')">
+            <h6 [class]="
+                me?.id === item?.author?.id
+                  ? 'comment-name by-author'
+                  : 'comment-name'
+              ">
+              <a [routerLink]="['/tabs', 'users', item?.author?.id]">{{
+                item.author.username
+                }}</a>
+            </h6>
+            <p class="text-black" [innerHTML]="item?.name" (mouseup)="redirectUser($event)">
+            </p>
+            <a *ngIf="item?.metadata" class="flex items-center mt-2" [href]="item?.metadata?.url">
+              <img [src]="item?.metadata?.image_url" alt="" class="w-20 h-20 mr-2">
+              <div>
+                <p>{{item?.metadata?.name}}</p>
+                <p class="line-clamp-1">{{item?.metadata?.description}}</p>
+              </div>
+            </a>
+            <img [src]="item?.images[0]?.image_url" alt="" *ngIf="item?.images">
+          </ion-card>
+          <div class="comment-content text-xs ">
+            <span class="mr-2">{{ item.updated_date }}</span>
+            <span class="mr-2"> {{ "TAB.HOME.LIKES" | translate }}</span>
+            <span (click)="replyComment(item)">
+              {{ "TAB.HOME.REPLIES" | translate }}</span>
+          </div>
+        </div>
+      </div>
+
+      <ul class="reply-list" *ngIf="isLoading && item?.replies?.length !== 0">
+        <ion-skeleton-text class="h-25" [animated]="true"></ion-skeleton-text>
+      </ul>
+      <ul class="reply-list" *ngIf="!isLoading && item?.replies?.length !== 0">
+        <li class="more-replies" *ngIf="itemId !== item.id || !isShowAll">
+          <div class="more-line"></div>
+          <div (click)="showAllComment(true, item.id)">
+            {{ item?.replies?.length }} {{'COMMON.REPLY_OTHER' | translate}}
+          </div>
+        </li>
+        <li *ngFor="let reply of item.replies; index as j"
+          [class]="isShowAll && itemId === item.id ? 'show-block' : 'show-none'">
+          <div class="replies-line"></div>
+          <div class="comment-avatar mr-2" *ngIf="isShowAll && itemId === item.id">
+            <app-avatar (getSrcImage)="getSrcImage($event)" [classNameAvatar]="'item'" [data]="reply.author"
+              [isAvatar]="isAvatar"></app-avatar>
+          </div>
+
+          <div class="comment-box" *ngIf="isShowAll && itemId === item.id">
+            <ion-card class="comment-head p-2 m-0" long-press (press)="setOpenActionSheet(item, 'me', reply)"
+              *ngIf="me?.id === reply?.author?.id">
+              <h6 [class]="
+                  me?.id === item?.author?.id
+                    ? 'comment-name by-author'
+                    : 'comment-name'
+                ">
+                <a [routerLink]="['/tabs', 'users', reply?.author?.id]">{{
+                  reply.author.username
+                  }}</a>
+              </h6>
+              <p class="text-black" [innerHTML]="reply?.name" (mouseup)="redirectUser($event)"></p>
+              <img [src]="reply?.images[0]?.image_url" alt="" *ngIf="reply?.images">
+            </ion-card>
+            <ion-card class="comment-head p-2 m-0" *ngIf="me?.id !== reply?.author?.id" long-press
+              (press)="setOpenActionSheet(item, 'other', reply)">
+              <h6 [class]="
+                  me?.id === item?.author?.id
+                    ? 'comment-name by-author'
+                    : 'comment-name'
+                ">
+                <a [routerLink]="['/tabs', 'users', reply?.author?.id]">{{
+                  reply.author.username
+                  }}</a>
+              </h6>
+              <p class="text-black" [innerHTML]="reply?.name" (mouseup)="redirectUser($event)"></p>
+              <img [src]="reply?.images[0]?.image_url" alt="" *ngIf="reply?.images">
+            </ion-card>
+            <div class="text-base comment-content">
+              <span class="mr-2">{{ reply.updated_date }}</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <ion-action-sheet [isOpen]="isActionSheetOpen" [buttons]="actionSheetButtons"
+    (didDismiss)="setResult($event, 'me')"></ion-action-sheet>
+
+  <ion-action-sheet [isOpen]="isActionSheetOpenOther" [buttons]="actionSheetButtonOthers"
+    (didDismiss)="setResult($event, 'other')"></ion-action-sheet>
+</div>

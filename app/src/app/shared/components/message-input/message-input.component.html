@@ -1,0 +1,82 @@
+<div class="w-full ml-0 my-4">
+
+  <div class="flex items-center">
+    
+    <div *ngIf="isEmojiVisible" class="flex items-center">
+
+      <div
+      *ngIf="selectedAttachments && selectedAttachments.length"
+      class="w-full py-2"
+    >
+      <app-attachment-chip
+        [attachments]="selectedAttachments"
+        (attachmentRemoved)="attachmentRemoved($event)"
+      ></app-attachment-chip>
+    </div>
+      
+      <app-attachment-select
+      (attachmentSelected)="attachmentSelected($event)"
+    ></app-attachment-select>
+
+    <ion-button fill="clear" size="medium" (click)="emoji.open()">
+      <ion-icon name="happy-outline"></ion-icon>
+    </ion-button>
+
+    <app-emoji-select
+      (onEmojiChange)="onEmojiChange($event)"
+      #emoji
+    ></app-emoji-select>
+
+    <ion-button fill="clear" size="medium">
+      <ion-icon name="at-circle-outline"></ion-icon>
+    </ion-button>
+    </div>
+    
+    <div *ngIf="!isEmojiVisible">
+      <ion-icon name="chevron-forward-outline" size="medium" (click)="toggleEmojiVisibility(true)"></ion-icon>
+    </div>
+
+    <div
+    *ngIf="replies !== undefined"
+    class="replies"
+    style="position: relative; padding: 8px"
+  >
+    <div
+      class="remove"
+      (click)="removeReplies()"
+      style="position: absolute; top: 4px; right: 8px; color: red"
+    >
+      <ion-icon name="close-circle-outline"></ion-icon>
+    </div>
+    <div
+      class="text-base font-extrabold"
+      style="
+        color: #ffffff;
+        max-width: 324px;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        font-size: 12px;
+      "
+    >
+      {{ replies.name }}
+    </div>
+  </div>
+  <div class="w-full h-10 px-2">
+    <ion-textarea
+    style="color: #000000;font-size: 14px;"
+    [placeholder]="'ENTER' | translate"
+    [(ngModel)]="newMessage"
+    (ionFocus)="toggleEmojiVisibility(false)"
+    (ionChange)="toggleEmojiVisibility(true)"
+    [fill]="true"
+  ></ion-textarea>
+  </div>
+
+    <span class="spacer"></span>
+    <ion-button fill="clear" size="small" (click)="sendMessage()">
+      <ion-icon slot="icon-only" size="medium" name="send"></ion-icon>
+    </ion-button>
+  </div>
+</div>

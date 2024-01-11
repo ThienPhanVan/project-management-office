@@ -1,0 +1,178 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-buttons>
+        <ion-back-button class="text-xs" defaultHref="/tabs/profile/security" text=""></ion-back-button>
+      </ion-buttons>
+      <ion-title class=" text-sm">
+        {{'PAGES.ACTIVITY_USER.TITLE' | translate}} 
+      </ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div  *ngFor="let item of data; index as i">
+    <ion-card>
+      <ion-card-header >
+        <ion-card-title>
+          <ion-item>
+            <app-avatar (getSrcImage)="getSrcImage($event)"[classNameAvatar]="classNameAvatar" [isAvatar]="isAvatar" [data]="item.user"></app-avatar>
+            <!-- <ion-avatar slot="start">
+              <img [src]="item.user.thumbnail" alt=""/>
+            </ion-avatar> -->
+            <ion-label>
+              
+              <div [ngClass]="{'label-verified': user.verified_flag}">
+                {{item.user.username}}
+                </div>
+                
+             
+              <div class="activity-header" >
+                <div class="email" >
+                  {{item.user.email}}
+                </div>
+                <div class="time" >
+                  <b><i>{{item.created_at}}</i></b>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+        
+          
+        </ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <div *ngIf="item.name === nameActivity[0] && item && item.detail_change">
+          <div class="item" *ngIf="item.detail_change.avatar">
+            <b>{{user.id === item.user.id ? 'Bạn' : item.user.username}}</b> đã cập nhật avatar
+          </div>
+
+          <div class="item" *ngIf="item.detail_change.password">
+            <b>{{user.id === item.user.id ? 'Bạn' : item.user.username}}</b> đã cập nhật mật khẩu
+          </div>
+
+          <div class="item" *ngIf="!item.detail_change.password && !item.detail_change.avatar">
+            <b>{{user.id === item.user.id ? 'Bạn' : item.user.username}}</b> đã cập nhật thông tin cá nhân
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[1]">
+          <div class="item">
+            <b>{{user.id === item.user.id ? 'Bạn' : item.user.username}}</b> đã cập nhật chapter
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[2]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã tham gia vào chapter
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã mời bạn tham gia vào chapter
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[3]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã rời khỏi chapter
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã mời bạn ra khỏi chapter
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[4]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã thêm doanh nghiệp vào chapter
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã thêm doanh nghiệp vào chapter
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[5]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã xóa doanh nghiệp ra khỏi chapter
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã xóa doanh nghiệp ra khỏi chapter
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[6]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã tạo mới doanh nghiệp
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã tạo mới doanh nghiệp
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[7]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã tạo mới chi nhánh doanh nghiệp
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã tạo mới chi nhánh doanh nghiệp
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[8]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã cập nhật doanh nghiệp
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã cập nhật doanh nghiệp
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[9]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã cập nhật chi nhánh doanh nghiệp
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã cập nhật chi nhánh doanh nghiệp
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[10]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã tham gia vào doanh nghiệp
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã mời bạn vào doanh nghiệp
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[11]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã rời khỏi doanh nghiệp
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã mời bạn rời khỏi doanh nghiệp
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[12]">
+          <div class="item">
+            <b>Bạn</b> đã chấp nhận tham gia vào doanh nghiệp
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[13]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã thay đổi quyền thành quyền Admin của doanh nghiệp
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã thay đổi quyền của bạn thành quyền Admin của doanh nghiệp
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[14]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã thay đổi quyền thành quyền Admin của chapter
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã thay đổi quyền của bạn thành quyền Admin của chapter
+          </div>
+        </div>
+        <div *ngIf="item.name === nameActivity[15]">
+          <div class="item" *ngIf="user.id === item.user.id">
+            <b>Bạn</b> đã xác nhận mình thành Owner của doanh nghiệp
+          </div>
+          <div class="item" *ngIf="user.id !== item.user.id">
+            <b>{{item.user.username}}</b> đã xác nhận cho bạn thành Owner của doanh nghiệp
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>
+</ion-content>

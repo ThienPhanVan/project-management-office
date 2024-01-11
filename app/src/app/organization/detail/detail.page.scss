@@ -1,0 +1,15 @@
+
+ion-content {
+  .bg-img {
+    width: 100%;
+    height: 192px;
+    object-fit: cover
+  }
+  
+  ion-thumbnail {
+    img {
+      height: 48px;
+      width: 48px;
+    }
+  }
+}

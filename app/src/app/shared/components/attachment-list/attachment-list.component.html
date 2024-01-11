@@ -1,0 +1,17 @@
+<app-image-grid *ngIf="getImages()" [images]="getImages()" (onImageClicked)="imageClicked($event)"></app-image-grid>
+
+<div *ngFor="let attachment of attachments; let i = index">
+  <div *ngIf="attachment.type==='file'" (click)="download();$event.stopPropagation()"
+    class="flex items-center mt-1 rounded-md h-20 w-[17rem] border-solid border border-dark background-light">
+    <ion-icon name="document-outline" class="h-14 w-14"></ion-icon>
+    <div class="w-full h-20 pl-3 grid grid-rows-2 gap-1">
+      <div class="text-base font-bold self-end">{{attachment.name}}</div>
+      <div class="text-sm self-start">{{attachment.size}}</div>
+    </div>
+  </div>
+  <div *ngIf="attachment.type==='video'" class="flex items-center mt-1">
+    <video #video preload="auto" playsinline class="w-[17rem]" (click)="play(video);$event.stopPropagation()">
+      <source src={{attachment.content}} type='video/mp4'>
+    </video>
+  </div>
+</div>

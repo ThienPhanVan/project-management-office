@@ -1,0 +1,224 @@
+<div class="ion-page" #page>
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <div class="flex">
+        <ion-buttons>
+          <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-label class="text-sm overflow-x-clip">{{ organization.name}}</ion-label>
+        <!-- <ion-icon name="search-outline" class="icon-search-page" routerLink="/search"></ion-icon> -->
+      </div>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content [fullscreen]="true" *ngIf="isLoading">
+    <ion-skeleton-text [animated]="true" style="width: 100%; height: 192px"></ion-skeleton-text>
+
+    <ion-card class="-mt-10 my-1 cursor-pointer text-xs" color="light">
+      <ion-card-content>
+        <div class="flex">
+          <ion-thumbnail slot="start" class="mt-1">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </ion-thumbnail>
+          <div class="ml-3" style="width: 70%">
+            <ion-card-title class="text-base font-extrabold">
+              <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text>
+            </ion-card-title>
+
+            <div class="text-xs">
+              <ion-skeleton-text [animated]="true" style="height: 16px"></ion-skeleton-text>
+            </div>
+            <div class="text-xs" *ngIf="industriesString">
+              <ion-skeleton-text [animated]="true" style="height: 16px"></ion-skeleton-text>
+            </div>
+            <div class="text-xs" *ngIf="addressString">
+              <ion-skeleton-text [animated]="true" style="height: 16px"></ion-skeleton-text>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-xs mt-2">
+          <div class="flex space-x-2">
+            <ion-button *ngIf="socials.facebook" fill="clear" target="_blank" [href]="socials.facebook">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </ion-button>
+            <ion-button *ngIf="socials.instagram" fill="clear" target="_blank" [href]="socials.instagram">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </ion-button>
+            <ion-button *ngIf="socials.youtube" fill="clear" target="_blank" [href]="socials.youtube">
+              <ion-icon name="logo-youtube"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="px-0" *ngIf="organization.description">
+      <ion-card-header>
+        <ion-card-subtitle><ion-skeleton-text [animated]="true"
+            style="height: 24px"></ion-skeleton-text></ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <pre class="text-sm break-words whitespace-pre-wrap" style="font-family: 'Open Sans', sans-serif">
+        <ion-skeleton-text [animated]="true" style="height: 20px;"></ion-skeleton-text>
+      </pre>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="px-0" *ngIf="organization.vision">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text>
+        </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <pre class="text-sm">
+        <ion-skeleton-text [animated]="true" style="height: 20px;"></ion-skeleton-text>
+      </pre>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="px-0" *ngIf="organization.mission">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text></ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <pre class="text-sm"> <ion-skeleton-text [animated]="true" style="height: 20px;"></ion-skeleton-text></pre>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="px-0" *ngIf="organization.core_values">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text></ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <pre class="text-sm break-words whitespace-pre-wrap" style="font-family: 'Open Sans', sans-serif">
+        <ion-skeleton-text [animated]="true" style="height: 20px;"></ion-skeleton-text></pre>
+      </ion-card-content>​
+    </ion-card>
+
+    <ion-card class="px-0" *ngIf="organization.services && organization.services.length > 0">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text></ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p class="text-sm" *ngFor="let service of organization.services" style="font-family: 'Open Sans', sans-serif">
+          <ion-skeleton-text [animated]="true" style="height: 20px"></ion-skeleton-text>
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          <div class="flex items-center">
+            <div class="ml-2" style="width: 100%">
+              <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text>
+            </div>
+          </div>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card class="px-0">
+      <ion-accordion-group>
+        <ion-accordion>
+          <ion-item slot="header" color="light">
+            <ion-card-subtitle class="pl-2" style="width: 100%">
+              <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text></ion-card-subtitle>
+          </ion-item>
+          <div class="w-full" slot="content"></div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </ion-card>
+
+    <ion-card class="px-0" *ngIf="organization.chapters &&
+  organization.chapters.length">
+      <ion-accordion-group>
+        <ion-accordion>
+          <ion-item slot="header" color="light">
+            <ion-card-subtitle class="pl-2" style="width: 100%">
+              <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text></ion-card-subtitle>
+          </ion-item>
+          <div class="w-full" slot="content"></div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </ion-card>
+
+    <ion-card class="px-0" *ngIf="organization.users && organization.users.length > 0">
+      <ion-accordion-group>
+        <ion-accordion>
+          <ion-item slot="header" color="light">
+            <ion-card-subtitle class="pl-2" style="width: 100%">
+              <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text></ion-card-subtitle>
+          </ion-item>
+
+          <div class="w-full" slot="content">
+            <div *ngIf="getIAMGroup()" class="px-3 pt-2">
+              <ion-segment value="0" (ionChange)="changeSegment($event)">
+                <ion-segment-button value="0">
+                  <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text>
+                </ion-segment-button>
+                <ion-segment-button value="1">
+                  <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text>
+                </ion-segment-button>
+              </ion-segment>
+            </div>
+            <div *ngIf="hasPermission('INVITE_ORGANIATION_USER')">
+              <ion-button class="text-sm ion-margin-top" fill="clear" expand="block">
+                <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text>
+              </ion-button>
+            </div>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </ion-card>
+  </ion-content>
+
+  <ion-content [fullscreen]="true" *ngIf="!isLoading">
+    <detail-organization-info [organization]="organization"></detail-organization-info>
+
+    <ion-card class="px-0">
+      <ion-segment [value]="selectedSegment" (ionChange)="changeSegment($event)">
+        <ion-segment-button value="commerce">
+          <ion-label> {{ 'PAGES.ORGANIZATION.COMMERCE' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="timeline">
+          <ion-label> {{ 'PAGES.ORGANIZATION.TIMELINE' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="about">
+          <ion-label> {{ 'PAGES.ORGANIZATION.ABOUT' | translate}}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card>
+
+    <div *ngIf="selectedSegment==='about'">
+      <profile-about-segment [organization]="organization"></profile-about-segment>
+    </div>
+
+    <div *ngIf="selectedSegment === 'timeline'">
+      <profile-timeline-segment [me]="me" [organization]="organization"></profile-timeline-segment>
+    </div>
+
+    <div *ngIf="selectedSegment === 'commerce'">
+      <profile-commerce-segment [me]="me" [organization]="organization"></profile-commerce-segment>
+    </div>
+
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="isAvailableUser" #fab>
+      <ion-fab-button size="small" (click)="toggleFabList()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="top" class="right-0 -bottom-3 mr-3" *ngIf="fabListOpen">
+        <app-fab-list [buttons]="buttonCommerceOrg" (type)="onClickCreateCommerce($event)">
+        </app-fab-list>
+      </ion-fab-list>
+    </ion-fab>
+
+    <app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>
+  </ion-content>
+</div>

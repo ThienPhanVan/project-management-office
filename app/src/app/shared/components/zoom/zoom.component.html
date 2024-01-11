@@ -1,0 +1,24 @@
+<div id="modal-zoom" [class]="showModal ? 'modal modal-show' : 'modal'">
+  <span class="close" (click)="hideModal()">&times;</span>
+  <div class="container">
+    <div *ngIf="dataImage.length">
+      <div [class]="indexCurrent===0 ? 'disabled prev-img' : 'prev-img'" (click)="actionImage(-1)">
+        <ion-icon name="caret-back-outline"></ion-icon>
+      </div>
+      <div *ngFor="let item of dataImage; index as i"
+        [class]="indexCurrent === i ? 'image-item is-active' : 'image-item' ">
+        <div class="content-image">
+          <img class="modal-content" [src]="item" alt="" (error)="onError(item)">
+          <div id="caption"></div>
+        </div>
+      </div>
+      <div [class]="indexCurrent===dataImage.length-1 ? 'disabled next-img' : 'next-img'" (click)="actionImage(1)">
+        <ion-icon name="caret-forward-outline"></ion-icon>
+      </div>
+    </div>
+    <div *ngIf="!dataImage.length">
+      <img class="modal-content" alt="" [src]="image">
+      <div id="caption"></div>
+    </div>
+  </div>
+</div>

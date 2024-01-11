@@ -1,0 +1,4 @@
+<p size="small" color="primary" class="text-sm p-0 m-0 text-blue-600" >
+  <a color="primary" class="text-blue-600 mr-1" *ngFor="let tag of tags"
+  [routerLink]="['/', 'tabs', 'home']" [queryParams]="{ tag: tag?.name }">#{{ tag?.name }}</a>
+</p>

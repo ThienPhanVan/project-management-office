@@ -1,0 +1,30 @@
+<div class="mb-1 mx-1" style="display: flex; justify-content: space-around;">
+  <ion-skeleton-text [animated]="true" style="width: 8%" class="rounded-full mr-0.5 h-7"></ion-skeleton-text>
+  <ion-skeleton-text [animated]="true" class="rounded-full w-1/5 mr-0.5 h-7"></ion-skeleton-text>
+  <ion-skeleton-text [animated]="true" class="rounded-full w-1/5 mr-0.5 h-7"></ion-skeleton-text>
+  <ion-skeleton-text [animated]="true" class="rounded-full w-1/5 mr-0.5 h-7"></ion-skeleton-text>
+  <ion-skeleton-text [animated]="true" class="rounded-full w-1/5 mr-0.5 h-7"></ion-skeleton-text>
+  <ion-skeleton-text [animated]="true" class="rounded-full w-1/5 mr-0.5 h-7"></ion-skeleton-text>    
+</div>
+<div style="display: flex; justify-content: space-around;" *ngFor="let item of SkeletonData; let i = index" class="mb-0.5">
+  <ion-card-text style="width: 48%;">
+    <div style="display: flex; justify-content: space-around;">
+        <ion-skeleton-text [animated]="true" class="rounded-full w-1/5 w-1/5"></ion-skeleton-text>   
+        <div style="width: 76%;">
+          <ion-skeleton-text [animated]="true" class="rounded-lg h-5"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" class="rounded-lg h-2.5" ></ion-skeleton-text>
+        </div>
+    </div>
+    <ion-skeleton-text [animated]="true" class="mt-0 rounded-lg h-44" ></ion-skeleton-text>   
+  </ion-card-text>
+  <ion-card-text style="width: 48%;">
+    <div style="display: flex; justify-content: space-around;">   
+        <ion-skeleton-text [animated]="true" class="rounded-full w-1/5 w-1/5"></ion-skeleton-text>
+        <div style="width: 76%;">
+          <ion-skeleton-text [animated]="true" class="rounded-lg h-5"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" class="rounded-lg h-2.5"></ion-skeleton-text>
+        </div>         
+    </div>
+    <ion-skeleton-text [animated]="true" class="mt-0 rounded-lg h-44" ></ion-skeleton-text>   
+  </ion-card-text>
+</div>

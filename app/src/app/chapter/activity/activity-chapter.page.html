@@ -1,0 +1,117 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title class=" text-sm">
+        {{'PAGES.ACTIVITY_CHAPTER.TITLE' | translate}} 
+      </ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div  *ngFor="let item of data; index as i">
+    <ion-card>
+      <ion-card-header >
+        <ion-card-title>
+          <ion-item>
+            <app-avatar (getSrcImage)="getSrcImage($event)" [classNameAvatar]="classNameAvatar" [isAvatar]="isAvatar" [data]="item.user"></app-avatar>
+            <!-- <ion-avatar slot="start">
+              <img [src]="item.user.thumbnail" alt="" (error)="onError(item.user)"/>
+            </ion-avatar> -->
+            <ion-label>
+              
+              <div [ngClass]="{'label-verified': user.verified_flag}">
+                {{item.user.username}}
+                </div>
+                
+             
+              <div class="activity-header" >
+                <div class="email" >
+                  {{item.user.email}}
+                </div>
+                <div class="time" >
+                  <b><i>{{item.created_at}}</i></b>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+        
+          
+        </ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <div *ngIf="item.type === nameActivity[0]">
+          <div class="item" *ngIf="item.new_data && item.new_data.name">Name: {{item.new_data.name}}</div>
+          <div class="item" *ngIf="item.new_data && item.new_data.description">Description: {{item.new_data.description}}</div>
+          <div class="item" *ngIf="item.new_data && item.new_data.type">Type: {{item.new_data.type}}</div>
+          <div class="item" *ngIf="item.new_data && item.new_data.parent_id">ParentId: {{item.new_data.parent_id}}</div>
+          <div class="item" *ngIf="item.new_data && item.new_data.display_order">DisplayOrder: {{item.new_data.display_order}}</div>
+        </div>
+  
+        <div *ngIf="item.name === nameActivity[1]">
+            <div class="item" *ngIf="item.detail_change && item.detail_change.name">
+              Name: 
+              {{item.detail_change.name.old_value}} -> {{item.detail_change.name.new_value}}
+            </div>
+            <div class="item" *ngIf="item.detail_change && item.detail_change.description">
+              Description: 
+              {{item.detail_change.description.old_value}} -> {{item.detail_change.description.new_value}}
+            </div>
+            <div class="item" *ngIf="item.detail_change && item.detail_change.type">
+              Type: 
+              {{item.detail_change.type.old_value}} -> {{item.detail_change.type.new_value}}
+            </div>
+            <div class="item" *ngIf="item.detail_change && item.detail_change.parent_id">
+              ParentId: 
+              {{item.detail_change.parent_id.old_value}} -> {{item.detail_change.parent_id.new_value}}
+            </div>
+            <div class="item" *ngIf="item.detail_change && item.detail_change.display_order">
+              DisplayOrder: 
+              {{item.detail_change.display_order.old_value}} -> {{item.detail_change.display_order.new_value}}
+            </div>
+          
+        </div>
+  
+        <div *ngIf="item.name === nameActivity[2]">
+          Bạn đã thêm
+          <span *ngFor="let el of item.relations.user; index as j">
+            <b>{{el.username}} {{j === item.relations.user.length - 1 ? '' : ','}}</b>
+          </span>
+          vào <b>{{item.relations.chapter.name}}</b>
+        </div>
+  
+        <div *ngIf="item.name === nameActivity[3]">
+          Bạn đã xóa
+          <span *ngFor="let el of item.relations.user; index as j">
+            <b>{{el.username}} {{j === item.relations.user.length - 1 ? '' : ','}}</b>
+          </span>
+          ra khỏi <b>{{item.relations.chapter.name}}</b>
+        </div>
+  
+        <div *ngIf="item.name === nameActivity[4]">
+          Bạn đã thêm
+          <span *ngFor="let el of item.relations.organization; index as j">
+            <b>{{el.name}} {{j === item.relations.organization.length - 1 ? '' : ','}}</b>
+          </span>
+          vào <b>{{item.relations.chapter.name}}</b>
+        </div>
+  
+        <div *ngIf="item.name === nameActivity[5]">
+          Bạn đã xóa
+          <span *ngFor="let el of item.relations.organization; index as j">
+            <b>{{el.name}} {{j === item.relations.organization.length - 1 ? '' : ','}}</b>
+          </span>
+          ra khỏi <b>{{item.relations.chapter.name}}</b>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>

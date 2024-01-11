@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar class="text-sm">
+    <ion-buttons slot="start">
+      <ion-button (click)="cancelChanges()" class="normal-case">{{'BUTTON.CANCEL' | translate}}</ion-button>
+    </ion-buttons>
+
+    <ion-title class="text-center text-base">{{ 'SELECT.LABEL.POSITION' | translate }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="confirmChanges()" class="normal-case" [disabled]="!positionId">{{'BUTTON.CHOICE' | translate}}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light" [fullscreen]="true">
+  <ion-list>
+    <ion-item *ngFor="let position of positions; trackBy: trackItems" lines="none">
+      <ion-checkbox [value]="position.id" [checked]="isChecked(position.id)" (ionChange)="ionChange($event)">
+        {{
+        position.name
+        }}</ion-checkbox>
+    </ion-item>
+  </ion-list>
+
+  <ion-item lines="none">
+    <ion-input placeholder="{{ 'MODAL.USER.ADD_POSITION' | translate }}" (ionInput)="changeNewPosition($event)"
+      [(ngModel)]="newPositionName">
+    </ion-input>
+    
+    <ion-button slot="end" fill="clear" (click)="addItem()" [disabled]="isCreating || !newPositionName.trim()">
+      <ion-icon name="reload-outline" [hidden]="!isCreating" class="icon-load mr-1"></ion-icon>
+      <ion-icon name="add-circle-outline" [hidden]="isCreating" class="mr-1"></ion-icon>
+      {{'BUTTON.ADD' | translate}}
+    </ion-button>
+  </ion-item>
+
+  <ion-toast [isOpen]="toastMessage !== ''" [message]="toastMessage" [duration]="1000"
+    (didDismiss)="closeToast()"></ion-toast>
+</ion-content>

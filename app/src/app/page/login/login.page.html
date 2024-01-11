@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="text-sm">{{'PAGES.LOGIN.TITLE' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="loginForm" novalidate>
+    <ion-item lines="none" class="ion-margin-top ion-margin-bottom">
+      <img src="../../../assets/logo/gcec.png" />
+    </ion-item>
+    <ion-item lines="none">
+      <p class="text-justify">{{'PAGES.LOGIN.SLOGAN' | translate}}</p>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="phone" formControlName="phone" [clearInput]="true" type="tel" [label]="'FORM.FIELD.PHONE' | translate"
+        labelPlacement="floating" placeholder="" class="required"></ion-input>
+    </ion-item>
+    <div class="error-container"
+      *ngIf="(loginForm.get('phone')?.invalid && loginForm.get('phone')?.touched) || loginForm.get('phone')?.dirty  || isSubmitting">
+      <div class="text-rose-600	text-xs pl-4 pr-4">
+        <span *ngIf="loginForm.get('phone')?.errors?.['required']">
+          {{'FORM.VALID.PHONE.REQUIRED' | translate}}
+        </span>
+        <span *ngIf="loginForm.get('phone')?.errors?.['pattern']">
+          {{'FORM.VALID.PHONE.CORRECT_FORMAT' | translate}}
+        </span>
+      </div>
+    </div>
+
+    <ion-item>
+      <ion-input name="password" formControlName="password" class="required" [type]="passwordType" [label]="'FORM.FIELD.PASSWORD' | translate"
+        labelPlacement="floating" placeholder="">
+      </ion-input>
+      <ion-button (click)='hideShowPassword()' fill="clear" color="dark"><ion-icon item-end [name]="passwordIcon" class="passwordIcon" ></ion-icon></ion-button>
+    </ion-item>
+    <div class="error-container"
+      *ngIf="(loginForm.get('password')?.invalid && loginForm.get('password')?.touched) || loginForm.get('password')?.dirty || isSubmitting">
+      <div class="text-rose-600	text-xs pl-4 pr-4">
+        <span *ngIf="loginForm.get('password')?.errors?.['required']">
+          {{'FORM.VALID.PASSWORD.REQUIRED' | translate}}
+        </span>
+        <span *ngIf="loginForm.get('password')?.errors?.['pattern']">
+          {{'FORM.VALID.PASSWORD.CORRECT_FORMAT' | translate}}</span>
+      </div>
+    </div>
+    <div class="error-container" *ngIf="loginFalse">
+      <div class="text-rose-600	text-xs pl-4 pr-4">
+        <span>{{loginFalseReason}}</span>
+      </div>
+    </div>
+
+    <ion-row>
+      <ion-col>
+        <ion-button class="px-2" type="submit" expand="block" (click)="submit()"
+          [disabled]="loginForm.invalid || isSubmitting">
+          <ion-icon name="reload-outline" [hidden]="!isSubmitting" class="icon-load mr-3"></ion-icon>
+          <span>{{'BUTTON.LOGIN' | translate}}</span></ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button class="px-2" type="submit" expand="block" (click)="redirectRegister()" color="light">{{'BUTTON.REGISTER' | translate}}</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <div text-center><a class="text-blue-500" routerLink="/auth/forgot-password">{{'BUTTON.FORGOT_PASSWORD' | translate}}</a></div>
+    </ion-row>
+  </form>
+</ion-content>

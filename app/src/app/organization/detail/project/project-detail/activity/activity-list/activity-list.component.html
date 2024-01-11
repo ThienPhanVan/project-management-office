@@ -1,0 +1,30 @@
+<div class="ion-item p-3" *ngFor="let activity of activities">
+  <div class="flex items-center w-full">
+    <app-avatar *ngIf="activity.user_activity" [classNameAvatar]="'thumbnail-2'" [isAvatar]="true"
+      [data]="activity.user_activity || {}"></app-avatar>
+    <div class="pl-1">
+      <div>
+        {{activity.user_activity?.username}}
+      </div>
+     
+      <div class="text-xs">
+        {{activity.activity_name}} |
+        {{activity.updated_date | date : 'hh:mm:ss dd/MM/yyyy'}}
+      </div>
+
+      <div class="">
+        <a [routerLink]="['../', 'issues', activity?.new_data?.Id]" class="text-green-500" *ngIf="activity.new_data.Code">{{activity.new_data.Code }} </a>
+        
+        <span class="ml-1"> {{
+          activity.new_data.Name}}</span>
+      </div>
+    </div>
+  </div>
+
+  <pre *ngIf="activity.activity_name.includes('UPDATE')">{{(activity.detail_change | displayActivity)  || "Nothing changed" }}
+</pre>
+</div>
+
+<ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+</ion-infinite-scroll>

@@ -1,0 +1,187 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title>Update: {{formGroup.value.name}}</ion-title>
+    <ion-button fill="clear" color="dark" (click)="actionSubmit()" slot="end">
+      <ion-icon *ngIf="!isUpdating" size="medium" color="dark" name="add-outline"></ion-icon>
+      <ion-spinner *ngIf="isUpdating" name="circular" class="text-xs"></ion-spinner>
+      Lưu
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="formGroup" novalidate>
+    <div>
+      <ion-item>
+        <ion-label (click)="type.open()"><span class="text-xs label-text-wrapper label-required">Type</span></ion-label>
+        <app-select class="mr-auto text-sm" title="Type" [items]="issueTypes"
+          (valueChange)="valueChange('type', $event)" [value]="formGroup.value.type" [removable]="true"
+          formControlName="type" ngDefaultControl #type>
+        </app-select>
+      </ion-item>
+
+      <div class="error-container"
+        *ngIf="(formGroup.get('type')?.invalid && formGroup.get('type')?.touched) || formGroup.get('type')?.dirty">
+        <div class="text-rose-600	text-sm pl-4 pr-4">
+          <span *ngIf="formGroup.get('type')?.errors?.['required']">
+            {{'FORM.VALID.REQUIRED' | translate}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <ion-item>
+        <ion-input class="required" label="Name" formControlName="name" [clearInput]="true" type="text"
+          labelPlacement="stacked" placeholder="">
+        </ion-input>
+      </ion-item>
+
+      <div class="error-container"
+        *ngIf="(formGroup.get('name')?.invalid && formGroup.get('name')?.touched) || formGroup.get('name')?.dirty">
+        <div class="text-rose-600	text-sm pl-4 pr-4">
+          <span *ngIf="formGroup.get('name')?.errors?.['required']">
+            {{'FORM.VALID.REQUIRED' | translate}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <ion-item><ion-textarea label="Description" formControlName="description" labelPlacement="stacked" [autoGrow]="true"
+        placeholder=""></ion-textarea></ion-item>
+
+    <div>
+      <ion-item>
+        <ion-label (click)="assignee.open()"><span
+            class="text-xs label-text-wrapper label-required">Assignee</span></ion-label>
+        <app-select class="mr-auto text-sm" title="Assignee" [items]="users"
+          (valueChange)="valueChange('assignee_id', $event)" [value]="formGroup.value.assignee_id"
+          [removable]="true" formControlName="assignee_id" ngDefaultControl #assignee>
+        </app-select>
+      </ion-item>
+
+      <div class="error-container"
+        *ngIf="(formGroup.get('assignee_id')?.invalid && formGroup.get('assignee_id')?.touched) || formGroup.get('assignee_id')?.dirty">
+        <div class="text-rose-600	text-sm pl-4 pr-4">
+          <span *ngIf="formGroup.get('assignee_id')?.errors?.['required']">
+            {{'FORM.VALID.REQUIRED' | translate}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+    <div>
+      <ion-item>
+        <ion-label (click)="status.open()"><span
+            class="text-xs label-text-wrapper label-required">Status</span></ion-label>
+        <app-select class="mr-auto text-sm" title="Status" [items]="statuses"
+          (valueChange)="valueChange('status_id', $event)" [value]="formGroup.value.status_id"
+          [removable]="true" formControlName="status_id" ngDefaultControl #status>
+        </app-select>
+      </ion-item>
+
+      <div class="error-container"
+        *ngIf="(formGroup.get('status_id')?.invalid && formGroup.get('status_id')?.touched) || formGroup.get('status_id')?.dirty">
+        <div class="text-rose-600	text-sm pl-4 pr-4">
+          <span *ngIf="formGroup.get('status_id')?.errors?.['required']">
+            {{'FORM.VALID.REQUIRED' | translate}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <ion-item>
+        <ion-label (click)="priority.open()"><span class="text-xs label-text-wrapper">Priority</span></ion-label>
+        <app-select class="mr-auto text-sm" title="Priority" [items]="priorities"
+          (valueChange)="valueChange('priority_id', $event)" [value]="formGroup.value.priority_id"
+          [removable]="true" formControlName="priority_id" ngDefaultControl #priority>
+        </app-select>
+      </ion-item>
+    </div>
+
+    <div>
+      <ion-item>
+        <ion-label (click)="parentIssue.open()"><span class="text-xs label-text-wrapper">Parent Issue</span></ion-label>
+        <app-select class="mr-auto text-sm" title="Parent Issue" [items]="issues" [searchable]="true"
+          (valueChange)="valueChange('parent_id', $event)" [value]="formGroup.value.parent_id"
+          [removable]="true" formControlName="parent_id" ngDefaultControl #parentIssue>
+        </app-select>
+      </ion-item>
+    </div>
+
+    <div>
+      <ion-item>
+        <ion-label (click)="version.open()"><span class="text-xs label-text-wrapper">Version</span></ion-label>
+        <app-select class="mr-auto text-sm" title="Version" [items]="versions"
+          (valueChange)="valueChange('version_id', $event)" [value]="formGroup.value.version_id"
+          [removable]="true" formControlName="version_id" ngDefaultControl #version>
+        </app-select>
+      </ion-item>
+    </div>
+
+    <div>
+      <ion-item>
+        <ion-label (click)="milestone.open()"><span class="text-xs label-text-wrapper">Milestone</span></ion-label>
+        <app-select class="mr-auto text-sm" title="Milestone" [items]="milestones"
+          (valueChange)="valueChange('milestone_id', $event)" [value]="formGroup.value.milestone_id"
+          [removable]="true" formControlName="milestone_id" ngDefaultControl #milestone>
+        </app-select>
+      </ion-item>
+    </div>
+
+    <div>
+      <ion-item id="start-date">
+        <span class="text-xs">Start Date</span>
+        <span class="spacer"></span>
+        <ion-text class="text-sm pr-1">{{
+          formGroup.value.start_date | date:'dd/MM/YYYY'}}</ion-text>
+        <ion-icon name="caret-down-outline" class="text-sm" color="dark"></ion-icon>
+      </ion-item>
+
+      <ion-modal trigger="start-date" [cssClass]="'bottom-end'">
+        <ng-template>
+          <ion-datetime presentation="date" size="cover" formControlName="start_date" [showDefaultButtons]="true"
+            doneText="Chọn" cancelText="{{ 'BUTTON.CANCEL' | translate}}"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </div>
+
+    <div>
+      <ion-item id="due-date">
+        <span class="text-xs">Due Date</span>
+        <span class="spacer"></span>
+        <ion-text class="text-sm pr-1">{{
+          formGroup.value.due_date | date:'dd/MM/YYYY'}}</ion-text>
+        <ion-icon name="caret-down-outline" class="text-sm" color="dark"></ion-icon>
+      </ion-item>
+
+      <ion-modal trigger="due-date" [cssClass]="'bottom-end'">
+        <ng-template>
+          <ion-datetime presentation="date" size="cover" formControlName="due_date" [showDefaultButtons]="true"
+            doneText="Chọn" cancelText="{{ 'BUTTON.CANCEL' | translate}}"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </div>
+
+    <ion-item>
+      <ion-input label="Estimate Hours" formControlName="estimate_hours" [clearInput]="true" type="number"
+        labelPlacement="stacked" placeholder="">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input label="Actual Hours" formControlName="actual_hours" [clearInput]="true" type="number"
+        labelPlacement="stacked" placeholder="">
+      </ion-input>
+    </ion-item>
+
+  </form>
+</ion-content>
+
+<ion-toast [isOpen]="toastMessage!==''" [message]="toastMessage" [duration]="2000"
+  (didDismiss)="closeToast()"></ion-toast>

@@ -1,0 +1,28 @@
+pre {
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.spacer {
+  flex: 1 1 0;
+}
+.friends {
+  --ion-grid-column-padding: 0px;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+  will-change: scroll-position;
+  justify-content: center;
+}
+
+.friend-item {
+  text-align: center;
+  --col-item-width: 5;
+    flex: 0 0 calc(var(--col-item-width) / var(--ion-grid-columns, 12) * 100%);
+    width: calc(var(--col-item-width) / var(--ion-grid-columns, 12) * 100%);
+    max-width: calc(var(--col-item-width) / var(--ion-grid-columns, 12) * 100%);
+    padding: 0px var(--page-friends-gutter);
+    margin: 0 0.5rem;
+}

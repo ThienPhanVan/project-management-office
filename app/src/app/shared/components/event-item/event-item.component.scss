@@ -1,0 +1,128 @@
+ion-card {
+  ion-card-content {
+
+    .date-time {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      // -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .type {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      .icon-online {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #006600;
+      }
+
+      .icon-offline {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: darkgray;
+      }
+
+      .text {
+        margin-left: 8px;
+      }
+    }
+
+    .location {
+      font-size: 14px;
+    }
+
+    .count {
+      margin-left:1px ;
+      .people {
+        margin-right: 6px;
+      }
+    }
+
+
+
+    .events-child {
+      margin-bottom: 8px;
+      ion-item {
+        font-size: 12px;
+        button {
+          background-color: gainsboro;
+          padding: 4px;
+          border-radius: 8px;
+        }
+      }
+    }
+
+    .action-participated {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px dashed;
+      border-radius: 8px;
+
+      &.active {
+        ion-icon {
+          color: blue !important;
+        }
+
+        border: 1px dashed blue !important;
+      }
+
+      .button {
+        .text {
+          margin-left: 12px;
+        }
+      }
+    }
+  }
+}
+
+.participated-children {
+  color: blue;
+}
+
+.children-event {
+  font-size: 12px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  .event-item {
+    display: inline-block;
+    border: 1px solid #eaebee;
+    border-radius: 8px;
+    padding: 4px;
+    margin-right: 8px;
+  }
+}
+
+.content-news {
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  // -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  line-height: normal !important;
+}
+
+
+.content-news-more {
+  font-size: 15px;
+  text-align: right;
+  margin-top: 4px;
+}
+

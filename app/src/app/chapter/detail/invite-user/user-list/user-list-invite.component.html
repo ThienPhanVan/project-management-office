@@ -1,0 +1,79 @@
+<ion-card *ngFor="let user of single?users:getOrganizationMembers()" class="cursor-pointer m-1 body">
+  <ion-card-content class="flex">
+    <div *ngIf="!single" class="flex">
+      <ion-checkbox class="checkbox" (ionChange)="changeCheckbox($event, user.id)" [checked]="isChapterMember(user)"
+        [disabled]="isChapterMember(user) || user.isInvited"></ion-checkbox>
+    </div>
+
+    <div class="flex-1">
+      <div class="flex">
+        <div>
+          <app-avatar (getSrcImage)="getSrcImage($event)" [classNameAvatar]="classNameAvatar" [isAvatar]="isAvatar"
+            [data]="user"></app-avatar>
+        </div>
+
+        <div class="ml-3">
+          <ion-card-title class="text-base font-extrabold" [routerLink]="['/tabs', 'users', user.id]">
+            <div [ngClass]="{'label-verified': user.verified_flag}">
+              {{ user.username || user.name }}
+            </div>
+          </ion-card-title>
+
+          <div class="text-xs" *ngIf="user.is_public_phone">
+            <ion-icon name="call-outline"></ion-icon> {{ user.phone }}
+          </div>
+
+          <div class="flex" *ngIf="isChapterMember(user)">
+            <ion-icon name="lock-closed-outline" class="text-xs"></ion-icon>
+
+            <app-select title="{{ 'SELECT.LABEL.IAM_GROUP' | translate }}" [items]="iamGroups" [disabled]="true"
+              placeHolder="{{ 'MODAL.USER.CHOICE_IAM_GROUP' | translate }}" [value]="getIAMGroupId(user)"
+              class="text-xs ml-1">
+            </app-select>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="single">
+        <div *ngIf="!isChapterMember(user);else isMember">
+          <div class="flex pt-1" *ngIf="(getMyId() !== user.id) && !user.isInvited">
+            <div class="flex-1">
+              <ion-button fill="clear" class="text-sm" expand="block">
+                <div class="flex">
+                  <div class="items-center pl-1">
+                    <app-select title="{{ 'SELECT.LABEL.IAM_GROUP' | translate }}" [items]="iamGroups"
+                      placeHolder="{{ 'MODAL.USER.CHOICE_IAM_GROUP' | translate }}" [value]="getIAMGroupId(user)"
+                      (selectionChange)="actionChangeIAMGroup($event, user)" class="text-sm">
+                    </app-select>
+                  </div>
+                </div>
+              </ion-button>
+            </div>
+
+            <div class="flex-1">
+              <ion-button class="text-sm" fill="clear" expand="block" (click)="actionInviteSingle(user)">
+                <ion-icon name="add-outline" class="mr-1"></ion-icon>
+                {{ 'MODAL.USER.ASSIGN' | translate }}
+              </ion-button>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #isMember>
+          <div class="mt-2 ml-1" *ngIf="(getMyId() !== user.id)">
+            {{'PAGES.CHAPTER.USER_IS_MEMBER' | translate}}</div>
+        </ng-template>
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+<ion-button class="text-xs" expand="block" (click)="actionInviteMultiple()" *ngIf="!single" [disabled]="!values.length">
+  <ion-icon name="add-outline" class="mr-1"></ion-icon>
+  {{ 'BUTTON.ASSIGN_USERS' | translate }}
+</ion-button>
+
+<ion-toast [isOpen]="toastMessage!==''" [message]="toastMessage" [duration]="1000"
+  (didDismiss)="closeToast()"></ion-toast>
+
+<app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>

@@ -1,0 +1,87 @@
+<div class="action" *ngIf="data.type !== 4">
+  <div *ngIf="!isHiddenSummary" style="display: flex; justify-content: space-between; align-items: center">
+    <span class="text-red-500 heart text-sm mr-1" (click)="setOpen(true)">
+      <ion-icon name="heart" color="danger" style="margin-bottom: -3px"></ion-icon>
+      {{ data?.summary?.number_of_reactions ?? 0 }}
+      <!-- {{ "COMMON.LIKE" | translate }} -->
+    </span>
+    <span *ngIf="page === 'list' || page === 'detail'">
+      <span class="text-default-500 heart text-sm mr-1" *ngIf="data?.summary?.number_of_comments < 2"
+        (click)="redirectDetail(data.id, true)">
+        {{ data?.summary?.number_of_comments ?? 0 }}
+        {{ "COMMON.COMMENT" | translate }}
+      </span>
+      <span class="text-default-500 heart text-sm mr-1" *ngIf="data?.summary?.number_of_comments >= 2"
+        (click)="redirectDetail(data.id, true)">
+        {{ data?.summary?.number_of_comments ?? 0 }}
+        {{ "COMMON.COMMENTS" | translate }}
+      </span>
+    </span>
+  </div>
+  <ion-label fill="clear" class="normal-case items-center">
+    <div class="bid">
+      <div class="-ml-3 ion-activatable ripple-parent circle" (click)="onHeart(data.id)" *ngIf="data?.has_reacted">
+        <ion-icon name="heart" class="items-center" color="danger"></ion-icon>
+        <ion-ripple-effect type="unbounded" class="cl-red"></ion-ripple-effect>
+      </div>
+
+      <div class="-ml-3 ion-activatable ripple-parent circle" (click)="onHeart(data.id)" *ngIf="!data?.has_reacted">
+        <ion-icon name="heart-outline" class="items-center" color="danger"></ion-icon>
+        <ion-ripple-effect type="unbounded" class="cl-red"></ion-ripple-effect>
+      </div>
+
+      <div class="ion-activatable ripple-parent circle" (click)="redirectDetail(data.id, true)"
+        *ngIf="page === 'list' || page === 'detail'">
+        <ion-icon color="dark" name="chatbubbles-outline"></ion-icon>
+        <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+      </div>
+
+      <!-- <div class="ion-activatable ripple-parent circle" (click)="onCopy()">
+        <ion-icon  size="large" name="link-outline" class="-rotate-45" color="primary"></ion-icon>
+        <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+      </div> -->
+
+      <!-- no bid -->
+      <ion-button fill="outline" size="small" shape="round" *ngIf="!data?.has_bid && hasBid" (click)="setOpenBid(true)"
+        class="mr-2" [hidden]="isOutdate()">
+        <ion-icon size="small" name="sunny-outline" class="mr-1"></ion-icon>
+        <a>{{ "COMMON.BID" | translate }}</a>
+      </ion-button>
+
+      <!-- has bid -->
+      <ion-button color="has_requested" fill="outline" size="small" shape="round" *ngIf="data?.has_bid && hasBid"
+        class="mr-2" (click)="setOpenBid(true)" [disabled]="isOutdate()">
+        <ion-icon size="small" name="checkmark-circle" color="has_requested"></ion-icon>
+        <a>{{ "COMMON.HAS_BID" | translate }}</a>
+      </ion-button>
+
+      <!-- no check -->
+      <ion-button fill="outline" size="small" shape="round" *ngIf="!data?.has_participated && type === 'events'"
+        class="mr-2" (click)="onPractice(data.id, 'join')" [hidden]="isOutdate()">
+        <ion-icon size="small" name="person-add-outline" class="mr-1"></ion-icon>
+        <a>{{ "COMMON.PARTICIPATE" | translate }}</a>
+      </ion-button>
+
+      <!-- checked -->
+      <ion-button color="has_requested" fill="outline" size="small" shape="round"
+        *ngIf="data?.has_participated && type === 'events'" (click)="onPractice(data.id, 'delete')" class="mr-2"
+        [disabled]="isOutdate()">
+        <ion-icon size="small" name="checkmark-circle" color="has_requested" class="mr-1"></ion-icon>
+        <a>{{ "COMMON.PARTICIPATE" | translate }}</a>
+      </ion-button>
+    </div>
+  </ion-label>
+
+  <ion-modal [isOpen]="isShowListUser" (didDismiss)="setOpen(false)" initialBreakpoint="0.95" [breakpoints]="[0, 0.95]">
+    <ng-template>
+      <app-users-favorites [data]="data" (closeBid)="setOpen($event)" [type]="type"></app-users-favorites>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="showBid" (didDismiss)="setOpenBid(false)" initialBreakpoint="0.85" [breakpoints]="[0, 0.85]">
+    <ng-template>
+      <app-form-bid (closeBid)="setOpenBid($event)" (getValues)="submitBid($event)" (deleteBid)="removeBid($event)"
+        [newsDetail]="detailBid"></app-form-bid>
+    </ng-template>
+  </ion-modal>
+</div>

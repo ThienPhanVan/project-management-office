@@ -1,0 +1,31 @@
+<ion-card class="px-0 m-4">
+
+  <ion-segment [value]="selectedSegment" (ionChange)="changeSegment($event)" *ngIf="isIamGroup">
+    <ion-segment-button value="products">
+      <ion-label> {{ 'PAGES.USER_INFO.PRODUCTS' | translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="orders">
+      <ion-label> {{ 'PAGES.USER_INFO.ORDERS' | translate}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-card>
+<div *ngIf="isIamGroup">
+  <div *ngIf="selectedSegment === 'products'">
+    <app-product-two-column [data]="products" [isLoading]="isLoading" (heart)="onHeart($event)" [me]="me"
+      (hidden)="onHidden($event)" (undo)="onUndo($event)"
+      (actionSheet)="onActionSheet($event)"></app-product-two-column>
+  </div>
+
+  <div *ngIf="selectedSegment === 'orders'">
+    <app-order-list [orders]="orders" (order)="getOrderDetail($event)"></app-order-list>
+  </div>
+</div>
+
+
+<app-product-two-column [data]="products" [isLoading]="isLoading" (heart)="onHeart($event)" [me]="me"
+  (hidden)="onHidden($event)" (undo)="onUndo($event)" (actionSheet)="onActionSheet($event)"
+  *ngIf="!isIamGroup"></app-product-two-column>
+
+<ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+</ion-infinite-scroll>

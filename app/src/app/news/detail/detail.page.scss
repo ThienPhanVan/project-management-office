@@ -1,0 +1,35 @@
+
+.header {
+  color: #666666;
+}
+.detail-news-pages {
+  color: #666666;
+  margin: 0;
+
+}
+
+.comments {
+  margin-bottom: 12px;
+  margin-top: 12px;
+}
+::ng-deep {
+  .detail-news-pages {
+    .action {
+      padding: 0px 16px 16px 16px !important;
+      border-bottom: 3px solid #f1f1f1;
+    }
+  }
+}
+
+ion-modal.modal-report {
+  --height: 90%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+@media only screen and (min-width: 768px) and (min-height: 600px) {
+  ion-modal {
+    --width: 384px;
+  }
+}

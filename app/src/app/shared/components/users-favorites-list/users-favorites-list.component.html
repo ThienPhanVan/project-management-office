@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title *ngIf="userReactions?.length">{{ "TAB.HOME.FAVORITE_LIST" | translate }}</ion-title>
+    <!-- <ion-buttons slot="end">
+      <ion-button (click)="setCloseModal(false)" [strong]="true">{{
+        "BUTTON.CLOSE" | translate
+        }}</ion-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" *ngIf="userReactions?.length" [class]="userReactions?.length < 10 ? 'no-scroll' : ''">
+  <ion-card *ngFor="let data of userReactions" class="cursor-pointer" class="card-modal-user">
+    <ion-card-content *ngIf="isLoading">
+      <ion-skeleton-text [animated]="true" style="height: 60px"></ion-skeleton-text>
+    </ion-card-content>
+    <ion-card-content *ngIf="!isLoading" style="height: 60px">
+      <div class="flex items-center" (click)="setCloseModal(false)" [routerLink]="['/tabs', 'users', data.user.id]">
+        <app-avatar (getSrcImage)="getSrcImage($event)" [classNameAvatar]="'item'" [data]="data.user"
+          [isAvatar]="isAvatar"></app-avatar>
+        <div class="ml-3">
+          <ion-card-title class="text-base font-extrabold">
+            <div>
+              {{ data.user.username }}
+            </div>
+          </ion-card-title>
+        </div>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" *ngIf="isScroll">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+<ion-content [fullscreen]="true" *ngIf="mentions?.length" [class]="mentions?.length < 10 ? 'no-scroll' : ''">
+  <ion-card *ngFor=" let data of userMentions" class="cursor-pointer" class="card-modal-user">
+    <ion-card-content *ngIf="isLoading">
+      <ion-skeleton-text [animated]="true" style="height: 60px"></ion-skeleton-text>
+    </ion-card-content>
+    <ion-card-content *ngIf="!isLoading" style="height: 60px">
+      <div class="flex items-center" (click)="setCloseModal(false)" [routerLink]="['/tabs', 'users', data.id]">
+        <app-avatar (getSrcImage)="getSrcImage($event)" [classNameAvatar]="'item'" [data]="data"
+          [isAvatar]="isAvatar"></app-avatar>
+        <div class="ml-3">
+          <ion-card-title class="text-base font-extrabold">
+            <div>
+              {{ data.username }}
+            </div>
+          </ion-card-title>
+        </div>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" *ngIf="isScroll">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

@@ -1,0 +1,49 @@
+<ion-button color="light" shape="round" size="small" class="no-shadow" id="add-user">
+    <ion-icon name="person-add-outline" size="small"></ion-icon>
+</ion-button>
+
+<div>{{"TAB.MESSAGE.ADD_MEMBER" | translate}}</div>
+
+<ion-modal trigger="add-user" (didDismiss)="modalDismiss()" #modal>
+    <ng-template>
+        <ion-header>
+            <ion-toolbar>
+                <ion-button fill="clear" color="dark" (click)="modal.dismiss()" slot="start" size="small">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                </ion-button>
+
+                <div class="flex flex-col justify-items-start ml-3">
+                    <ion-text color="dark font-bold text-base">Thêm vào nhóm</ion-text>
+                    <ion-text *ngIf="selectedUserIds.length" color="medium font-thin text-sm">Đã chọn:
+                        {{selectedUserIds.length}}</ion-text>
+                </div>
+            </ion-toolbar>
+        </ion-header>
+
+        <ion-content class="relative">
+            <div color="light">
+                <ion-item class="pr-3">
+                    <ion-input [label]="label" [clearInput]="true" (ionInput)="onSearchChange()" type="text"
+                        labelPlacement="stacked" placeholder="">
+                    </ion-input>
+                </ion-item>
+
+                <div *ngIf="searchedUsers.length" class="mt-1">
+                    <span class="italic ml-3 text-sm">{{'NOTE.RESULT' | translate}}</span>
+                    <app-user-list [users]="searchedUsers" [isLoading]="isLoading" [isSelectCheckbox]="true"
+                        [allowRedirect]="false"></app-user-list>
+                </div>
+
+                <div *ngIf="!searchedUsers.length" class="mt-1">
+                    <span class="italic ml-3 text-sm">{{'NOTE.SUGGESTION' | translate}}</span>
+                    <app-user-list [users]="users" [isLoading]="isLoading" [isSelectCheckbox]="true"
+                        [allowRedirect]="false" (selectedUserIdsChange)="getSelectedUsers($event)"></app-user-list>
+                </div>
+            </div>
+        </ion-content>
+
+        <ion-button [hidden]="!selectedUserIds.length" class="w-full absolute bottom-0 m-0"
+        expand="full" size="default" (click)="addToGroup()">Mời</ion-button>
+
+    </ng-template>
+</ion-modal>

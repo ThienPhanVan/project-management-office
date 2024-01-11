@@ -1,0 +1,55 @@
+<ion-card class="card">
+  <ion-card-header class="">
+    <div class="flex">
+      <div class="w-full ml-2">
+        <div
+          class="flex"
+          style="justify-content: space-between; align-items: flex-start"
+        >
+          <ion-avatar class="h-12" style="width: 64px; height: 64px">
+            <ion-skeleton-text
+              [animated]="true"
+              class="m-2"
+              style="width: 64px; height: 64px"
+            ></ion-skeleton-text>
+          </ion-avatar>
+          <div class="w-full ml-4 mt-4">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </div>
+          <div style="display: flex; align-items: center; margin-left: 8px">
+            <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+            <ion-icon
+              name="close-outline"
+              style="font-size: 20px; margin-right: 8px; margin-left: 8px"
+            ></ion-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-card-header>
+
+  <app-avatar></app-avatar>
+
+  <ion-card-content style="padding-bottom: 0">
+    <div>
+      <div class="title-new">
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      </div>
+      <p class="text-xs content-news">
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      </p>
+    </div>
+    <div class="hashtag" class="m-0 h-5 items-center">
+      <ion-chip
+        size="small"
+        color="none"
+        class="text-xs p-0 m-0 h-5 text-blue-600 pr-1"
+      >
+        <a color="primary" class="text-blue-600"
+          >#<ion-skeleton-text [animated]="true"></ion-skeleton-text
+        ></a>
+      </ion-chip>
+    </div>
+  </ion-card-content>
+</ion-card>

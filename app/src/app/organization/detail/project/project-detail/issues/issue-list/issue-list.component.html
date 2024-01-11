@@ -1,0 +1,57 @@
+<ion-list *ngIf="issues && issues.length; else issuesEmpty">
+  <ion-item *ngFor="let issue of issues" [routerLink]="[issue.id]">
+    <div class="w-full py-2">
+      <div class="flex items-center">
+        <app-avatar
+          class=""
+          [classNameAvatar]="'thumbnail-08'"
+          [isAvatar]="true"
+          [data]="issue.assignee || {}"
+        ></app-avatar>
+
+        <div class="flex-1 pl-2 text-xs">
+          {{ issue.assignee?.username || "unassignee" }}
+        </div>
+
+        <ion-icon
+          color="danger"
+          name="flame"
+          *ngIf="isOutdate(issue)"
+        ></ion-icon>
+
+        <ion-chip class="text-right text-xs h-[1.4rem]"
+          >{{ issue.priority?.name || "Normal" }}
+        </ion-chip>
+
+        <ion-chip
+          [color]="issue.status?.color || ''"
+          class="text-right text-xs h-[1.4rem]"
+          >{{ issue.status?.name || "open" }}
+        </ion-chip>
+      </div>
+
+      <div class="">
+        <ion-chip class="text-xs h-[1.4rem]">{{
+          displayType(issue.type || 1)
+        }}</ion-chip>
+        <span class="text-green-500" *ngIf="issue.code">{{ issue.code }} </span>
+        <span class="ml-1"> {{ issue.name }}</span>
+      </div>
+
+      <div class="">
+        <ion-chip
+          >{{ issue.start_date | date : "dd/MM" }} -
+          {{ issue.due_date | date : "dd/MM" }}</ion-chip
+        >
+      </div>
+    </div>
+  </ion-item>
+</ion-list>
+
+<ng-template #issuesEmpty>
+  <div>No Issues</div>
+</ng-template>
+
+<ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+</ion-infinite-scroll>

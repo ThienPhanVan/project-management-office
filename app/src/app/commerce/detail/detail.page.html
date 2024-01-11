@@ -1,0 +1,258 @@
+<ion-header [translucent]="true">
+  <!-- <ion-toolbar>
+    <div class="flex items-center">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-card-header class="header w-full" *ngIf="!isLoading" style="padding: 4px 4px 2px">
+        <div class="flex" style="display: flex; justify-content: space-around">
+
+          <app-avatar [type]="'detail'" class="mr-4" [isAvatar]="true" [classNameAvatar]="'item'" [data]="data?.author"
+            *ngIf="!isLoading"></app-avatar>
+          <div class="w-10/12 ml-2">
+            <div class="flex" style="justify-content: space-between; align-items: flex-start">
+              <div>
+                <a class="text-sm decoration-none font-bold" [routerLink]="['/tabs', 'users', data?.author?.id]">
+                  {{ data?.author?.username }}
+                </a>
+              </div>
+              <div style="display: flex; align-items: center; margin-left: 8px">
+                <ion-icon class="rotate-90 mr-2" name="ellipsis-vertical-outline"
+                  [id]="'open-action-sheet-product-detail'"></ion-icon>
+                <ion-action-sheet [trigger]="'open-action-sheet-product-detail'" [buttons]="
+                      me?.id !== data?.author?.id
+                        ? actionSheetGuests
+                        : actionSheetOwn
+                    " (didDismiss)="setResult($event)"></ion-action-sheet>
+              </div>
+            </div>
+            <div class="text-xs">{{ data.created_date }}</div>
+          </div>
+        </div>
+      </ion-card-header>
+    </div>
+  </ion-toolbar> -->
+  <ion-toolbar>
+    <div class="flex items-center">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+      <ion-searchbar class="search-news-tabs" placeholder="{{ 'PLACEHOLDER.SEARCH' | translate }}" [debounce]="1000"
+        (ionFocus)="showSearchProductModel()" (ionClear)="clearSearchNewModel()"></ion-searchbar>
+
+      <ion-button fill="clear" class="right-0" routerLink="/carts">
+        <ion-icon name="cart-outline"></ion-icon>
+        <span class="cart-count" *ngIf="countCartItem !== 0">{{countCartItem}}</span>
+      </ion-button>
+      <!-- <div>
+        <ion-menu-button size="small"></ion-menu-button>
+      </div> -->
+      <div style="display: flex; align-items: center; margin-left: 8px">
+        <ion-icon class="rotate-90 mr-2" name="ellipsis-vertical-outline"
+          [id]="'open-action-sheet-product-detail'"></ion-icon>
+        <ion-action-sheet [trigger]="'open-action-sheet-product-detail'" [buttons]="
+                me?.id !== data?.author?.id ? actionSheetGuests : actionSheetOwn
+              " (didDismiss)="setResult($event)" *ngIf="me?.super_admin !== 1"></ion-action-sheet>
+        <ion-action-sheet [trigger]="'open-action-sheet-product-detail'" [buttons]="
+                      me?.id !== data?.author?.id ? actionSheetSuperAdmin : actionSheetOwn
+                    " (didDismiss)="setResult($event)" *ngIf="me?.super_admin === 1"></ion-action-sheet>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="commerce-tab-detail">
+  <ion-card class="shadow-md">
+    <ion-card-header class="header" *ngIf="isLoading">
+      <ion-skeleton-text [animated]="true" class="h-48"></ion-skeleton-text>
+      <div class="flex">
+        <ion-skeleton-text [animated]="true" class="h-12"></ion-skeleton-text>
+      </div>
+    </ion-card-header>
+    <ion-card-header class="header" *ngIf="!isLoading">
+
+      <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+        <div ngxSlickItem class="slide" *ngFor="let slide of data?.listImages; index as i">
+          <img class="image-detail" src="{{ slide?.image_url }}" alt="" width="100%"
+            (click)="onZoom({index: i, data: data?.listImages})">
+
+        </div>
+
+      </ngx-slick-carousel>
+
+      <!-- <img [src]="
+          data && data?.images && data?.images?.length
+            ? data?.images[0]?.image_url
+            : data.cover
+        " (error)="
+          onError(item && item?.images.length && item?.images[0], 'images_url')
+        " /> -->
+    </ion-card-header>
+    <ion-card-content *ngIf="isLoading">
+      <ion-skeleton-text [animated]="true" class="h-12"></ion-skeleton-text>
+      <ion-card-subtitle class="text-xs">
+        <ion-skeleton-text [animated]="true" class="h-6"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" class="h-20"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" class="h-12"></ion-skeleton-text>
+      </ion-card-subtitle>
+
+      <ion-skeleton-text [animated]="true" class="h-5"></ion-skeleton-text>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="!isLoading">
+
+      <p *ngIf="data?.percent_discount > 0">
+        <span class="text-red-500 font-bold">
+          {{data?.amount.toLocaleString("it-IT", { style: "currency",
+          currency:"VND" })}}
+        </span>
+      </p>
+
+      <div class="flex justify-between">
+        <div class=" py-1">
+          <p *ngIf="data?.price >= 1000">
+            <span [class]="data?.percent_discount > 0 ? 'line-through' : 'text-red-500 font-bold'">
+              {{data.price?.toLocaleString("it-IT", { style: "currency",
+              currency:"VND" })}}
+            </span>
+            <span *ngIf="data?.percent_discount > 0 "
+              class="p-1 text-xs font-normal text-red-500 bg-pink-100">{{'TAB.COMMERCE.SAVINGS_COME' |
+              translate }}
+              {{data?.percent_discount}}%</span>
+          </p>
+          <p *ngIf="data?.price < 1000">
+            <span class="text-red-500 font-bold">{{ "COMMON.CONTACT" | translate }}</span>
+          </p>
+        </div>
+        <!-- <ion-icon name="bookmark-outline"></ion-icon> -->
+      </div>
+
+      <ion-card-title class="text-base pb-1"> {{ data.name }} </ion-card-title>
+      <!-- <ion-card-subtitle class=""> -->
+      <p class="description text-xs">{{ data.description }}</p>
+      <!--
+        <div style="display: flex; justify-content: space-between">
+          <div class="type-product" style="font-size: 16px">
+            <span *ngIf="data.type === 0">
+              {{ "TAB.COMMERCE.BUY" | translate }}</span>
+            <span *ngIf="data.type !== 0">
+              {{ "TAB.COMMERCE.SALE" | translate }}</span>
+          </div>
+        </div> -->
+
+      <!-- <div class="location py-1" *ngIf="data.location">
+          <ion-icon name="location-outline"></ion-icon>
+          <span style="margin-left: 8px">{{ data.location }}</span>
+        </div> -->
+      <!-- </ion-card-subtitle> -->
+
+
+      <div class="text-sm ">
+        <span *ngIf="!data?.organization">{{ 'TAB.COMMERCE.POSTER' | translate }} : </span>
+        <a class="font-bold" *ngIf="!data?.organization" [routerLink]="['/tabs', 'users', data?.author?.id]">{{
+          data?.author?.username
+          }}</a>
+        <span *ngIf="data?.organization">{{ 'TAB.COMMERCE.ORGANIZATION_POST' | translate }} : </span>
+        <a class="font-bold" *ngIf="data?.organization"
+          [routerLink]="['/tabs', 'organizations', data?.organization?.id]">{{ data?.organization?.name }}</a>
+      </div>
+
+
+      <app-reactions [data]="data" [page]="''" (heart)="onHeart($event)"></app-reactions>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="comments">
+    <app-comment-list [me]="me" [authorId]="data?.author?.id" [comments]="comments" (replies)="onRepliesComment($event)"
+      (editComment)="onEditComment($event)" (deleteComment)="onDeleteComment($event)"></app-comment-list>
+  </div>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" *ngIf="comments?.length">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-modal [isOpen]="isShowReport" class="modal-report" (didDismiss)="onCloseReport(false)">
+    <ng-template>
+      <app-report-form (getValues)="onGetValueReport($event)" (close)="onCloseReport($event)"></app-report-form>
+    </ng-template>
+  </ion-modal>
+
+  <!-- <app-message-input
+    (messageChange)="sendComments($event)"
+    [replies]="repliesData"
+    (removeReply)="onRemoveReply($event)"
+    [message]="commentEdit?.parentName ?? commentEdit?.childrenName"
+  ></app-message-input> -->
+
+  <!-- <ion-modal [isOpen]="isModalUpload" class="modal-upload-image">
+    <ng-template>
+      <app-album-image [isUploadSuccess]="isUploadSuccess" [images]="data.images" [data]="data"
+        (addImage)="handleAddImage($event)" (removeImage)="handleRemoveImage($event)"
+        (closeModal)="handleCloseUpload($event)"></app-album-image>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isModalUpload" class="modal-upload-image">
+    <ng-template>
+      <app-album-image [isUploadSuccess]="isUploadSuccess" [images]="data.images" [data]="data"
+        (addImage)="handleAddImage($event)" (removeImage)="handleRemoveImage($event)"
+        (closeModal)="handleCloseUpload($event)"></app-album-image>
+    </ng-template>
+  </ion-modal> -->
+
+  <!-- <app-preview-image [showModal]="showModal" [images]="images" (closeModal)="closeModal($event)"></app-preview-image> -->
+</ion-content>
+
+<!-- <app-send-comment (messageChange)="sendComments($event)" [replies]="repliesData" (removeReply)="onRemoveReply($event)"
+  [message]="commentEdit?.parentName ?? commentEdit?.childrenName"></app-send-comment> -->
+
+<ion-footer class="bg-white pl-1" *ngIf="data?.price !== 0">
+  <div class="flex justify-center">
+    <div class="w-2/5 flex justify-between ">
+      <div (click)="directShop(data)">
+        <div class="flex justify-center mt-2">
+          <ion-icon name="storefront-outline"></ion-icon>
+        </div>
+        <div class="flex justify-center">
+          <p class="text-xs mt-2 line-clamp-1 ">{{'TAB.COMMERCE.SHOP' | translate}}</p>
+        </div>
+      </div>
+      <div (click)="sendMessage(data)">
+        <div class="flex justify-center mt-2">
+          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        </div>
+        <div class="flex justify-center">
+          <p class="text-xs mt-2 line-clamp-1">{{'TAB.COMMERCE.CHAT' | translate}}</p>
+        </div>
+      </div>
+    </div>
+
+    <ion-button fill="outline" color="danger" class="ion-text-wrap w-2/5" (click)="addToCart()">
+      {{'TAB.COMMERCE.ADD_TO_CART' | translate}}
+    </ion-button>
+    <ion-button color="danger" class="ion-text-wrap w-2/5" (click)="onDirectCreateOrder()">
+      {{'TAB.COMMERCE.BUY_NOW' | translate}}
+    </ion-button>
+  </div>
+</ion-footer>
+
+<ion-footer class="bg-white pl-1" *ngIf="data?.price === 0">
+  <div class="flex justify-center">
+    <div class="w-1/5 flex justify-between ">
+      <div (click)="directShop(data)">
+        <div class="flex justify-center mt-2">
+          <ion-icon name="storefront-outline"></ion-icon>
+        </div>
+        <div class="flex justify-center">
+          <p class="text-xs mt-2 line-clamp-1 ">{{'TAB.COMMERCE.SHOP' | translate}}</p>
+        </div>
+      </div>
+    </div>
+    <ion-button fill="outline" color="danger" class="ion-text-wrap w-4/5" (click)="sendMessage(data)">
+      {{'COMMON.CONTACT' | translate}}
+    </ion-button>
+  </div>
+</ion-footer>

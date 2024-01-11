@@ -1,0 +1,133 @@
+<div class="ion-page">
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <div class="flex">
+        <ion-buttons>
+          <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-title class="text-sm">{{chapter.name}}</ion-title>
+        <ion-icon name="search-outline" class="icon-search-page" routerLink="/search"></ion-icon>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content *ngIf="isLoading">
+    <ion-card class="user-detail">
+      <ion-card-header class="">
+        <ion-card-title>
+          <div class="flex">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </div>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="">
+        <div class="time text-sm">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </div>
+        <div class="text-sm">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          <div class="flex items-center">
+            <ion-skeleton-text [animated]="true" style="height: 18px"></ion-skeleton-text>
+          </div>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+    <ion-card class="px-0">
+      <ion-accordion-group>
+        <ion-accordion>
+          <ion-item slot="header" color="light">
+            <ion-card-header class="p-0" style="width: 100%">
+              <ion-card-subtitle>
+                <ion-skeleton-text [animated]="true" style="height: 18px"></ion-skeleton-text>
+              </ion-card-subtitle>
+            </ion-card-header>
+          </ion-item>
+          <div class="w-full" slot="content"></div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </ion-card>
+
+    <ion-card class="px-0">
+      <ion-accordion-group>
+        <ion-accordion>
+          <ion-item slot="header" color="light">
+            <ion-card-header class="p-0" style="width: 100%">
+              <ion-card-subtitle>
+                <ion-skeleton-text [animated]="true" style="height: 18px"></ion-skeleton-text>
+              </ion-card-subtitle>
+            </ion-card-header>
+          </ion-item>
+          <div class="w-full" slot="content"></div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </ion-card>
+  </ion-content>
+
+  <ion-content *ngIf="!isLoading">
+    <ion-card class="px-0" *ngIf="chapter.description && chapter.description.trim().length">
+      <ion-accordion-group value="first">
+        <ion-accordion value="first">
+          <ion-item slot="header" color="light">
+            <ion-card-header class="p-0">
+              <ion-card-subtitle>
+                <ion-icon name="reader-outline"></ion-icon>
+                <span class="pl-1">{{ 'PAGES.COMMUNITY.ABOUT' | translate}}</span>
+              </ion-card-subtitle>
+            </ion-card-header>
+          </ion-item>
+
+          <div class="w-full text-sm" slot="content">
+            <ion-card-content>
+              <span>{{chapter.description}}</span></ion-card-content>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </ion-card>
+
+    <ion-card class="px-0">
+      <ion-segment value="about" (ionChange)="changeSegment($event)">
+        <ion-segment-button value="commerce">
+          <ion-label> {{ 'PAGES.CHAPTER.COMMERCE' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="timeline">
+          <ion-label> {{ 'PAGES.CHAPTER.TIMELINE' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="about">
+          <ion-label> {{ 'PAGES.CHAPTER.ABOUT' | translate}}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card>
+
+    <div *ngIf="selectedSegment==='about'">
+      <chapter-about-segment [chapter]="chapter" [me]="me" [resourceAccess]="resourceAccess"></chapter-about-segment>
+    </div>
+
+    <div *ngIf="selectedSegment === 'timeline'">
+      <chapter-timeline-segment [chapter]="chapter" [me]="me"></chapter-timeline-segment>
+    </div>
+
+    <div *ngIf="selectedSegment === 'commerce'">
+      <chapter-commerce-segment [chapter]="chapter" [me]="me"></chapter-commerce-segment>
+    </div>
+
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="isAvailableUser" #fab>
+      <ion-fab-button size="small">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="top" class="right-0" style="right: 0">
+        <app-fab-list [buttons]="buttons" (type)="onClickCreateCommerce($event)">
+        </app-fab-list>
+      </ion-fab-list>
+    </ion-fab>
+
+    <app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>
+  </ion-content>
+</div>

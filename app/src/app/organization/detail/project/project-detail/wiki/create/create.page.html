@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title>Wiki Create</ion-title>
+
+    <ion-toggle
+      slot="end"
+      [checked]="isAutoSave"
+      (ionChange)="autoSaveChange($event)"
+      >Auto Save</ion-toggle
+    >
+    <ion-button
+      fill="clear"
+      color="dark"
+      (click)="actionSubmit()"
+      slot="end"
+      [disabled]="!form.valid"
+    >
+      <ion-icon
+        *ngIf="!isCreating"
+        size="medium"
+        color="dark"
+        name="add-outline"
+      ></ion-icon>
+      <ion-spinner
+        *ngIf="isCreating"
+        name="circular"
+        class="text-xs"
+      ></ion-spinner>
+      Lưu
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" novalidate>
+    <div>
+      <ion-item lines="none">
+        <ion-input
+          class="required"
+          formControlName="name"
+          [clearInput]="true"
+          type="text"
+          labelPlacement="floating"
+          label="Label"
+          placeholder=""
+        >
+        </ion-input>
+      </ion-item>
+      <div
+        class="error-container"
+        *ngIf="(form.get('name')?.invalid && form.get('name')?.touched) || form.get('name')?.dirty"
+      >
+        <div class="text-rose-600 text-sm pl-4 pr-4">
+          <span *ngIf="form.get('name')?.errors?.['required']">
+            {{'FORM.VALID.REQUIRED' | translate}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <ion-item lines="none">
+        <ion-label (click)="parent.open()"
+          ><span class="label-text-wrapper">Parent Wiki</span></ion-label
+        >
+        <app-select
+          class="mr-auto text-sm"
+          title="Parent Wiki"
+          [items]="wikis"
+          [removable]="true"
+          [searchable]="true"
+          [value]="form.value.parent_id"
+          (valueChange)="parentChange($event)"
+          formControlName="parent_id"
+          ngDefaultControl
+          #parent
+        >
+        </app-select>
+      </ion-item>
+    </div>
+
+    <div class="m-4">
+      <ion-label>Content</ion-label>
+      <div class="NgxEditor__Wrapper mt-2">
+        <ngx-editor-menu
+          [editor]="editor"
+          [toolbar]="toolbar"
+          class="sticky top-0 z-50"
+        >
+        </ngx-editor-menu>
+        <ngx-editor
+          [editor]="editor"
+          formControlName="description"
+          [placeholder]="'ENTER' | translate"
+        ></ngx-editor>
+      </div>
+    </div>
+  </form>
+</ion-content>
+
+<ion-toast
+  [isOpen]="toastMessage!==''"
+  [message]="toastMessage"
+  [duration]="2000"
+  (didDismiss)="closeToast()"
+></ion-toast>

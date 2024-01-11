@@ -1,0 +1,49 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-button fill="clear" color="dark" (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-label class="text-sm ml-2 self-center">
+        {{user.username}}</ion-label>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" *ngIf="isLoading">
+  <app-skeleton-user-profile-info></app-skeleton-user-profile-info>
+</ion-content>
+<ion-content [fullscreen]="true" *ngIf="!isLoading">
+
+  <detail-user-info [user]="user" (reloadData)="reloadData($event)"></detail-user-info>
+
+  <ion-card class="px-0 m-4">
+    <ion-segment [value]="selectedSegment" (ionChange)="changeSegment($event)">
+      <ion-segment-button value="timeline">
+        <ion-label> {{ 'PAGES.ORGANIZATION.TIMELINE' | translate}}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="commerce">
+        <ion-label> {{ 'PAGES.ORGANIZATION.COMMERCE' | translate}}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-card>
+
+  <div *ngIf="selectedSegment === 'timeline'">
+    <user-timeline-segment [user]="user"></user-timeline-segment>
+  </div>
+
+  <div *ngIf="selectedSegment === 'commerce'">
+    <user-commerce-segment [user]="user"></user-commerce-segment>
+  </div>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="showButton">
+    <ion-fab-button size="small">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top" class="right-0 " style="right: 0">
+      <app-fab-list [buttons]="buttons" (type)="onClickCreate($event)">
+      </app-fab-list>
+    </ion-fab-list>
+  </ion-fab>
+
+  <app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>
+</ion-content>

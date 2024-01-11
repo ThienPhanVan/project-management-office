@@ -1,0 +1,33 @@
+<ion-item>
+  Checklists
+</ion-item>
+<ion-item *ngFor="let item of checklists">
+  <div class="flex flex-wrap w-full">
+  <ion-input class="w-full border-b" *ngIf="item.isEdit" [(ngModel)]="item.name"></ion-input>
+  <ion-checkbox *ngIf="!item.isEdit" (ionChange)="update(item)" labelPlacement="end" justify="start"
+    [checked]="item.status===1">
+    {{item.name}}
+  </ion-checkbox>
+
+  <ion-button *ngIf="!item.isEdit" color="" (click)="item.isEdit=true">
+    Edit
+    <ion-icon name="create-outline"></ion-icon>
+  </ion-button>
+
+  <ion-button *ngIf="item.isEdit" color="" (click)="save(item)">
+    Save
+    <ion-icon name="save-outline"></ion-icon>
+  </ion-button>
+
+  <ion-button *ngIf="item.isEdit" color="warning" (click)="item.isEdit=false">
+    Close
+    <ion-icon name="close-outline"></ion-icon>
+  </ion-button>
+
+  <ion-button *ngIf="!item.isEdit" color="danger" (click)="remove(item)">
+    Remove
+    <ion-icon slot="end" name="remove"></ion-icon></ion-button>
+  </div>
+</ion-item>
+
+<pmo-checklist-create [issueId]="issueId" (onCreated)="onCreated()"></pmo-checklist-create>

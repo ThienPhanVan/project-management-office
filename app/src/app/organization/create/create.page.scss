@@ -1,0 +1,47 @@
+ion-modal {
+    &.bottom-end {
+        align-items: flex-end;
+        --height: auto;
+
+        .ion-page {
+            position: relative;
+            display: block;
+            contain: content;
+        }
+    }
+}
+
+.outer {
+    margin: auto;
+    border-radius: 100%;
+    position: relative;
+
+    img {
+        width: 100%;
+        height: 190px;
+        object-fit: contain;
+    }
+}
+
+.inner {
+    border-radius: 100%;
+    position: absolute;
+    top: 1vh;
+    right: 2vh;
+}
+
+.file-input {
+    display: none;
+}
+
+ion-card {
+    ion-card-content {
+        ion-thumbnail{
+            img {
+                width: 52px;
+                height: 52px;
+                object-fit: contain;
+            }
+        }
+    }
+}

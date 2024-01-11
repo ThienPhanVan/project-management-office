@@ -1,0 +1,56 @@
+<app-menu></app-menu>
+<ion-header [translucent]="true" class="bg-white">
+  <div class="flex ml-2 mt-2 h-11 items-center">
+    <ion-searchbar class="search-news-tabs" placeholder="{{ 'PLACEHOLDER.SEARCH_PRODUCT' | translate }}"
+      [debounce]="1000" (ionFocus)="showSearchProductModel()" (ionClear)="clearSearchNewModel()"
+      [value]="searchValue"></ion-searchbar>
+    <ion-button fill="clear" class="right-0" routerLink="/carts">
+      <ion-icon name="cart-outline"></ion-icon>
+      <span class="cart-count" *ngIf="countCartItem !== 0">{{countCartItem}}</span>
+    </ion-button>
+    <div>
+      <ion-menu-button size="small">
+        <ion-icon name="storefront-outline"></ion-icon>
+      </ion-menu-button>
+    </div>
+  </div>
+</ion-header>
+
+<!-- <ion-content id="main-content" *ngIf="isLoading">
+  <app-skeleton-product-item></app-skeleton-product-item>
+</ion-content> -->
+
+<ion-content id="main-content" [fullscreen]="true">
+  <div>
+    <app-categories-slide [isLoading]="isLoadingCategory" class="flex" [categories]="productCategories"
+      [productCategoryId]="productCategoryId" (active)="onSearchCategories($event)" (segment)="onChangeSegment($event)"
+      (isOpenModalFilter)="openCategoriesFilter($event)"></app-categories-slide>
+  </div>
+  <app-product-two-column [data]="products" [isLoading]="isLoading" (heart)="onHeart($event)" [me]="me"
+    (hidden)="onHidden($event)" (undo)="onUndo($event)" (actionSheet)="onActionSheet($event)"
+    (zoomImage)="onZoomImage($event)"></app-product-two-column>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button size="small" (click)="onClickCreate(0)">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-modal [isOpen]="isModalUpload" class="modal-upload-image">
+    <ng-template>
+      <app-album-image [isUploadSuccess]="isUploadSuccess" [images]="uploadData.images" [data]="uploadData"
+        (addImage)="handleAddImage($event)" (removeImage)="handleRemoveImage($event)"
+        (closeModal)="handleCloseUpload($event)"></app-album-image>
+    </ng-template>
+  </ion-modal>
+
+  <app-categories-filter [isModalOpen]="isFilterCategory" [title]="'TAB.COMMERCE.PRODUCT_CATEGORY'"
+    [categories]="categoriesFilter" (setOpenModal)="setOpenModal($event)"
+    (categoriesFilter)="onCategoriesFilter($event)" (checked)="changeChecked($event)"></app-categories-filter>
+
+  <app-preview-image [showModal]="showModal" [images]="images" (closeModal)="closeModal($event)"></app-preview-image>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

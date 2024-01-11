@@ -1,0 +1,45 @@
+<div class="post-comment">
+  <div *ngIf="itemComment?.comment !== ''" class="reply">
+    <div>
+      {{ itemComment.name }}
+    </div>
+    <div class="remove" (click)="removeCommentReply()">X</div>
+  </div>
+  <form [formGroup]="form" novalidate class="form">
+    <!-- <input hidden [value]="xxx" /> -->
+    <img
+      (click)="cover.click()"
+      alt=""
+      src="../../../../assets/images/image.png"
+    />
+    <input
+      type="file"
+      accept="image/png, image/jpeg"
+      multiple
+      hidden
+      (change)="setCoverImage($event)"
+      #cover
+    />
+
+    <ion-input
+      name="comment"
+      formControlName="comment"
+      [clearInput]="true"
+      type="text"
+      [placeholder]="'ENTER' | translate"
+      class="input-comment"
+    ></ion-input>
+
+    <ion-icon name="send-outline" (click)="handleSendComment()"></ion-icon>
+  </form>
+
+  <div *ngIf="images.length" class="list-image">
+    <div *ngFor="let img of images; index as i" class="image">
+      <img
+        alt="Silhouette of mountains"
+        src="https://ionicframework.com/docs/img/demos/thumbnail.svg"
+      />
+      <div class="remove" (click)="removeImage(i)"></div>
+    </div>
+  </div>
+</div>

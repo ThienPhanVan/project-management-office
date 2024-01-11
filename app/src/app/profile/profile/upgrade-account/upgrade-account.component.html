@@ -1,0 +1,83 @@
+<div *ngIf="isLoading">
+  <ion-card>
+    <ion-card-content class="flex">
+      <div style="width: 70%">
+        <ion-card-subtitle class="font-medium" style="width: 100%;"><ion-skeleton-text [animated]="true"
+            style="height: 20px;"></ion-skeleton-text></ion-card-subtitle>
+        <div class="mt-2">
+          <ion-text style="width: 100%;"><ion-skeleton-text [animated]="true"
+              style="height: 20px;"></ion-skeleton-text></ion-text>
+        </div>
+      </div>
+      <div class="ml-auto absolute right-0 top-0">
+        <div
+          class="text-[0.8rem] absolute transform rotate-45 bg-green-600 text-center text-white font-semibold py-1 right-[-35px] top-[25px] w-[170px]">
+          <ion-skeleton-text [animated]="true" style="height: 20px;"></ion-skeleton-text>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</div>
+
+<div *ngIf="!isLoading">
+  <ion-card *ngIf="userRank === 0" class="px-0">
+    <ion-card-content>
+      <div class="text-sm">
+        * {{'TAB.PROFILE.NOT_MEMBER' | translate}}
+      </div>
+      <div>
+        * {{'TAB.PROFILE.MEMBERSHIP.BANKING' | translate}}
+        {{bankAccount.number}} -
+        {{bankAccount.bank}} -
+        {{bankAccount.name}}
+        <div class="ml-2">
+          - {{'TAB.PROFILE.MEMBERSHIP.BANKING_MESSAGE' | translate}}<br />
+          <span class="italic">- {{'TAB.PROFILE.MEMBERSHIP.EXAM_BANKING_MESSAGE' | translate}}</span>
+        </div>
+      </div>
+      <div>
+        * {{'TAB.PROFILE.MEMBERSHIP.CONTACT' | translate}} {{supportAccount.phone}}
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="userRank === 1" class="card-selected">
+    <ion-card-content class="flex">
+      <div>
+        <ion-card-subtitle class="font-medium">{{'TAB.PROFILE.NORMAL_USER' | translate}}</ion-card-subtitle>
+        <div class="mt-2">
+          <ion-text>
+            {{'NOTE.FROM' | translate}} {{userVerifyHistory.from_date | date:'dd-MM-YYYY'}}
+            {{'NOTE.TO' | translate}} {{userVerifyHistory.to_date | date:'dd-MM-YYYY'}}
+          </ion-text>
+        </div>
+      </div>
+      <div class="ml-auto absolute right-0 top-0">
+        <div
+          class="text-[0.8rem] absolute transform rotate-45 bg-green-600 text-center text-white font-semibold py-1 right-[-35px] top-[25px] w-[170px]">
+          {{'TAB.PROFILE.REGISTERED' | translate}}
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="userRank === 2" class="card-selected">
+    <ion-card-content class="flex">
+      <div>
+        <ion-card-subtitle class="font-medium">{{'TAB.PROFILE.VIP_USER' | translate}}</ion-card-subtitle>
+        <div class="mt-2">
+          <ion-text>
+            {{'NOTE.FROM' | translate}} {{userVerifyHistory.from_date | date:'dd-MM-YYYY'}}
+            {{'NOTE.TO' | translate}} {{userVerifyHistory.to_date | date:'dd-MM-YYYY'}}
+          </ion-text>
+        </div>
+      </div>
+      <div class="ml-auto absolute right-0 top-0">
+        <div
+          class="text-[0.8rem] absolute transform rotate-45 bg-green-600 text-center text-white font-semibold py-1 right-[-35px] top-[25px] w-[170px]">
+          {{'TAB.PROFILE.REGISTERED' | translate}}
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</div>

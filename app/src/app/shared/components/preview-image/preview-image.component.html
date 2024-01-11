@@ -1,0 +1,20 @@
+<ion-modal [isOpen]="showModal" [initialBreakpoint]="1" [breakpoints]="[1]" (didDismiss)="hideModal()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-icon size="large" name="arrow-back-outline" (click)="hideModal(false)"></ion-icon>
+        </ion-buttons>
+        <div slot="end">{{ activeSlider + 1 }}/{{ images.data.length }}</div>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="p-1 relative">
+      <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig"
+        (init)="slickInit($event)" (afterChange)="afterChange($event)">
+        <div ngxSlickItem class="slide" *ngFor="let slide of images.data">
+          <img src="{{ slide.image_url }}" alt="" width="100%" />
+        </div>
+      </ngx-slick-carousel>
+    </ion-content>
+  </ng-template>
+</ion-modal>

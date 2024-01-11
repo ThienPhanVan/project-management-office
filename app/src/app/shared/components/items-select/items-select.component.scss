@@ -1,0 +1,18 @@
+.category-header {
+  display:contents;
+
+  ion-toolbar {
+    ion-title {
+      padding: 0;
+      font-size: 16px;
+    }
+  }
+}
+
+ion-modal {
+  ion-toolbar {
+      --background : #fff;
+      padding-left: 0px;
+      padding-right: 0px;
+  }
+}

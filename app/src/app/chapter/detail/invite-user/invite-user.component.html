@@ -1,0 +1,19 @@
+<div color="light">
+    <form [formGroup]="form" novalidate>
+        <ion-item>
+            <ion-input [label]="label" formControlName="field" [clearInput]="true" (ionInput)="onSearchChange()"
+                type="text" labelPlacement="stacked" placeholder="">
+            </ion-input>
+        </ion-item>
+
+        <div *ngIf="searchedUsers.length" class="mt-1">
+            <span class="italic ml-3 text-sm">{{'NOTE.RESULT' | translate}}</span>
+            <app-user-list-chapter-invite [users]="searchedUsers" [single]="true"></app-user-list-chapter-invite>
+        </div>
+
+        <div *ngIf="!searchedUsers.length" class="mt-1">
+            <span class="italic ml-3 text-sm">{{'NOTE.SUGGESTION' | translate}}</span>
+            <app-user-list-chapter-invite [users]="users" [single]="true"></app-user-list-chapter-invite>
+        </div>
+    </form>
+</div>

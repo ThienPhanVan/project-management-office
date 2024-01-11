@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title>Projects</ion-title>
+    <!-- <ion-button fill="clear" slot="end" (click)="issueFilter.open()">
+      <ion-icon size="medium" color="dark" name="options-outline"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" slot="end" [routerLink]="['issue-create']">
+      <ion-icon size="medium" color="dark" name="add-outline"></ion-icon>
+    </ion-button> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item *ngFor="let project of projects" lines="none" [routerLink]="[project.id]">
+      <div class="flex-1 text-base">
+        {{project.name}}
+      </div>
+      <div class="text-sm font-thin">
+        #{{project.code}}
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

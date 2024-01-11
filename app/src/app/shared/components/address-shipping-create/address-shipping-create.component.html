@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title> {{'TAB.COMMERCE.ORDER.ADD_DELIVERY_ADDRESS' | translate}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCloseModal(false)">{{
+        "BUTTON.CLOSE" | translate
+        }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-card-content class="flex justify-center">
+    <ion-textarea type="text" (ionInput)="inputAddress($event)" [label]=" 'TAB.COMMERCE.ORDER.LOCATION' | translate"
+      labelPlacement="floating" [placeholder]="'ENTER' | translate" style="height: 100px"
+      *ngIf="type === 'create'"></ion-textarea>
+    <ion-textarea type="text" (ionInput)="inputAddress($event)" [label]=" 'TAB.COMMERCE.ORDER.LOCATION' | translate"
+      labelPlacement="floating" [placeholder]="'ENTER' | translate" [(ngModel)]="data.address" style="height: 100px"
+      *ngIf="type === 'update'"></ion-textarea>
+  </ion-card-content>
+
+  <ion-row>
+    <ion-col>
+      <ion-button class="px-2" expand="block" (click)="submit()" [disabled]="disabled">
+
+        <span>{{ "BUTTON.CREATE" | translate }}</span>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-content>

@@ -1,0 +1,485 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex" *ngIf="!idCreateBranchOrganization">
+      <ion-button fill="clear" color="dark" (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title class="text-sm"
+        >{{'PAGES.ORGANIZATION.CREATE' | translate}}</ion-title
+      >
+    </div>
+    <div class="flex" *ngIf="idCreateBranchOrganization">
+      <ion-buttons>
+        <ion-back-button
+          class="text-xs"
+          [routerLink]="['/tabs', 'organization', idCreateBranchOrganization]"
+          defaultHref=""
+          text=""
+        ></ion-back-button>
+      </ion-buttons>
+      <ion-title class="text-sm"
+        >{{'PAGES.ORGANIZATION.CREATE_CHILD' | translate}}</ion-title
+      >
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="organizationFormCreate" novalidate>
+    <app-avatar
+      (getSrcImage)="getSrcImage($event)"
+      [isUploadImageBg]="isUploadImageBg"
+      [isBackground]="isBackground"
+      [form]="organizationFormCreate"
+      (setCoverImageBackgroundEvent)="setCoverImage($event)"
+    ></app-avatar>
+
+    <ion-card class="-mt-10 my-1 cursor-pointer text-xs" color="light">
+      <ion-card-content>
+        <div class="flex">
+          <app-avatar
+            (getSrcImage)="getSrcImage($event)"
+            [isUploadImageLogo]="isUploadImageLogo"
+            [isLogo]="isLogo"
+            [form]="organizationFormCreate"
+            (setThumbnailLogoEvent)="setThumbnail($event)"
+          ></app-avatar>
+          <div class="ml-3 w-full">
+            <ion-item>
+              <ion-input
+                class="required"
+                label="{{'FORM.FIELD.ORGANIZATION_NAME' | translate}}"
+                formControlName="name"
+                [clearInput]="true"
+                type="text"
+                labelPlacement="stacked"
+                placeholder=""
+              >
+              </ion-input>
+            </ion-item>
+            <div
+              class="error-container"
+              *ngIf="(organizationFormCreate.get('name')?.invalid && organizationFormCreate.get('name')?.touched) || organizationFormCreate.get('name')?.dirty || isDisplayError"
+            >
+              <div class="text-rose-600 text-sm pl-4 pr-4">
+                <span
+                  *ngIf="organizationFormCreate.get('name')?.errors?.['required']"
+                >
+                  {{'FORM.VALID.ORGANIZATION_NAME.REQUIRED' | translate}}
+                </span>
+              </div>
+            </div>
+
+            <ion-item>
+              <ion-input
+                class="required"
+                label="{{'FORM.FIELD.TAX_CODE' | translate}}"
+                formControlName="code"
+                [clearInput]="true"
+                type="text"
+                labelPlacement="stacked"
+                placeholder=""
+              >
+              </ion-input>
+            </ion-item>
+            <div
+              class="error-containe"
+              *ngIf="(organizationFormCreate.get('code')?.invalid && organizationFormCreate.get('code')?.touched) || organizationFormCreate.get('code')?.dirty || isDisplayError"
+            >
+              <div class="text-rose-600 text-sm pl-4 pr-4">
+                <span
+                  *ngIf="organizationFormCreate.get('code')?.errors?.['required']"
+                >
+                  {{'FORM.VALID.TAX_CODE.REQUIRED' | translate}}
+                </span>
+                <span
+                  *ngIf="organizationFormCreate.get('code')?.errors?.['pattern']"
+                >
+                  {{'FORM.VALID.TAX_CODE.FORMAT' | translate}}
+                </span>
+              </div>
+            </div>
+
+            <ion-item>
+              <ion-input
+                class="required"
+                label="{{'FORM.FIELD.PHONE' | translate}}"
+                formControlName="phone"
+                [clearInput]="true"
+                type="text"
+                labelPlacement="stacked"
+                placeholder=""
+              >
+              </ion-input>
+            </ion-item>
+            <div
+              class="error-container"
+              *ngIf="(organizationFormCreate.get('phone')?.invalid && organizationFormCreate.get('phone')?.touched) || organizationFormCreate.get('phone')?.dirty || isDisplayError"
+            >
+              <div class="text-rose-600 text-sm pl-4 pr-4">
+                <span
+                  *ngIf="organizationFormCreate.get('phone')?.errors?.['required']"
+                >
+                  {{'FORM.VALID.PHONE.REQUIRED' | translate}}
+                </span>
+                <span
+                  *ngIf="organizationFormCreate.get('phone')?.errors?.['pattern']"
+                >
+                  {{'FORM.VALID.PHONE.CORRECT_FORMAT' | translate}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <ion-item
+            [button]="true"
+            [detail]="false"
+            id="select-industries"
+            [lines]="selectedIndustries.length > 0 ? 'none' : 'inset'"
+          >
+            <span class="text-xs label-required"
+              >{{'FORM.FIELD.INDUSTRIES' | translate}}</span
+            >
+            <ion-icon
+              slot="end"
+              class="text-sm"
+              name="chevron-down-outline"
+            ></ion-icon>
+          </ion-item>
+          <ion-item
+            class="text-sm py-0"
+            *ngFor="let selectedIndustry of selectedIndustries; let i = index"
+            [lines]="i === selectedIndustries.length-1 ? 'inset': 'none'"
+          >
+            <span class="pl-2">- {{selectedIndustry.name}}</span>
+          </ion-item>
+        </div>
+
+        <ion-modal trigger="select-industries" #modalIndustry>
+          <ng-template>
+            <app-industry-select
+              [selectedIndustries]="selectedIndustries"
+              class="ion-page"
+              (selectionChange)="industrySelectionChanged($event)"
+              (selectionCancel)="modalIndustry.dismiss()"
+            ></app-industry-select>
+          </ng-template>
+        </ion-modal>
+
+        <div>
+          <ion-item
+            [button]="true"
+            [detail]="false"
+            id="select-service"
+            [lines]="selectedServices.length > 0 ? 'none' : 'inset'"
+          >
+            <span class="text-xs label-required"
+              >{{'FORM.FIELD.SERVICES' | translate}}</span
+            >
+            <ion-icon
+              slot="end"
+              class="text-sm"
+              name="chevron-down-outline"
+            ></ion-icon>
+          </ion-item>
+          <ion-item
+            [lines]="i === selectedServices.length-1 ? 'inset': 'none'"
+            *ngFor="let selectedService of selectedServices; let i = index"
+          >
+            <span class="text-sm pl-2">- {{selectedService.name}}</span>
+          </ion-item>
+        </div>
+
+        <ion-modal trigger="select-service" #modalService>
+          <ng-template>
+            <app-service-select
+              [selectedServices]="selectedServices"
+              class="ion-page"
+              (selectionChange)="serviceSelectionChanged($event)"
+              (selectionCancel)="modalService.dismiss()"
+            ></app-service-select>
+          </ng-template>
+        </ion-modal>
+
+        <ion-list *ngIf="isDisplayWorkingTime">
+          <ion-item>
+            <span class="text-xs"
+              >{{'FORM.FIELD.OPERATING_TIME' | translate}}</span
+            >
+            <div class="ml-12">
+              <ion-text
+                id="open-working-start"
+                class="text-sm text-slate-500 hover:text-blue-600"
+                >{{ organizationFormCreate.value.working_time_start | date:
+                'HH:mm'}}</ion-text
+              >
+              <ion-text class="text-sm ion-margin-start ion-margin-end"
+                >-</ion-text
+              >
+              <ion-text
+                id="open-working-end"
+                class="text-sm text-slate-500 hover:text-blue-600"
+                >{{ organizationFormCreate.value.working_time_end | date:
+                'HH:mm'}}</ion-text
+              >
+            </div>
+          </ion-item>
+          <ion-modal trigger="open-working-start" [cssClass]="'bottom-end'">
+            <ng-template>
+              <ion-datetime
+                presentation="time"
+                size="cover"
+                minuteValues="0,15,30,45"
+                formControlName="working_time_start"
+                [showDefaultButtons]="true"
+                doneText="Chọn"
+                cancelText="{{ 'BUTTON.CANCEL' | translate}}"
+              ></ion-datetime>
+            </ng-template>
+          </ion-modal>
+          <ion-modal trigger="open-working-end" [cssClass]="'bottom-end'">
+            <ng-template>
+              <ion-datetime
+                presentation="time"
+                size="cover"
+                minuteValues="0,15,30,45"
+                formControlName="working_time_end"
+                [showDefaultButtons]="true"
+              ></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-list>
+
+        <ion-item (click)="countrySelect.open()">
+          <ion-label
+            ><span class="text-xs label-text-wrapper label-required"
+              >{{'SELECT.LABEL.COUNTRY' | translate}}</span
+            ></ion-label
+          >
+          <app-country-select
+            [countries]="countries"
+            [selectedCountry]="selectedCountry"
+            (selectionChange)="countrySelectionChanged($event)"
+            formControlName="country_id"
+            #countrySelect
+            ngDefaultControl
+          ></app-country-select>
+        </ion-item>
+
+        <div
+          class="error-container"
+          *ngIf="(organizationFormCreate.get('country_id')?.invalid && organizationFormCreate.get('country_id')?.touched) || organizationFormCreate.get('country_id')?.dirty || isDisplayError"
+        >
+          <div class="text-rose-600 text-sm pl-4 pr-4">
+            <span
+              *ngIf="organizationFormCreate.get('country_id')?.errors?.['required']"
+            >
+              {{'FORM.VALID.COUNTRY.REQUIRED' | translate}}
+            </span>
+          </div>
+        </div>
+
+        <ion-item (click)="citySelect.open()">
+          <ion-label
+            ><span class="text-xs label-text-wrapper"
+              >{{'SELECT.LABEL.CITY' | translate}}</span
+            ></ion-label
+          >
+          <app-city-select
+            [selectedCity]="selectedCity"
+            [selectedCountryId]="selectedCountry.id"
+            (selectionChange)="citySelectionChanged($event)"
+            #citySelect
+            formControlName="city_id"
+            ngDefaultControl
+          ></app-city-select>
+        </ion-item>
+
+        <div
+          class="error-container"
+          *ngIf="(organizationFormCreate.get('city_id')?.invalid && organizationFormCreate.get('city_id')?.touched) || organizationFormCreate.get('city_id')?.dirty || isDisplayError"
+        >
+          <div class="text-rose-600 text-sm pl-4 pr-4">
+            <span
+              *ngIf="organizationFormCreate.get('city_id')?.errors?.['required']"
+            >
+              {{'FORM.VALID.CITY.REQUIRED' | translate}}
+            </span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-input
+            label="{{ 'FORM.FIELD.ADDRESS' | translate}}"
+            formControlName="address"
+            [clearInput]="true"
+            type="text"
+            labelPlacement="stacked"
+            placeholder=""
+            class="required"
+          >
+          </ion-input>
+        </ion-item>
+
+        <div
+          class="error-container"
+          *ngIf="(organizationFormCreate.get('address')?.invalid && organizationFormCreate.get('address')?.touched) || organizationFormCreate.get('address')?.dirty || isDisplayError"
+        >
+          <div class="text-rose-600 text-sm pl-4 pr-4">
+            <span
+              *ngIf="organizationFormCreate.get('address')?.errors?.['required']"
+            >
+              {{'FORM.VALID.ADDRESS.REQUIRED' | translate}}
+            </span>
+          </div>
+        </div>
+
+        <ion-item
+          ><ion-textarea
+            label="{{'FORM.FIELD.ABOUT' | translate}}"
+            formControlName="description"
+            labelPlacement="stacked"
+            [autoGrow]="true"
+            placeholder=""
+          ></ion-textarea
+        ></ion-item>
+
+        <ion-item>
+          <ion-icon name="link-outline" size="small" slot="start"></ion-icon>
+          <ion-input
+            label="Website"
+            [clearInput]="true"
+            type="url"
+            formControlName="websites"
+            labelPlacement="stacked"
+            placeholder=""
+          >
+          </ion-input>
+        </ion-item>
+        <div class="error-container" *ngIf="isWebsiteError">
+          <div class="text-rose-600 text-sm pl-4 pr-4">
+            <span> {{'FORM.VALID.WEBSITE.FORMAT' | translate}} </span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-icon name="logo-facebook" size="small" slot="start"></ion-icon>
+          <ion-input
+            label="Facebook"
+            [clearInput]="true"
+            type="url"
+            labelPlacement="stacked"
+            placeholder=""
+            [(ngModel)]="socials.facebook"
+            [ngModelOptions]="{standalone: true}"
+          >
+          </ion-input>
+        </ion-item>
+
+        <div class="error-container" *ngIf="isFacebookError">
+          <div class="text-rose-600 text-sm pl-4 pr-4">
+            <span> {{'FORM.VALID.FACEBOOK.FORMAT' | translate}} </span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-input
+            label="Instagram"
+            [clearInput]="true"
+            type="url"
+            labelPlacement="stacked"
+            placeholder=""
+            [(ngModel)]="socials.instagram"
+            [ngModelOptions]="{standalone: true}"
+          >
+          </ion-input>
+          <ion-icon name="logo-instagram" size="small" slot="start"></ion-icon>
+        </ion-item>
+
+        <div class="error-container" *ngIf="isInstagramError">
+          <div class="text-rose-600 text-sm pl-4 pr-4">
+            <span> {{'FORM.VALID.INSTAGRAM.FORMAT' | translate}} </span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-input
+            label="Youtube"
+            [clearInput]="true"
+            type="url"
+            labelPlacement="stacked"
+            placeholder=""
+            [(ngModel)]="socials.youtube"
+            [ngModelOptions]="{standalone: true}"
+          >
+          </ion-input>
+          <ion-icon name="logo-youtube" size="small" slot="start"></ion-icon>
+        </ion-item>
+
+        <div class="error-container" *ngIf="isYoutubeError">
+          <div class="text-rose-600 text-sm pl-4 pr-4">
+            <span> {{'FORM.VALID.YOUTUBE.FORMAT' | translate}} </span>
+          </div>
+        </div>
+
+        <ion-item
+          ><ion-textarea
+            label="{{'FORM.FIELD.VISION' | translate}}"
+            formControlName="vision"
+            labelPlacement="stacked"
+            [autoGrow]="true"
+            placeholder=""
+          ></ion-textarea
+        ></ion-item>
+
+        <ion-item
+          ><ion-textarea
+            label="{{'FORM.FIELD.MISSION' | translate}}"
+            formControlName="mission"
+            labelPlacement="stacked"
+            [autoGrow]="true"
+            placeholder=""
+          ></ion-textarea
+        ></ion-item>
+
+        <ion-item
+          ><ion-textarea
+            label="{{'FORM.FIELD.CORE_VALUE' | translate}}"
+            formControlName="core_values"
+            labelPlacement="stacked"
+            [autoGrow]="true"
+            placeholder=""
+          ></ion-textarea
+        ></ion-item>
+
+        <ion-button
+          class="text-sm ion-margin-top"
+          expand="block"
+          (click)="actionSubmit()"
+          [disabled]="isCreating || organizationFormCreate.invalid"
+        >
+          <ion-icon name="add-circle-outline" class="mr-1"></ion-icon>
+          {{ 'BUTTON.ADD' | translate}}
+          <ion-spinner
+            name="circular"
+            [hidden]="!isCreating"
+            class="max-h-5 pl-1"
+          ></ion-spinner>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+    <ion-toast
+      [isOpen]="toastMessage!==''"
+      [message]="toastMessage"
+      [duration]="3000"
+      (didDismiss)="closeToast()"
+    ></ion-toast>
+  </form>
+  <app-zoom
+    [showModal]="showModal"
+    [image]="imagesString"
+    (closeModal)="closeModal($event)"
+  ></app-zoom>
+</ion-content>

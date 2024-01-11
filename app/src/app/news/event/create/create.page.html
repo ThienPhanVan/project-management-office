@@ -1,0 +1,201 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBackCreate()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-text> {{titlePage}} </ion-text>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <form *ngIf="isLoading">
+    <ion-skeleton-text [animated]="true" class="h-12"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-56"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-7"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-12"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-24"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-20"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-11"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-5"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-24"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-20"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-96"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-36"></ion-skeleton-text>
+  </form>
+  <form [formGroup]="form" novalidate *ngIf="!isLoading">
+    <!-- <ion-item>
+      <ion-label class="label-text sc-ion-textarea-ios">{{ "PAGES.EVENTS.COVER_IMAGE" | translate }}<span
+          class="ml-1 text-red-500">*</span></ion-label>
+       <div *ngIf="query.type === '0'">
+        {{'TAB.HOME.CHILD.OPPORTUNITY' | translate}}
+      </div>
+      <div *ngIf="query.type === '1'">
+        {{'TAB.HOME.CHILD.EVENT' | translate}}
+      </div>
+      <div *ngIf="query.type === '2'">
+        {{'TAB.HOME.CHILD.NEWS' | translate}}
+      </div>
+    </ion-item> -->
+    <!-- <app-avatar [isUploadImageBg]="isUploadImageBg" [isBackground]="isBackground" [form]="form"
+      (setCoverImageBackgroundEvent)="setCoverImage($event)" /> -->
+    <ion-item class="events-person">
+      <div class="person">
+        <div class="title">
+          <div>{{ 'PAGES.EVENTS.ORGANIZED' | translate }}</div>
+
+        </div>
+        <div class="user">
+          <app-avatar [isAvatar]="isAvatar" [classNameAvatar]="'item'" [data]="user" />
+          <ion-label> {{user.username}} </ion-label>
+        </div>
+      </div>
+    </ion-item>
+
+    <ion-item *ngIf="!query?.organization_id" [hidden]="isEdit">
+      <ion-select label="{{'TAB.COMMERCE.CHOICE_ORG' | translate}}" label-placement="floating"
+        formControlName="organization_id" okText="{{ 'BUTTON.CHOICE' | translate}}"
+        cancelText="{{ 'BUTTON.CANCEL' | translate}}" [class]="form.value.organization_id !== '' ? 'chooseOrg' : ''">
+        <ion-select-option *ngFor="let option of organizations" [value]="option.id">{{option.name}}</ion-select-option>
+      </ion-select>
+      <ion-icon *ngIf="form.value.organization_id !== ''" name="close-outline" (click)="clearOrg()"></ion-icon>
+    </ion-item>
+
+    <ion-item>
+      <ion-textarea name="name" formControlName="name" type="text" [label]="'FORM.FIELD.TITLE' | translate"
+        labelPlacement="floating" [placeholder]="'ENTER' | translate" class="required h-20"></ion-textarea>
+    </ion-item>
+    <div class="pl-4 leading-10">
+      <span class="mb-0">{{'FORM.FIELD.PARTICIPATING_FEE' |translate}}</span>
+      <div>
+        <ion-radio-group [value]="typePrice" (ionChange)="checkTypePrice($event)">
+          <ion-radio [value]="-1" class="mr-8" labelPlacement="end">{{"COMMON.CONTACT" |
+            translate}}</ion-radio>
+          <ion-radio [value]="0" class="mr-8" labelPlacement="end">{{"COMMON.FREE" | translate}}</ion-radio>
+          <ion-radio [value]="1" labelPlacement="end">{{"COMMON.CHARGES" | translate}}</ion-radio>
+        </ion-radio-group>
+      </div>
+    </div>
+    <ion-item *ngIf="typePrice === 1">
+      <app-price-input class="w-full" [priceEdit]="data?.fee_type" [label]="'FORM.FIELD.PRICE'"
+        (price)="onPrice($event)"></app-price-input>
+    </ion-item>
+
+    <ion-item>
+      <div class="datetime-item">
+        <span class="">{{ 'FORM.FIELD.START_DATE' | translate }} </span>
+        <ion-text id="open-date-start" class="text-sm text-slate-500 hover:text-blue-600">
+          {{form.value.event_date_start}}
+        </ion-text>
+        <ion-modal trigger="open-date-start" [cssClass]="'bottom-end'">
+          <ng-template>
+            <ion-datetime presentation="date" size="cover" formControlName="event_date_start"
+              [showDefaultButtons]="true" doneText="{{'BUTTON.CHOICE' | translate}}"
+              cancelText="{{'BUTTON.CANCEL' | translate}}" [min]="dayNow"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+
+        <ion-text id="open-time-start" class="text-sm text-slate-500 hover:text-blue-600">{{form.value.start_time
+          }}</ion-text>
+        <ion-modal trigger="open-time-start" [cssClass]="'bottom-end'">
+          <ng-template>
+            <ion-datetime presentation="time" formControlName="start_time" size="cover" [showDefaultButtons]="true"
+              doneText="{{'BUTTON.CHOICE' | translate}}" cancelText="{{'BUTTON.CANCEL' | translate}}"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </div>
+    </ion-item>
+    <div [class]="isShowDateEnd ? 'datetime show' : 'datetime'" (click)="onShowDateEnd(!isShowDateEnd)">
+      <div class="content">
+        <ion-icon name="add-outline" *ngIf="!isShowDateEnd"></ion-icon>
+        <ion-icon name="remove-outline" *ngIf="isShowDateEnd"></ion-icon>
+        <span class="text" *ngIf="!isShowDateEnd">{{'PAGES.EVENTS.ADD_END_DATE' | translate}}</span>
+        <span class="text" *ngIf="isShowDateEnd">{{'PAGES.EVENTS.REMOVE_END_DATE' | translate}}</span>
+      </div>
+    </div>
+
+    <ion-item *ngIf="isShowDateEnd">
+      <div class="datetime-item">
+        <span class="">{{ 'FORM.FIELD.END_DATE' | translate }}</span>
+        <ion-text id="open-date-end" class="text-sm text-slate-500 hover:text-blue-600">
+          {{form.value.event_date_end}}
+        </ion-text>
+
+        <ion-modal trigger="open-date-end" [cssClass]="'bottom-end'">
+          <ng-template>
+            <ion-datetime presentation="date" size="cover" formControlName="event_date_end" [showDefaultButtons]="true"
+              doneText="{{'BUTTON.CHOICE' | translate}}" cancelText="{{'BUTTON.CANCEL' | translate}}"
+              [min]="form.value.event_date_start" (ionChange)="onTimeEventDateEnd($event)"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+
+        <ion-text id="open-time-end" class="text-sm text-slate-500 hover:text-blue-600">{{form.value.end_time
+          }}</ion-text>
+        <ion-modal trigger="open-time-end" [cssClass]="'bottom-end'">
+          <ng-template>
+            <ion-datetime presentation="time" formControlName="end_time" size="cover" [showDefaultButtons]="true"
+              doneText="{{'BUTTON.CHOICE' | translate}}" cancelText="{{'BUTTON.CANCEL' | translate}}"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </div>
+    </ion-item>
+
+    <ion-item class="flex justify-between mt-2">
+      <div>
+
+      </div>
+      <div>{{ 'PAGES.EVENTS.ON_OR_OFFLINE' | translate }}</div>
+      <div>
+        <ion-toggle (ionChange)="changeType($event)" labelPlacement="end" aria-label="Primary toggle" color="primary"
+          style="text-transform: capitalize" [checked]="isCheckedType" [disabled]="eventParent?.event_type">{{
+          labelEventType}}</ion-toggle>
+      </div>
+    </ion-item>
+    <ion-item *ngIf="isLinkOnline">
+      <ion-input name="linkOnline" type="text" [label]="'FORM.FIELD.LINK_ONLINE' | translate" labelPlacement="floating"
+        [placeholder]="'ENTER' | translate" class="" (ionChange)="getLinkOnline($event)"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-textarea name="location" formControlName="location" type="text" [label]="'FORM.FIELD.LOCATION' | translate"
+        labelPlacement="floating" [placeholder]="'ENTER' | translate" class="h-20"></ion-textarea>
+    </ion-item>
+
+    <app-hashtag-mention *ngIf="!eventParent" (getArrayHashtag)="onGetArrayHashtag($event)"
+      (getHashtag)="onGetHasTag($event)" [arrayHashtag]="arrayTag"></app-hashtag-mention>
+    <div class="p-4">
+      <ion-label position="fixed" class="label-required">{{'FORM.FIELD.CONTENT' | translate}}</ion-label>
+      <div class="NgxEditor__Wrapper mt-2">
+        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" class="sticky top-0 z-50">
+        </ngx-editor-menu>
+        <ngx-editor [editor]="editor" formControlName="content" [placeholder]="'ENTER' | translate"
+          (ngModelChange)="editorChange($event)"></ngx-editor>
+      </div>
+    </div>
+    <div class="image-event">
+      <div>{{ 'FORM.FIELD.UPLOAD_IMAGE' | translate }}</div>
+
+      <app-avatar [data]="data" [isCreate]="isCreate" [isEdit]="isEdit" (removeImage)="handleRemoveImage($event)"
+        [isLoadingUpload]="isLoadingUpload" (addImage)="handleAddImage($event)"></app-avatar>
+    </div>
+
+
+  </form>
+
+  <app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>
+</ion-content>
+
+<ion-footer class="bg-white">
+  <ion-row>
+    <ion-col>
+      <ion-button class="px-2" type="submit" expand="block" (click)="submit()" [disabled]="isNotCanSave">
+        <ion-icon name="reload-outline" [hidden]="!isSubmitting" class="icon-load mr-3"></ion-icon>
+
+        <span *ngIf="isCreate">{{'BUTTON.CREATE' | translate}}</span>
+        <span *ngIf="isEdit">{{'BUTTON.SAVE' | translate}}</span>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

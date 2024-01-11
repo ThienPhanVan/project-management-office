@@ -1,0 +1,76 @@
+<div *ngIf="isLoading">
+  <div style="display: flex; justify-content: space-around;" *ngFor="let item of SkeletonData; let i = index"
+    class="mb-0.5">
+    <ion-card-text style="width: 48%;">
+      <div style="display: flex; justify-content: space-around;">
+        <ion-skeleton-text [animated]="true" class="rounded-full w-1/5 w-1/5"></ion-skeleton-text>
+        <div style="width: 76%;">
+          <ion-skeleton-text [animated]="true" class="rounded-lg h-5"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" class="rounded-lg h-2.5"></ion-skeleton-text>
+        </div>
+      </div>
+      <ion-skeleton-text [animated]="true" class="mt-0 rounded-lg h-44"></ion-skeleton-text>
+    </ion-card-text>
+    <ion-card-text style="width: 48%;">
+      <div style="display: flex; justify-content: space-around;">
+        <ion-skeleton-text [animated]="true" class="rounded-full w-1/5 w-1/5"></ion-skeleton-text>
+        <div style="width: 76%;">
+          <ion-skeleton-text [animated]="true" class="rounded-lg h-5"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" class="rounded-lg h-2.5"></ion-skeleton-text>
+        </div>
+      </div>
+      <ion-skeleton-text [animated]="true" class="mt-0 rounded-lg h-44"></ion-skeleton-text>
+    </ion-card-text>
+  </div>
+</div>
+
+<div class="flex flex-wrap justify-evenly">
+  <ion-card *ngFor="let item of data; index as i" class="w-5/12 m-0 mx-1 mb-2 card commerce-tab">
+    <div *ngIf="!isLoading && !item.hidden" (click)="directProductDetail(item)">
+      <img class="image" [src]="
+          item && item?.images && item?.images?.length
+            ? item?.images[0]?.image_url
+            : defaultCover
+        " (error)="
+          onError(item && item?.images?.length && item?.images[0], 'images_url')
+        " />
+      <ion-card-content>
+        <ion-card-title class="text-sm font-normal pb-1.5 line-clamp-2">
+          <div>
+            {{
+            (item.name?.length || 0) > 16
+            ? (item.name | slice : 0 : 16) + "..."
+            : item.name
+            }}
+          </div>
+        </ion-card-title>
+        <ion-card-subtitle class="text-sm">
+          <div class="price">
+            <p *ngIf="item.price >= 0">
+              {{
+              (item.price - (item.price*item?.percent_discount)/100).toLocaleString("it-IT", {
+              style: "currency",
+              currency: "VND"
+              })
+              }}
+              <span *ngIf="item?.percent_discount > 0"
+                class="text-xs text-red-500 bg-pink-100 p-1">-{{item?.percent_discount}}%
+              </span>
+            </p>
+            <p *ngIf="item.price === -1">
+              <span class="text">{{ "COMMON.CONTACT" | translate }}</span>
+            </p>
+          </div>
+        </ion-card-subtitle>
+
+      </ion-card-content>
+    </div>
+    <app-hide-news-box [data]="item" (undo)="handleUndo($event)"></app-hide-news-box>
+  </ion-card>
+  <ion-modal [isOpen]="isShowListUser">
+    <ng-template>
+      <app-users-favorites page="'news'" [id]="idForData" [users]="users" (setOpen)="setOpen($event)"
+        [isLoading]="isLoading"></app-users-favorites>
+    </ng-template>
+  </ion-modal>
+</div>

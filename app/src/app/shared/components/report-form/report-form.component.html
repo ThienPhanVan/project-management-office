@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ "BUTTON.REPORT" | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCloseModal(false)">{{
+        "BUTTON.CLOSE" | translate
+      }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" scroll="false">
+  <form [formGroup]="form" novalidate>
+    <div class="pl-2">
+      <h2 class="py-2 text-base font-bold">
+        Hãy chọn vấn đề <span class="text-red-500">(*)</span>
+      </h2>
+      <ion-radio-group value="" (ionChange)="onChange($event)">
+        <div *ngFor="let item of array">
+          <ion-radio [value]="item.value" aria-label="" labelPlacement="end">{{
+            item.name
+          }}</ion-radio
+          ><br />
+        </div>
+      </ion-radio-group>
+
+      <ion-item *ngIf="change === 8">
+        <ion-textarea
+          name="description"
+          formControlName="description"
+          type="text"
+          [label]="'FORM.FIELD.DIFFERENT' | translate"
+          labelPlacement="floating"
+          [placeholder]="'ENTER' | translate"
+          class="required"
+          style="height: 100px"
+        ></ion-textarea>
+      </ion-item>
+    </div>
+
+    <ion-row>
+      <ion-col>
+        <ion-button
+          class="px-2"
+          type="submit"
+          expand="block"
+          (click)="submit()"
+          [disabled]="form.invalid"
+        >
+          <ion-icon
+            name="reload-outline"
+            [hidden]="form.invalid"
+            class="icon-load mr-3"
+          ></ion-icon>
+          <span>{{ "BUTTON.REPORT" | translate }}</span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

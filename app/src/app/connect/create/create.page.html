@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="max-h-14 flex">
+    <ion-button fill="clear" color="dark" (click)="back()" slot="start">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title>
+        <div class="text-sm font-bold text-left">{{name || 'Nhóm mới'}}</div>
+        <div class="text-xs font-thin text-left">Đã chọn: {{selectedUsers.length}}</div>
+    </ion-title>
+</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="flex items-center">
+    <div class="relative mx-4 mt-4">
+      <app-avatar [isAvatar]="true" [isGroupAvatar]="true" (getSrcImage)="getSrcImage($event)" [isUploadImage]="false"
+        [updateAvatar]="true" (setCoverImageEvent)="setCoverImage($event)" [classNameAvatar]="'thumbnail-3'"></app-avatar>
+    </div>
+    <ion-input class="pl-2" [(ngModel)]="name" labelPlacement="stacked" placeholder="Đặt tên nhóm" (ionFocus)="nameForcus()" (ionBlur)="nameBlur()" maxlength="50"></ion-input>
+    <ion-button class="pr-2" fill="clear" [hidden]="!isNameForcus">Lưu</ion-button>
+  </div>
+
+  <ion-searchbar animated="true" placeholder="Tìm tên hoặc số điện thoại"></ion-searchbar>
+
+  <app-user-list [users]="users" [isLoading]="isLoading" [allowRedirect]="false" [isSelectCheckbox]="true" (selectedUserIdsChange)="getSelectedUserIds($event)"></app-user-list>
+
+  <app-user-chip-list [groupName]="name" *ngIf="selectedUsers && selectedUsers.length" [users]="selectedUsers" (userRemoved)="userRemoved($event)"></app-user-chip-list>
+  
+</ion-content>

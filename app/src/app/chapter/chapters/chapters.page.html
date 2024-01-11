@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+
+  <ion-toolbar>
+    <div class="flex items-center">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" [routerLink]="['/', 'tabs', 'community']" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-searchbar placeholder="{{ 'PLACEHOLDER.SEARCH_CHAPTER' | translate }}" class="mt-3 pl-0 pr-1"
+        [value]="searchValue" (ionFocus)="showSearchChapterModel()"></ion-searchbar>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <app-chapter-list [chapters]="chapters" [isLoading]="isLoading" (joined)="joinChapter($event)"
+    (reject)="cancelJoinChapter($event)"></app-chapter-list>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

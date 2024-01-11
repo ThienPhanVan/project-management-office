@@ -1,0 +1,149 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-item lines="none">
+        <ion-text>{{titlePage}}</ion-text>
+      </ion-item>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <form *ngIf="isLoading">
+    <ion-skeleton-text [animated]="true" class="h-12"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-56"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-7"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-12"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-24"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-20"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-11"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-5"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-24"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-20"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-96"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-36"></ion-skeleton-text>
+  </form>
+  <form [formGroup]="form" novalidate *ngIf="!isLoading">
+    <!-- <ion-item>
+      <ion-label class="label-text sc-ion-textarea-ios">{{ "PAGES.EVENTS.COVER_IMAGE" | translate }}<span
+          class="ml-1 text-red-500">*</span></ion-label>
+    </ion-item>
+    <app-avatar [isUploadImageBg]="isUploadImageBg" [isBackground]="isBackground" [form]="form"
+      (setCoverImageBackgroundEvent)="setCoverImage($event)" />
+    <ion-item>
+      <ion-toggle (ionChange)="changeType($event)" labelPlacement="end" aria-label="Primary toggle" color="primary"
+        [checked]="isCheckType">{{ labelEventType}}</ion-toggle>
+    </ion-item> -->
+    <!-- <ion-item> -->
+    <!-- <ion-select label="Chọn danh mục sản phẩm" label-placement="floating" formControlName="product_category_id"
+        okText="{{ 'BUTTON.CHOICE' | translate}}" cancelText="{{ 'BUTTON.CANCEL' | translate}}">
+        <ion-select-option *ngFor="let option of productCategories"
+          [value]="option.id">{{option.name}}</ion-select-option>
+      </ion-select> -->
+    <div></div>
+    <!-- </ion-item> -->
+    <!-- <ion-item *ngIf="(org | json) !== '{}'" hidden="true">
+      <ion-select label="Chọn org" label-placement="floating" formControlName="organization_id"
+      okText="{{ 'BUTTON.CHOICE' | translate}}" cancelText="{{ 'BUTTON.CANCEL' | translate}}">
+      <ion-select-option [value]="org.id">
+        {{org.name}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item> -->
+
+    <ion-item *ngIf="!query?.organization_id" [hidden]="isEdit">
+      <ion-select label="{{'TAB.COMMERCE.CHOICE_ORG' | translate}}" label-placement="floating"
+        formControlName="organization_id" okText="{{ 'BUTTON.CHOICE' | translate}}"
+        cancelText="{{ 'BUTTON.CANCEL' | translate}}" [class]="form.value.organization_id !== '' ? 'chooseOrg' : ''">
+        <ion-select-option *ngFor="let option of organizations" [value]="option.id">{{option.name}}</ion-select-option>
+      </ion-select>
+      <ion-icon *ngIf="form.value.organization_id !== ''" name="close-outline" (click)="clearOrg()"></ion-icon>
+    </ion-item>
+
+    <app-items-select [title]="'TAB.COMMERCE.PRODUCT_CATEGORY'" [itemId]="form.value.product_category_id"
+      [data]="categoriesFilter" (chooseData)="onChooseData($event)" (searchQuery)="onSearchQuery($event)"
+      [isLoading]="isLoadingProductCategories" (createData)="onCreateData($event)" [removeName]="removeName"
+      [type]="'category'"></app-items-select>
+    <!-- <ion-item>
+      <ion-select label="Chọn chapter" label-placement="floating" formControlName="chapter_id"
+        okText="{{ 'BUTTON.CHOICE' | translate}}" cancelText="{{ 'BUTTON.CANCEL' | translate}}">
+        <ion-select-option *ngFor="let option of chapters" [value]="option.id">{{option.name}}</ion-select-option>
+      </ion-select>
+    </ion-item> -->
+    <ion-item>
+      <ion-input name="name" formControlName="name" type="text" [label]=" 'FORM.FIELD.PRODUCT_NAME' | translate"
+        labelPlacement="floating" [placeholder]="'ENTER' | translate" class="required" />
+    </ion-item>
+    <div class="pl-4 leading-10 flex justify-between">
+      <span class="mb-0">{{'FORM.FIELD.PRODUCT_PRICE' |translate}}</span>
+      <div class="mr-4">
+        <ion-radio-group [value]="typePrice" (ionChange)="checkTypePrice($event)">
+          <ion-radio [value]="0" class="mr-5" labelPlacement="end">{{"COMMON.CONTACT" |
+            translate}}</ion-radio>
+          <!-- <ion-radio [value]="0" class="mr-5" labelPlacement="end">{{"COMMON.FREE" | translate}}</ion-radio> -->
+          <ion-radio [value]="1" labelPlacement="end">{{"COMMON.PRODUCT_PRICE" | translate}}</ion-radio>
+        </ion-radio-group>
+      </div>
+      <!-- <div [class]="typePrice <= 0 ? 'group-checkbox' : ''">
+        <ion-radio-group [value]="typePrice" (ionChange)="checkTypePrice($event)">
+          <ion-radio [value]="-1" style="margin-right: 20px">{{"COMMON.CONTACT" | translate}}</ion-radio>
+          <ion-radio [value]="0" style="margin-right: 20px">{{"COMMON.FREE" | translate}}</ion-radio>
+          <ion-radio [value]="1">{{"COMMON.CHARGES" | translate}}</ion-radio>
+        </ion-radio-group>
+      </div> -->
+    </div>
+
+    <ion-item *ngIf="isGetPrice">
+      <app-price-input class="w-full" [label]="'FORM.FIELD.PRICE_PRODUCT'" [priceEdit]="data?.price" [type]="'product'"
+        (price)="onPrice($event)"></app-price-input>
+      <!-- <ion-input name="price" formControlName="price" type="number" [label]=" 'FORM.FIELD.PRICE' | translate"
+        labelPlacement="floating" [placeholder]="'ENTER' | translate" class="required" /> -->
+    </ion-item>
+
+    <div class="pl-4 leading-10 flex justify-between" *ngIf="isGetPrice">
+      <div class="mb-0">{{'FORM.FIELD.PRODUCT_DISCOUNT' | translate}}</div>
+      <input class="w-12 flex text-center mr-2" name="percent_discount" formControlName="percent_discount" type="number"
+        (blur)="onDiscount($event)" [(ngModel)]="discountDisplay" />
+    </div>
+
+    <div class="pl-4 leading-10 flex justify-between" *ngIf="isGetPrice">
+      <div class="mb-0">{{'FORM.FIELD.AMOUNT' | translate}}</div>
+      <div class="mr-6">{{form.value.amount.toLocaleString("it-IT",
+        { style: "currency",
+        currency: "VND" })}}</div>
+    </div>
+
+    <ion-item>
+      <ion-textarea name="description" formControlName="description" type="text"
+        [label]=" 'FORM.FIELD.PRODUCT_CONTENT' | translate" labelPlacement="floating"
+        [placeholder]="'ENTER' | translate" class="required" style="height: 100px">
+      </ion-textarea>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-textarea name="location" formControlName="location" type="text" [label]=" 'FORM.FIELD.LOCATION' | translate"
+        labelPlacement="floating" [placeholder]="'ENTER' | translate" style="height: 100px"></ion-textarea>
+    </ion-item> -->
+    <ion-item>
+      <div class="image">
+        <h5>{{"FORM.FIELD.UPLOAD_IMAGE" | translate}}</h5>
+        <app-avatar [data]="data" [isCreate]="isCreate" [isEdit]="isEdit" (removeImage)="handleRemoveImage($event)"
+          [isLoadingUpload]="isLoadingUpload" (addImage)="handleAddImage($event)"></app-avatar>
+      </div>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button class="px-2" type="submit" expand="block" (click)="submit()" [disabled]="isNotCanSave">
+          <ion-icon name="reload-outline" [hidden]="!isSubmit" class="icon-load mr-3"></ion-icon>
+
+          <span *ngIf="isCreate">{{'BUTTON.ADD' | translate}}</span>
+          <span *ngIf="isEdit">{{'BUTTON.SAVE' | translate}}</span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

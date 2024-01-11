@@ -1,0 +1,315 @@
+<ion-content [fullscreen]="true" *ngIf="isLoading">
+  <ion-card>
+    <ion-avatar class="ml-3 mt-3 absolute w-16 h-16">
+      <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+    </ion-avatar>
+    <ion-card-header class="py-3 ml-16">
+      <ion-card-title>
+        <div class="flex">
+          <div class="mt-1 mb-1" style="width: 100%">
+            <div class="text-base font-extrabold">
+              <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text>
+            </div>
+            <div class="text-xs opacity-80">
+              <ion-skeleton-text [animated]="true" style="height: 16px"></ion-skeleton-text>
+            </div>
+            <div class="text-xs opacity-80">
+              <ion-skeleton-text [animated]="true" style="height: 16px"></ion-skeleton-text>
+            </div>
+          </div>
+        </div>
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card class="px-0" *ngIf="user.description">
+    <ion-card-header>
+      <ion-card-subtitle><ion-skeleton-text [animated]="true"
+          style="height: 24px"></ion-skeleton-text></ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="text-sm">
+        <ion-skeleton-text [animated]="true" style="height: 16px"></ion-skeleton-text>
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="px-0">
+    <ion-accordion-group>
+      <ion-accordion>
+        <ion-item slot="header">
+          <div class="flex items-center" style="width: 100%">
+            <ion-card-subtitle class="ml-2" style="width: 100%"><ion-skeleton-text [animated]="true"
+                style="height: 20px"></ion-skeleton-text></ion-card-subtitle>
+          </div>
+        </ion-item>
+        <div class="w-full" slot="content">
+          <ion-button fill="clear" class="text-xs" expand="block">
+            <ion-skeleton-text [animated]="true" style="height: 24px"></ion-skeleton-text>
+          </ion-button>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card>
+
+  <ion-card class="px-0" *ngIf="chapters &&
+  chapters.length">
+    <ion-accordion-group>
+      <ion-accordion>
+        <ion-item slot="header">
+          <div class="flex items-center">
+            <ion-card-subtitle class="ml-2"><ion-skeleton-text [animated]="true"
+                style="height: 20px"></ion-skeleton-text></ion-card-subtitle>
+          </div>
+        </ion-item>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card>
+
+  <ion-card class="px-0">
+    <ion-accordion-group>
+      <ion-accordion>
+        <ion-item slot="header">
+          <div class="flex items-center" style="width: 100%">
+            <ion-card-subtitle class="ml-2" style="width: 100%"><ion-skeleton-text [animated]="true"
+                style="height: 20px"></ion-skeleton-text></ion-card-subtitle>
+          </div>
+        </ion-item>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center" routerLink="./security">
+          <div class="ml-2" style="width: 100%">
+            <div>
+              <ion-skeleton-text [animated]="true" style="height: 20px"></ion-skeleton-text>
+            </div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center" routerLink="/app-information">
+          <div class="ml-2" style="width: 100%">
+            <div>
+              <ion-skeleton-text [animated]="true" style="height: 20px"></ion-skeleton-text>
+            </div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center" routerLink="/auth/login">
+          <div class="ml-2" style="width: 100%">
+            <ion-skeleton-text [animated]="true" style="height: 20px"></ion-skeleton-text>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+</ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="!isLoading">
+  <ion-card>
+    <app-avatar (getSrcImage)="getSrcImage($event)" [isUploadImage]="isUploadImage" [isAvatar]="isAvatar"
+      [classNameAvatar]="'ml-3 mt-3 absolute w-16 h-16'" [type]="'user-detail'" [updateAvatar]="updateAvatar"
+      [data]="user" (setCoverImageEvent)="setCoverImage($event)"></app-avatar>
+    <ion-card-header class="py-3 ml-16">
+      <ion-card-title [routerLink]="['/', 'tabs', 'users', user.id]">
+        <div class="flex">
+          <div class="mt-1 mb-1">
+            <div [ngClass]="{'label-verified': user.verified_flag}">
+              <span class="text-base font-extrabold">{{user.username}}</span>
+            </div>
+            <div class="text-xs opacity-80" *ngIf="user.is_public_phone">
+              <ion-icon name="call-outline"></ion-icon> {{user.phone}}
+            </div>
+            <div class="text-xs opacity-80">
+              <ion-icon name="mail-outline"></ion-icon>
+              {{user.email}}
+            </div>
+          </div>
+        </div>
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <app-shortcut></app-shortcut>
+
+  <ion-card class="px-0" *ngIf="user.description">
+    <ion-card-header>
+      <ion-card-subtitle>{{'TAB.PROFILE.ABOUT_ME' | translate}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="text-sm">{{user.description}}.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- <div class="flex flex-wrap justify-evenly">
+    <ion-card class="w-5/12 m-0 mx-1 mb-2">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <div class="flex items-center" (click)="redirectNewsUser(2)">
+            <ion-icon size="large" name="newspaper-outline"></ion-icon>
+            <div class="ml-2">
+              <div>{{'TAB.PROFILE.NEWS_USER' | translate}}</div>
+            </div>
+          </div>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card class="w-5/12 m-0 mx-1 mb-2">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <div class="flex items-center" (click)="redirectNewsUser(1)">
+            <ion-icon size="large" name="calendar-outline"></ion-icon>
+            <div class="ml-2">
+              <div>{{'TAB.PROFILE.EVENTS_USER' | translate}}</div>
+            </div>
+          </div>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card class="w-5/12 m-0 mx-1">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <div class="flex items-center" (click)="redirectNewsUser(0)">
+            <ion-icon size="large" name="cash-outline"></ion-icon>
+            <div class="ml-2">
+              <div>{{'TAB.PROFILE.OPP_USER' | translate}}</div>
+            </div>
+          </div>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card class="w-5/12 m-0 mx-1">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <div class="flex items-center" (click)="redirectNewsUser(3)">
+            <ion-icon size="large" name="cart-outline"></ion-icon>
+            <div class="ml-2">
+              <div>{{'TAB.PROFILE.COMMERCE_USER' | translate}}</div>
+            </div>
+          </div>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+  </div> -->
+
+  <!-- organizations -->
+  <!-- <ion-card class="px-0">
+    <ion-accordion-group>
+      <ion-accordion>
+        <ion-item slot="header">
+          <div class="flex items-center">
+            <ion-icon name="business-outline" class="text-xs"></ion-icon>
+            <ion-card-subtitle class="ml-2">{{'TAB.PROFILE.ORGANIZATION' | translate}} {{organizations |
+              displayTotal}}</ion-card-subtitle>
+          </div>
+        </ion-item>
+
+        <div class="w-full" slot="content">
+          <app-profile-organization-list [isLoading]="isLoading" *ngIf="organizations" class="my-0 p-0"
+            [organizations]="organizations" (changeOrganization)="changeOrganization($event)"
+            [isOwner]="true"></app-profile-organization-list>
+          <ion-button shape="outline" class="text-xs mx-10" expand="block" routerLink="/tabs/organizations/create">
+            <ion-icon name="add-circle-outline" class="mr-1"></ion-icon>
+            {{'BUTTON.CREATE' | translate}}
+          </ion-button>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card> -->
+
+  <!-- chapters -->
+  <!-- <ion-card class="px-0" *ngIf="chapters && chapters.length">
+    <ion-accordion-group>
+      <ion-accordion>
+        <ion-item slot="header">
+          <div class="flex items-center">
+            <ion-icon name="shapes-outline" class="text-xs"></ion-icon>
+            <ion-card-subtitle class="ml-2">{{'TAB.PROFILE.CHAPTERS' | translate}} {{chapters |
+              displayTotal}}</ion-card-subtitle>
+          </div>
+        </ion-item>
+        <div *ngIf="chapters" class="w-full" slot="content">
+          <app-chapter-list [isShowButton]="false" [isLoading]="isLoading" class="my-0 p-0"
+            [chapters]="chapters"></app-chapter-list>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card> -->
+
+  <!-- <ion-card class="px-0">
+    <ion-accordion-group>
+      <ion-accordion>
+        <ion-item slot="header">
+          <div class="flex items-center">
+            <ion-icon name="diamond-outline" class="text-xs"></ion-icon>
+            <ion-card-subtitle class="ml-2">{{'TAB.PROFILE.MEMBERSHIP.TITLE' | translate}}</ion-card-subtitle>
+          </div>
+        </ion-item>
+        <div class="w-full" slot="content">
+          <app-upgrade-account></app-upgrade-account>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card> -->
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center" routerLink="./security">
+          <ion-icon class="" name="key-outline"></ion-icon>
+          <div class="ml-2">
+            <div>{{'TAB.PROFILE.ACCOUNT_SECURITY' | translate}}</div>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="text-2xl ml-auto"></ion-icon>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center" routerLink="/app-information">
+          <ion-icon name="information-circle-outline"></ion-icon>
+          <div class="ml-2">
+            <div>{{'TAB.PROFILE.ABOUT_APP' | translate}}</div>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="text-2xl ml-auto"></ion-icon>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="flex items-center" (click)="doSignOut()">
+          <ion-icon name="log-out-outline"></ion-icon>
+          <div class="ml-2">
+            <div>{{'TAB.PROFILE.LOGOUT' | translate}}</div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>
+</ion-content>

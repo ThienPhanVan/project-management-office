@@ -1,0 +1,75 @@
+<ion-header>
+  <div style="padding-left: 16px; padding-right: 16px">
+    <div style="
+        display: flex;
+        align-items: center;
+        height: 100%;
+        min-height: 48px;
+        border-bottom: 1px solid #dddce0;
+      ">
+      <ion-label style="width: 100%">
+        <div class="flex justify-between" (click)="setOpen(!isModalOpen)">
+          <div class="text-base">{{ title | translate }}</div>
+          <ion-icon name="happy-outline" style="font-size: 24px; width: 8%"></ion-icon>
+        </div>
+        <div *ngIf="feeling?.name">
+          <ion-chip size="small" color="none" class="text-xs p-0 color-blue-600" style="
+              margin-right: 12px;
+              border: 1px solid #f1f1f1;
+              padding: 8px;
+              background-color: #f1f1f1;
+            ">
+            <a color="primary" class="color-blue-600">{{ feeling?.name | translate }} {{ feeling?.char}}</a>
+            <ion-icon *ngIf="feeling?.name" name="close-outline" (click)="removeMention()"></ion-icon>
+          </ion-chip>
+        </div>
+      </ion-label>
+
+    </div>
+  </div>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar class="text-sm">
+          <ion-buttons slot="start">
+            <ion-button (click)="cancelChanges()" class="normal-case">{{
+              "BUTTON.CANCEL" | translate
+              }}</ion-button>
+          </ion-buttons>
+
+          <ion-title class="text-center text-base">{{
+            title | translate
+            }}</ion-title>
+
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmChanges()" class="normal-case" [disabled]="!feeling?.name">{{ "BUTTON.CHOICE" |
+              translate }}</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content color="light" [fullscreen]="true">
+        <ion-toolbar>
+          <div class="flex">
+            <ion-searchbar [debounce]="1500" placeholder="{{ 'PLACEHOLDER.SEARCH' | translate }}" class="mt-1"
+              (ionInput)="searchFeelings($event)"></ion-searchbar>
+          </div>
+        </ion-toolbar>
+        <!-- modal -->
+        <ion-radio-group [(ngModel)]="selectedValue">
+          <ion-item *ngFor="let item of feelings; trackBy: trackItems" lines="none">
+            <ion-radio *ngIf="isLoading">
+              <ion-skeleton-text [animated]="true" style="height: 44px"></ion-skeleton-text>
+            </ion-radio>
+            <ion-radio [value]="item.id" *ngIf="!isLoading" (click)="ionChange(item)">
+              {{ item.name | translate }} {{item.char}}
+            </ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

@@ -1,0 +1,156 @@
+.container {
+  padding: 0 12px 0 12px;
+}
+
+.header {
+  position: relative;
+    padding: 12px 8px 0px 12px;
+  .actions {
+    position: absolute;
+    top: 12px;
+    right: 8px;
+  }
+}
+
+.detail-event-pages {
+  color: #666666;
+}
+.header {
+  color: #666666;
+}
+
+ion-segment {
+  margin-top: 4px;
+}
+.segment-content {
+  margin-top: 12px;
+  margin-bottom: 70px;
+  .disscut {
+    position: relative;
+
+    .container {
+      position: absolute;
+      bottom: 0;
+      left: 0px;
+      background-color: #00000025;
+      padding: 4px;
+      color: #fff;
+    }
+  }
+}
+.date-time {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.type {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  .icon-online {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #006600;
+  }
+
+  .icon-offline {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: darkgray;
+  }
+
+  .text {
+    margin-left: 8px;
+  }
+}
+
+.location {
+  font-size: 14px;
+}
+
+.count {
+  margin-left:1px ;
+  .people {
+    margin-right: 6px;
+  }
+}
+
+.participate {
+
+  ion-card-content {
+    padding: 0;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+
+    .username {
+      color: #050505;
+      margin-left: 12px;
+    }
+  }
+}
+
+.children-event {
+  padding: 0 12px 0 12px;
+  font-size: 12px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  .event-item {
+    display: inline-block;
+    border: 1px solid #eaebee;
+    border-radius: 8px;
+    padding: 4px;
+    margin-right: 8px;
+
+    &.active {
+      background-color: #e5e7eb;
+    }
+  }
+}
+
+.add {
+  p {
+    max-width: 150px;
+    padding-bottom: 12px;
+    text-align: center;
+  }
+}
+
+.upload-image {
+  text-align: center;
+}
+
+ion-segment {
+  margin-top: 8px;
+}
+
+::ng-deep {
+  app-avatar {
+    .many-images {
+      img {
+        height: 100% !important;
+      }
+    }
+  }
+}
+
+ion-modal.modal-report {
+  --height: 90%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}

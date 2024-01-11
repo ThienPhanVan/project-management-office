@@ -1,0 +1,184 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-buttons>
+        <ion-back-button
+          class="text-xs"
+          text=""
+          defaultHref="/login"
+        ></ion-back-button>
+      </ion-buttons>
+      <ion-title class="text-sm">Đăng ký tài khoản</ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <form [formGroup]="registerForm" novalidate>
+    <div class="register-page">
+      <ion-list>
+        <ion-item lines="none" class="ion-margin-top ion-margin-bottom">
+          <img src="../../../assets/logo/gcec.png" />
+        </ion-item>
+
+        <div>
+          <app-organization-list
+            (getThumbnail)="getSrcImage($event)"
+            [organizations]="org"
+            [description]="description"
+            [isLoading]="orgLoading"
+          ></app-organization-list>
+        </div>
+
+        <ion-item lines="none">
+          <ion-text>
+            <p clas="text-xs text-justify">
+              Tham gia cộng đồng, cùng nhau chia sẻ, tạo ra sức mạnh và năng
+              lượng Việt, thực sự mở rộng "biên giới", nâng cao vị thế và định
+              vị Việt Nam trên bản đồ kinh tế Thế giới.
+            </p>
+          </ion-text>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Họ và tên"
+            labelPlacement="floating"
+            formControlName="username"
+            [clearInput]="true"
+            placeholder="Nguyễn Văn A"
+          ></ion-input>
+        </ion-item>
+        <div
+          class="error-container"
+          *ngIf="(registerForm.get('username')?.invalid && registerForm.get('username')?.touched) || registerForm.get('username')?.dirty  || submitted"
+        >
+          <div class="text-rose-600 text-xs pl-4 pr-4">
+            <span *ngIf="registerForm.get('username')?.errors?.['required']">
+              Không được bỏ trống
+            </span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-input
+            label="Email"
+            formControlName="email"
+            labelPlacement="floating"
+            [clearInput]="true"
+            placeholder="email@gmail.com"
+          ></ion-input>
+        </ion-item>
+        <div
+          class="error-container"
+          *ngIf="(registerForm.get('email')?.invalid && registerForm.get('email')?.touched) || registerForm.get('email')?.dirty  || submitted"
+        >
+          <div class="text-rose-600 text-xs pl-4 pr-4">
+            <span *ngIf="registerForm.get('email')?.errors?.['required']">
+              Không được bỏ trống
+            </span>
+            <span *ngIf="registerForm.get('email')?.errors?.['pattern']">
+              Không đúng định dạng
+            </span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-input
+            label="Số điện thoại"
+            formControlName="phone"
+            labelPlacement="floating"
+            [clearInput]="true"
+            type="tel"
+            placeholder="0123456789"
+          ></ion-input>
+        </ion-item>
+        <div
+          class="error-container"
+          *ngIf="(registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched) || registerForm.get('phone')?.dirty  || submitted"
+        >
+          <div class="text-rose-600 text-xs pl-4 pr-4">
+            <span *ngIf="registerForm.get('phone')?.errors?.['required']">
+              Không được bỏ trống
+            </span>
+            <span *ngIf="registerForm.get('phone')?.errors?.['pattern']">
+              Vui lòng nhập số điện thoại đúng định dạng
+            </span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-input
+            label="Mật khẩu"
+            formControlName="password"
+            labelPlacement="floating"
+            [type]="passwordType"
+            placeholder="Abc@1234"
+          >
+          </ion-input>
+          <ion-icon
+            item-end
+            [name]="passwordIcon"
+            class="passwordIcon"
+            (click)="hideShowPassword()"
+          ></ion-icon>
+        </ion-item>
+        <div
+          class="error-container"
+          *ngIf="(registerForm.get('password')?.invalid && registerForm.get('password')?.touched) || registerForm.get('password')?.dirty || submitted"
+        >
+          <div class="text-rose-600 text-xs pl-4 pr-4">
+            <span *ngIf="registerForm.get('password')?.errors?.['required']">
+              Không được bỏ trống
+            </span>
+            <span *ngIf="registerForm.get('password')?.errors?.['pattern']">
+              Nhập ít nhất 8 ký tự. Bao gồm ít nhất một chữ số, một chữ in, một
+              chữ thường và một ký tự đặc biệt.</span
+            >
+          </div>
+        </div>
+
+        <ion-item lines="none" class="ion-margin-top ion-margin-bottom">
+          <ion-text
+            ><i
+              >Bằng cách nhấp vào Đăng ký , bạn đồng ý với
+              <a routerLink="" class="text-blue-500">Điều khoản</a>,
+              <a routerLink="" class="text-blue-500"
+                >Chính sách quyền riêng tư
+              </a>
+              của chúng tôi.</i
+            ></ion-text
+          >
+        </ion-item>
+      </ion-list>
+      <ion-row>
+        <ion-col>
+          <ion-button
+            class="px-2"
+            (click)="submit()"
+            expand="block"
+            [disabled]="registerForm.invalid || submitted"
+          >
+            <ion-icon
+              name="reload-outline"
+              [hidden]="!submitted"
+              class="icon-load mr-3"
+            ></ion-icon>
+            <span>Đăng Ký</span></ion-button
+          >
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <div text-center>
+          Đã có tài khoản?
+          <a class="text-blue-500" routerLink="/login">Đăng nhập</a>
+        </div>
+      </ion-row>
+    </div>
+  </form>
+
+  <app-zoom
+    [showModal]="showModal"
+    [image]="imagesString"
+    (closeModal)="closeModal($event)"
+  ></app-zoom>
+</ion-content>

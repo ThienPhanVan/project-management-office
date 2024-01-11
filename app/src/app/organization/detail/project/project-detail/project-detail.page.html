@@ -1,0 +1,17 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title>Project - {{project.name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="grid grid-cols-2 gap-3 p-3">
+    <div *ngFor="let option of menuOptions" ion-button class="background-toolbar w-full min-h-[8rem] rounded-md flex flex-col justify-center items-center" (click)="navigate(option.route)">
+      <ion-icon name={{option.icon}} size="large"></ion-icon>
+      <div class="text-lg">{{option.name}}</div>
+    </div>
+  </div>
+</ion-content>

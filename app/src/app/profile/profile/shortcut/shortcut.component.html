@@ -1,0 +1,8 @@
+<div class="flex ml-3">
+  <div *ngFor="let shortcut of shortcuts">
+    <ion-button size="small" fill="outline" class="m-1" [href]="shortcut.description">
+      {{shortcut.name}}
+      <ion-icon size="small" name="arrow-redo-outline" class="mt-4 -ml-9 absolute"></ion-icon>
+    </ion-button>
+  </div>
+</div>

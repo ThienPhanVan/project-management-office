@@ -1,0 +1,10 @@
+<ion-list>
+  <ion-item *ngFor="let project of projects" lines="none" [routerLink]="['projects', project.id]">
+    <div class="flex-1 text-base">
+      {{project.name}}
+    </div>
+    <div class="text-sm font-thin">
+      #{{project.code}}
+    </div>
+  </ion-item>
+</ion-list>

@@ -1,0 +1,45 @@
+.news-tabs {
+  width: 100%;
+
+  ion-searchbar.search-news-tabs {
+    padding: 0;
+  }
+
+  .tabs {
+    margin: 0;
+    width: 100%;
+    padding: 4px;
+  }
+}
+
+::ng-deep {
+  .page-news {
+    app-zoom {
+      .close {
+        top: 30px;
+      }
+    }
+  }
+  .list-images {
+    .one-image {
+      img {
+        height: 100% !important;
+      }
+    }
+  }
+}
+
+.create-news {
+  position: sticky;
+  color: green;
+  z-index: 9999;
+  right: 0;
+  bottom: 0;
+  text-align: right;
+
+  ion-icon {
+    width: 36px;
+    height: 36px;
+    margin-right: 8px;
+  }
+}

@@ -1,0 +1,13 @@
+<ion-content>
+  <ion-content class="ion-padding">
+    <div *ngFor="let msg of message; let i = index" class="user-reaction-row">
+      <ion-avatar slot="start">
+        <ion-img [src]="msg.user?.thumbnail"></ion-img>
+      </ion-avatar>
+      <div class="user-reaction-info">
+        <p class="text-lg">{{ msg.user?.username }}</p>
+        <p class="text-lg">{{ msg.react_emoji }}</p>
+      </div>
+    </div>
+  </ion-content>
+</ion-content>

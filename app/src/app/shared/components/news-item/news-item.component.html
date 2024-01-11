@@ -1,0 +1,42 @@
+<ion-card class="mx-0 my-1" *ngIf="!data.hidden">
+  <app-post-header [isLoading]="isLoading" [data]="data" [me]="me" [mentionOthers]="mentionOthers"
+    [indexNews]="indexNews" (hidden)="handleHidden($event)" (actionSheet)="setResult($event)"></app-post-header>
+
+  <div *ngIf="isLoading">
+    <ion-skeleton-text [animated]="true" class="h-40"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-6"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-16"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-5"></ion-skeleton-text>
+  </div>
+
+  <div *ngIf="!isLoading">
+    <app-images-list [images]="data.images" (zoom)="onZoom($event)"></app-images-list>
+
+    <ion-card-content class="px-4 py-4 pb-4" [class]="data?.listImages.length === 0 ? 'pt-1' : 'pt-4'">
+      <div>
+        <div (click)="clickRedirectDetail($event)" class="text-sm decoration-none font-bold">
+          {{ data.name }}
+        </div>
+        <p (click)="clickRedirectDetail($event)" class="content-news"
+          [innerHTML]="isShowMore ? data.content :  (data.content | slice:0:250).length >= 250 ? (data.content | slice:0:250) + '...' : (data.content | slice:0:250)">
+        </p>
+        <p *ngIf="(data.content | slice:0:250).length >= 150" class="text-blue-500 content-news-more">
+          <a *ngIf="isShowMore" (click)="isShowMore = !isShowMore">{{ "TAB.HOME.SHOW_LESS" | translate }}</a>
+          <a *ngIf="!isShowMore" (click)="isShowMore = !isShowMore">{{ "TAB.HOME.SHOW_MORE" | translate }}</a>
+        </p>
+      </div>
+      <div *ngIf="data.tags" class="p-0 m-0 items-center">
+        <app-tags-list [tags]="data.tags"></app-tags-list>
+      </div>
+    </ion-card-content>
+  </div>
+
+  <div *ngIf="isLoading">
+    <ion-skeleton-text [animated]="true" class="h-5"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-6"></ion-skeleton-text>
+  </div>
+  <app-reactions *ngIf="!isLoading" [data]="data" (heart)="onHeart($event)" [type]="'news'" [page]="'list'"
+    (redirect)="clickRedirectDetail($event)" [hostNameLocation]="hostNameLocation"></app-reactions>
+</ion-card>
+
+<app-hide-news-box [data]="data" (undo)="handleUndo($event)"></app-hide-news-box>

@@ -1,0 +1,30 @@
+
+.content-news {
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  // -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  line-height: normal !important;
+}
+
+
+.content-news-more {
+  font-size: 15px;
+  text-align: right;
+  margin-top: 4px;
+}
+
+
+::ng-deep {
+  app-news-list {
+    app-avatar {
+      img {
+        object-fit: cover !important;
+      }
+    }
+  }
+}
+
+

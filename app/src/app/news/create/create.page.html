@@ -1,0 +1,111 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBackCreate()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <!-- <ion-item lines="none"> -->
+      <ion-text *ngIf="isCreate">
+        {{ "TAB.HOME.CREATE_NEWS" | translate }}
+      </ion-text>
+      <ion-text *ngIf="!isCreate">
+        {{ "TAB.HOME.UPDATE" | translate }}
+      </ion-text>
+      <!-- </ion-item> -->
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <form [formGroup]="form" novalidate *ngIf="isLoading">
+    <ion-skeleton-text [animated]="true" class="h-12"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-14"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-24"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-72"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-20"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-12"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-14"></ion-skeleton-text>
+  </form>
+  <form [formGroup]="form" novalidate *ngIf="!isLoading">
+    <!-- <ion-item>
+      <ion-label class="label-text sc-ion-textarea-ios">{{ "TAB.HOME.NEWS_TYPE" | translate }}</ion-label>
+      <div *ngIf="query.type === '0'">
+        {{'TAB.HOME.CHILD.OPPORTUNITY' | translate}}
+      </div>
+      <div *ngIf="query.type === '1'">
+        {{'TAB.HOME.CHILD.EVENT' | translate}}
+      </div>
+      <div *ngIf="query.type === '2'">
+        {{'TAB.HOME.CHILD.NEWS' | translate}}
+      </div>
+    </ion-item> -->
+
+    <ion-item *ngIf="!query?.organization_id" [hidden]="isEdit">
+      <ion-select label="{{'TAB.COMMERCE.CHOICE_ORG' | translate}}" label-placement="floating"
+        formControlName="organization_id" okText="{{ 'BUTTON.CHOICE' | translate}}"
+        cancelText="{{ 'BUTTON.CANCEL' | translate}}" [class]="form.value.organization_id !== '' ? 'chooseOrg' : ''">
+        <ion-select-option *ngFor="let option of organizations" [value]="option.id">{{option.name}}</ion-select-option>
+      </ion-select>
+      <ion-icon *ngIf="form.value.organization_id !== ''" name="close-outline" (click)="clearOrg()"></ion-icon>
+    </ion-item>
+
+    <ion-item>
+      <ion-textarea name="name" formControlName="name" type="text" [label]="'FORM.FIELD.TITLE' | translate"
+        labelPlacement="floating" [placeholder]="'ENTER' | translate" style="height: 100px"
+        class="required"></ion-textarea>
+    </ion-item>
+    <!-- <ion-item> -->
+    <div style="padding: 16px">
+      <ion-label position="fixed" class="label-required">{{'FORM.FIELD.CONTENT' | translate}}</ion-label>
+      <div class="NgxEditor__Wrapper mt-2">
+        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" class="sticky top-0 z-50">
+        </ngx-editor-menu>
+        <ngx-editor [editor]="editor" formControlName="content" [placeholder]="'ENTER' | translate"
+          (ngModelChange)="editorChange($event)"></ngx-editor>
+      </div>
+    </div>
+
+    <app-hashtag-mention (getArrayHashtag)="onGetArrayHashtag($event)" (getHashtag)="onGetHasTag($event)"
+      [arrayHashtag]="arrayTag"></app-hashtag-mention>
+
+    <app-tag-name-list [title]="'FORM.FIELD.MENTIONS'" [data]="users" [count]="count" [mentions]="mentions"
+      (getArrayMention)="onGetArrayMention($event)" (query)="onGetQuery($event)" (searchQuery)="onSearchQuery($event)"
+      [isLoading]="isLoadingMentions"
+      *ngIf="!form.value.organization_id && !query?.organization_id"></app-tag-name-list>
+
+    <app-feeling-create-new (feelingChoose)="handleChooseData($event)" [title]="'FORM.FIELD.FEELING'"
+      *ngIf="!form.value.organization_id && !query?.organization_id"></app-feeling-create-new>
+
+    <!-- <ion-item *ngIf="!form.value.organization_id && !query?.organization_id">
+      <ion-input
+        name="name"
+        formControlName="feeling"
+        type="text"
+        [label]=" 'FORM.FIELD.FEELING' | translate"
+        labelPlacement="floating"
+        [placeholder]="'ENTER' | translate"
+      />
+    </ion-item> -->
+
+    <ion-item>
+      <div class="image">
+        <h5>{{"FORM.FIELD.UPLOAD_IMAGE" | translate}}</h5>
+        <app-avatar [data]="data" [isCreate]="isCreate" [isEdit]="isEdit" (removeImage)="handleRemoveImage($event)"
+          [isLoadingUpload]="isLoadingUpload" (addImage)="handleAddImage($event)"></app-avatar>
+      </div>
+    </ion-item>
+
+  </form>
+</ion-content>
+
+<ion-footer class="bg-white">
+  <ion-row>
+    <ion-col>
+      <ion-button class="px-2" type="submit" expand="block" (click)="submit()" [disabled]="isNotCanSave">
+        <ion-icon name="reload-outline" [hidden]="!isSubmitting" class="icon-load mr-3"></ion-icon>
+        <span *ngIf="isCreate">{{ "BUTTON.CREATE" | translate }}</span>
+        <span *ngIf="!isCreate">{{ "BUTTON.SAVE" | translate }}</span></ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

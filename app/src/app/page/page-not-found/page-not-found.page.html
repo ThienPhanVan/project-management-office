@@ -1,0 +1,17 @@
+<div class="content-center">
+  <div class="mt-10 flex justify-center">
+    <img [src]="image" alt="" class="image" />
+  </div>
+  <div class="text-center">
+    <p class="text-4xl p-2">Oops!</p>
+    <p class="text-3xl font-bold p-2">404 {{'PAGES.NOT_FOUND.NOT_FOUND' | translate}}</p>
+    <div class="mb-3">
+      {{'PAGES.NOT_FOUND.SORRY' | translate}}
+    </div>
+    <div class="">
+      <ion-button color="danger" class="h-10" (click)="goHome()">
+        {{'PAGES.NOT_FOUND.GO_HOME' | translate}}
+      </ion-button>
+    </div>
+  </div>
+</div>

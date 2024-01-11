@@ -1,0 +1,104 @@
+<ion-card *ngFor="let user of users" class="cursor-pointer body mx-0">
+  <ion-card-content *ngIf="!isLoading">
+    <div class="flex">
+
+      <ion-avatar slot="start">
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      </ion-avatar>
+      <div class="ml-3">
+        <ion-card-title class="text-base font-extrabold">
+          <ion-skeleton-text [animated]="true" style="height: 24px;"></ion-skeleton-text>
+        </ion-card-title>
+        <div class="text-xs">
+          <ion-skeleton-text [animated]="true" style="height: 24px;"></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 pt-1">
+      <div class="flex" id="open-position-{{ user.id }}">
+        <ion-button fill="clear" class="text-sm" expand="block">
+          <ion-skeleton-text [animated]="true" style="height: 24px;"></ion-skeleton-text>
+        </ion-button>
+      </div>
+      <div class="flex">
+        <ion-button class="text-sm" fill="clear" expand="block" (click)="actionInvite(user)"
+          [disabled]="!user.organization_user?.position?.id">
+          <ion-skeleton-text [animated]="true" style="height: 24px;"></ion-skeleton-text>
+        </ion-button>
+        <ion-button class="text-sm" *ngIf="user.organization_user?.status === 1" [disabled]="true" fill="clear"
+          expand="block">
+          <ion-skeleton-text [animated]="true" style="height: 24px;"></ion-skeleton-text>
+        </ion-button>
+      </div>
+    </div>
+    <div>
+      <span *ngIf="user.organization_user?.status === 0" class="italic">
+        <ion-skeleton-text [animated]="true" style="height: 24px;"></ion-skeleton-text></span>
+    </div>
+  </ion-card-content>
+
+  <ion-card-content *ngIf="isLoading">
+    <div class="flex">
+      <app-avatar (getSrcImage)="getSrcImageUser($event)" [isAvatar]="isAvatar" [classNameAvatar]="classNameAvatar"
+        [data]="user"></app-avatar>
+
+      <div class="ml-3">
+        <ion-card-title class="text-base font-extrabold">
+          <div [ngClass]="{'label-verified': user.verified_flag}">
+            {{ user.username }}
+          </div>
+        </ion-card-title>
+
+        <div class="justify-items-center" *ngIf="user.is_public_phone">
+          <ion-icon name="call-outline" class="text-xs"></ion-icon>
+          <span class="pl-1 text-sm">{{ user.phone }}</span>
+        </div>
+
+        <div *ngIf="![0, 1].includes(user.organization_user?.status)" id="open-position-{{ user.id }}"
+          class=justify-items-center>
+          <ion-icon name="ribbon-outline" class="text-xs"></ion-icon>
+
+          <span class="text-sm">
+            {{
+            user.organization_user?.position?.name
+            ? user.organization_user?.position?.name
+            : 'MODAL.USER.CHOICE_POSITION' | translate
+            }}
+            <ion-icon name="chevron-down-outline" class="text-xs"></ion-icon>
+          </span>
+
+          <ion-modal trigger="open-position-{{ user.id }}" class="popup-modal" #modalPosition>
+            <ng-template>
+              <app-position-select [positionId]="user.organization_user?.position_id"
+                (selectionChange)="actionChangePosition($event, user, modalPosition)"
+                (selectionCancel)="modalPosition.dismiss()"></app-position-select>
+            </ng-template>
+          </ion-modal>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="pt-1">
+      <div class="grid justify-items-end">
+        <ion-button class="text-base" *ngIf="![0, 1].includes(user.organization_user?.status)" fill="clear"
+          (click)="actionInvite(user)" [disabled]="!user.organization_user?.position?.id">
+          {{ 'MODAL.USER.INVITE' | translate }}
+          <ion-icon name="add-outline" class="ml-1"></ion-icon>
+        </ion-button>
+
+        <ion-button class="text-sm" *ngIf="user.organization_user?.status === 1" [disabled]="true" fill="clear"
+          expand="block">
+          {{ 'MODAL.USER.WAITING' | translate }}
+        </ion-button>
+      </div>
+
+      <div>
+        <span *ngIf="user.organization_user?.status === 0" class="italic">
+          {{ 'MODAL.USER.USER_MEMBER' | translate }}
+          {{ 'MODAL.USER.ORGANIZATION' | translate }}</span>
+      </div>
+    </div>
+
+  </ion-card-content>
+</ion-card>

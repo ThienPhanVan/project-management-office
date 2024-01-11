@@ -1,0 +1,52 @@
+<ion-card *ngFor="let org of data" class="cursor-pointer m-1 body">
+  <ion-card-content class="flex">
+
+    <div class="flex-1">
+      <div class="grid grid-cols-10">
+        <div class="grid col-span-3">
+          <app-avatar (getSrcImage)="getSrcImage($event)" [isLogo]="isLogo" [classNameThumbnail]="classNameThumbnail"
+            [data]="org"></app-avatar>
+
+        </div>
+        <div class="ml-3 col-span-7">
+          <ion-card-title class="text-base font-extrabold" [routerLink]="['/tabs', 'org', org.id]">
+            <div class="flex items-center">
+              <span>{{ org.username || org.name }}</span>
+            </div>
+          </ion-card-title>
+
+          <div class="text-xs">
+            <ion-icon name="call-outline"></ion-icon> {{ org.phone }}
+          </div>
+        </div>
+      </div>
+
+      <ion-button *ngIf="!isChapterOrganization(org) && !org.hideInviteButton" class="text-xs" expand="block"
+        (click)="actionInvite(org)">
+        <ion-icon name="add-outline" class="mr-1"></ion-icon>
+        {{ 'BUTTON.ASSIGN_ORGANIZATION' | translate }}
+      </ion-button>
+
+      <div class="my-2 rounded-lg">
+        <ion-accordion-group>
+          <ion-accordion>
+            <ion-item slot="header" color="light">
+              <ion-icon name="people-circle-outline" class="text-base"></ion-icon>
+              <p class="pl-2">
+                {{ 'PAGES.ORGANIZATION.MEMBERS' | translate}}</p>
+            </ion-item>
+
+            <div class="w-full" slot="content">
+              <app-user-list-chapter-invite [users]="org.users" [single]="false"></app-user-list-chapter-invite>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+<ion-toast [isOpen]="toastMessage!==''" [message]="toastMessage" [duration]="1000"
+  (didDismiss)="closeToast()"></ion-toast>
+
+<app-zoom [showModal]="showModal" [image]="imagesString" (closeModal)="closeModal($event)"></app-zoom>

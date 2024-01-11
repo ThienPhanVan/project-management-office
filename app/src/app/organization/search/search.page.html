@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="flex">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-searchbar    placeholder="{{ 'PLACEHOLDER.SEARCH_ORGANIZATIONS' | translate }}" class="search-news-tabs" [debounce]="1000" (ionInput)="handleInput($event)"
+        (keydown.enter)="search($event)"></ion-searchbar>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item aria-hidden="true" *ngFor="let history of histories">
+      <ion-icon name="stopwatch-outline"></ion-icon>
+      <ion-label class="ml-2" [routerLink]="['/', 'tabs','organizations']" [queryParams]="{q: history.name.replaceAll('%', '') }">
+        <span class="w-full">{{ history.name.replaceAll('%', '') }}</span>
+      </ion-label>
+      <ion-icon slot="end" name="close-outline" (click)="remove(history)"></ion-icon>
+    </ion-item>
+  </ion-list>
+</ion-content>

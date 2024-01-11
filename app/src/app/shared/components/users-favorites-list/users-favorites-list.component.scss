@@ -1,0 +1,29 @@
+.tabs {
+  position: sticky;
+  top: 0;
+  z-index: 9999999;
+}
+
+.tab-icon {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  ion-icon {
+    margin-right: 8px;
+  }
+}
+
+.card-modal-user {
+  margin: 12px;
+
+  ion-card-content {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+  }
+}
+
+.no-scroll {
+  --overflow: hidden;
+}

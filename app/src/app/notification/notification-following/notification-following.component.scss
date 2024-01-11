@@ -1,0 +1,26 @@
+.tag {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.content-news {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  font-weight: normal;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+}
+
+.icon-status {
+  width: 18px;
+
+  ion-icon {
+      width: 10px;
+  }
+}

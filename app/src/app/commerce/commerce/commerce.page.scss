@@ -1,0 +1,95 @@
+// .category {
+//   display: inline-flex;
+//   width: 100%;
+//   justify-content: flex-start;
+//   position: relative;
+//   padding-left: 52px;
+
+//   #active {
+//     background-color: #000000;
+//     color: #f2f2f2;
+//   }
+//   .box {
+//     background-color: #f2f2f2;
+//     color: #000000;
+//     border-radius: 8px;
+//     height: 36px;
+//     line-height: 36px;
+//     padding: 0 12px;
+//     margin: 12px;
+
+//     &.hide {
+//       display: none;
+//     }
+
+//     &.show {
+//       display: block;
+//     }
+//   }
+//   .prev,
+//   .next {
+//     position: absolute;
+//     top: 50%;
+//     transform: translate(-50%, -50%);
+//     width: 56px;
+//     height: 38px;
+//     line-height: 38px;
+
+//     // &.hide {
+//     //   display: none;
+//     // }
+//   }
+
+//   .prev {
+//     left: 48px;
+//     text-align: left;
+//     // background: linear-gradient(to left,#fff 20%,rgba(255,255,255,0) 80%);
+//     // &::after {
+//     //   content: "";
+//     //   background: linear-gradient(
+//     //     to right,
+//     //     #fff 20%,
+//     //     rgba(255, 255, 255, 0) 80%
+//     //   );
+//     // }
+//   }
+
+//   .next {
+//     right: -12px;
+//     text-align: right;
+//     // background: linear-gradient(to right,#fff 20%,rgba(255,255,255,0) 80%);
+//     // &::before {
+//     //   content: "";
+//     //   background: linear-gradient(
+//     //     to left,
+//     //     #fff 20%,
+//     //     rgba(255, 255, 255, 0) 80%
+//     //   );
+//     // }
+//   }
+// }
+
+ion-searchbar.search-news-tabs {
+  padding: 0;
+  width: 100%;
+}
+
+.cart-count {
+  position: absolute;
+  top: 8px;
+  right: -4px;
+  background-color: #ff0000;
+  color: #fff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-infinite-scroll-content {
+  margin: 0; /* Loại bỏ margin của infinite scroll */
+}
+

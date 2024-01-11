@@ -1,0 +1,353 @@
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <div class="ml-2">
+        <div>{{ 'NOTIFICATION.NOTIFICATION_LIST' | translate }}</div>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title>{{ 'NOTIFICATION.NOTIFICATION_LIST' | translate }}</ion-title>
+    <!-- <ion-button fill="clear" slot="end" (click)="issueFilter.open()">
+      <ion-icon size="medium" color="dark" name="options-outline"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" slot="end" [routerLink]="['issue-create']">
+      <ion-icon size="medium" color="dark" name="add-outline"></ion-icon>
+    </ion-button> -->
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div *ngIf="isHasNotification" class="mark-all-as-read">
+    <a
+      class="float-right mr-5 text-blue-500 text-sm"
+      (click)="setAllStatusNotification()"
+      >{{ 'NOTIFICATION.MARK_ALL_AS_READ' | translate }}</a
+    >
+  </div>
+  <div class="mt-3">
+    <div class="ml-4" *ngIf="!isHasNotification">
+      <div>{{ 'NOTIFICATION.CONTENT.HAVE_NO_NOTIFICATIONS' | translate }}</div>
+    </div>
+    <div *ngFor="let data of listNotification; index as i">
+      <ion-card
+        *ngIf="data.action === 'friend_accept'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-accept-friend
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-accept-friend>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'friend_request'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-request-friend
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-request-friend>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'create_news' ||data.action === 'chapter_create_news'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-create-news
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-create-news>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'reaction_news' || data.action === 'reaction_event' || data.action === 'reaction_opportunity' || data.action === 'reaction_product'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-reaction
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-reaction>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'comment_news' || data.action === 'comment_event' || data.action === 'comment_opportunity'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-comment-news
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-comment-news>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'comment_product'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-comment-product
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-comment-product>
+        </ion-card-content>
+      </ion-card>
+      <ion-card
+        *ngIf="data.action === 'create_bids'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-bid
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-bid>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'mention_news'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-mention-news
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-mention-news>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'create_event'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-create-event
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-create-event>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'create_opportunity'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-create-opportunity
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-create-opportunity>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'create_participate'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-participate-event
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-participate-event>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'organization_create_news'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-org-create-news
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-org-create-news>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'organization_create_event'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-org-create-event
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-org-create-event>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'organization_create_opportunity'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-org-create-opportunity
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-org-create-opportunity>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'user_following'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-following
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-following>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'reply_comment' || data.action === 'reply_comment_news'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-reply-comment-news
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-reply-comment-news>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'reply_comment_product'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-reply-comment-product
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-reply-comment-product>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'create_product'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-create-product
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-create-product>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'comment_mention_news'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-mention-comment
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-mention-comment>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card
+        *ngIf="data.action === 'create_issue'"
+        class="cursor-pointer"
+        class="card-modal-user my-2"
+      >
+        <ion-card-content *ngIf="!isLoading" class="pr-2.5">
+          <app-notification-assignee-issue
+            [data]="data"
+            (actionSheet)="onActionSheet($event)"
+            [indexNotification]="i"
+            [isLoading]="isLoading"
+          ></app-notification-assignee-issue>
+        </ion-card-content>
+      </ion-card>
+    </div>
+    <div class="ml-4" *ngIf="!isMoreNotification">
+      <div>{{ 'NOTIFICATION.CONTENT.READ_ALL_NOTIFICATIONS' | translate }}</div>
+    </div>
+  </div>
+
+  <ion-infinite-scroll
+    (ionInfinite)="onIonInfinite($event)"
+    *ngIf="listNotification.length"
+  >
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

@@ -1,0 +1,143 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-item
+        lines="none"
+        class="text-sm w-full self-center ml-2"
+        *ngIf="query.type === '2'"
+      >
+        <ion-icon name="newspaper-outline"></ion-icon>
+        <ion-text> {{'TAB.PROFILE.NEWS_USER' | translate }} </ion-text>
+      </ion-item>
+      <ion-item
+        lines="none"
+        class="text-sm w-full self-center ml-2"
+        *ngIf="query.type === '1'"
+      >
+        <ion-icon name="calendar-number-outline"></ion-icon>
+        <ion-text> {{'TAB.PROFILE.EVENTS_USER' | translate }} </ion-text>
+      </ion-item>
+      <ion-item
+        lines="none"
+        class="text-sm w-full self-center ml-2"
+        *ngIf="query.type === '0'"
+      >
+        <ion-icon name="bulb-outline"></ion-icon>
+        <ion-text> {{'TAB.PROFILE.OPP_USER' | translate }} </ion-text>
+      </ion-item>
+      <ion-searchbar
+        class="!py-0"
+        [debounce]="1000"
+        (ionInput)="searchNews($event)"
+        placeholder="{{ 'PLACEHOLDER.SEARCH' | translate }}"
+      ></ion-searchbar>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" class="pages-news-profile">
+  <ion-segment
+    [value]="segmentStatus"
+    (ionChange)="changeSegment($event)"
+    *ngIf="query.type === '2'"
+    class="bg-transparent"
+  >
+    <ion-segment-button value="0">
+      <ion-label>{{'TAB.PROFILE.NEWS_USER' | translate }}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="1">
+      <ion-label>{{'TAB.PROFILE.FOLLOWINGS' | translate }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-segment
+    [value]="segmentStatus"
+    (ionChange)="changeSegment($event)"
+    *ngIf="query.type === '1'"
+    class="bg-transparent"
+  >
+    <ion-segment-button value="0">
+      <ion-label>{{'TAB.PROFILE.POST' | translate }}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="1">
+      <ion-label>{{'TAB.PROFILE.PARTICIPATE' | translate }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-segment
+    [value]="segmentStatus"
+    (ionChange)="changeSegment($event)"
+    *ngIf="query.type === '0'"
+    class="bg-transparent"
+  >
+    <ion-segment-button value="0">
+      <ion-label>{{'TAB.PROFILE.POST' | translate }}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="1">
+      <ion-label>{{'TAB.PROFILE.BIDED' | translate }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngFor="let item of data; index as i">
+    <app-opportunity-item
+      *ngIf="query.type === '0'"
+      [data]="item"
+      [isLoading]="isLoading"
+      (heart)="clickHeart($event, 'news')"
+      (tagSearch)="onSearchTag($event)"
+      [me]="me"
+      [indexNews]="i+'opptab-'+segmentStatus"
+      (showNews)="onShowNews($event)"
+      (actionSheet)="onActionSheet($event)"
+      [hostNameLocation]="hostNameLocation + '/tabs/opportunities'"
+      (zoomImage)="onZoomImage($event)"
+    ></app-opportunity-item>
+    <app-event-item
+      *ngIf="query.type === '1'"
+      [data]="item"
+      (willParticipate)="setWillParticipate($event)"
+      (heart)="clickHeart($event, 'news')"
+      (practice)="clickPractice($event, 'event')"
+      (tagSearch)="onSearchTag($event)"
+      [me]="me"
+      [indexNews]="i+'eventtab-'+segmentStatus"
+      (showNews)="onShowNews($event)"
+      (actionSheet)="onActionSheet($event)"
+      [hostNameLocation]="hostNameLocation + '/tabs/events'"
+      (zoomImage)="onZoomImage($event)"
+    ></app-event-item>
+    <app-news-item
+      *ngIf="query.type === '2'"
+      [data]="item"
+      [isLoading]="isLoading"
+      (heart)="clickHeart($event, 'news')"
+      (tagSearch)="onSearchTag($event)"
+      [me]="me"
+      [indexNews]="i+'newstab-'+segmentStatus"
+      (showNews)="onShowNews($event)"
+      (actionSheet)="onActionSheet($event)"
+      [hostNameLocation]="hostNameLocation + '/tabs/news'"
+      (zoomImage)="onZoomImage($event)"
+    ></app-news-item>
+  </div>
+
+  <app-preview-image
+    [showModal]="showModal"
+    [images]="images"
+    (closeModal)="closeModal($event)"
+  ></app-preview-image>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button size="small" (click)="onClickCreate(0)">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+    <!-- <ion-fab-list side="top" class="right-0" style="right: 0">
+      <app-fab-list [buttons]="buttonCommerces" (type)="onClickCreate($event)">
+      </app-fab-list>
+    </ion-fab-list> -->
+  </ion-fab>
+</ion-content>

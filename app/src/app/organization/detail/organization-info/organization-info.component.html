@@ -1,0 +1,79 @@
+<app-avatar (getSrcImage)="getSrcImage($event)" [isBackground]="isBackground" [data]="organization"></app-avatar>
+
+<ion-card class="-mt-10 my-1 cursor-pointer text-xs" color="light">
+  <ion-card-content>
+    <div class="flex">
+      <app-avatar class="mt-1" (getSrcImage)="getSrcImage($event)" [isLogo]="isLogo" [data]="organization"></app-avatar>
+
+      <div class="ml-3 w-full">
+        <ion-card-title class="text-base font-extrabold">
+          <div [ngClass]="{'label-verified': organization.verified_flag}">
+            {{organization.name}}
+          </div>
+        </ion-card-title>
+
+        <div class="text-xs flex justify-between">
+          <div class="mt-1">
+            <ion-icon name="call-outline"></ion-icon> {{organization.phone}}
+          </div>
+          <div class="text-xs">
+            <ion-button *ngIf="!isFollow" class="text-xs m-0 h-6" size="small"
+              (click)="followOrganization(organization.id)" [disable]="isFollowing">
+              <ion-icon slot="start" name="duplicate-outline" class="ml-1"></ion-icon>
+              {{ 'PAGES.ORGANIZATION.FOLLOW' | translate}}
+            </ion-button>
+            <ion-button *ngIf="isFollow" class="text-xs m-0 h-6" size="small" fill="outline"
+              (click)="followOrganization(organization.id)" [disable]="isFollowing">
+              <ion-icon slot="start" name="checkmark-done-circle-outline" class="ml-1"></ion-icon>
+              {{ 'PAGES.ORGANIZATION.FOLLOWING' | translate}}
+            </ion-button>
+          </div>
+        </div>
+        <div class="text-xs" *ngIf="industriesString">
+          <ion-icon name="golf-outline"></ion-icon>
+          <span> {{industriesString}} </span>
+        </div>
+        <div class="text-xs" *ngIf="addressString">
+          <ion-icon name="location-outline"></ion-icon> {{addressString}}
+        </div>
+        <div class="text-xs mt-2">
+          <div class="flex space-x-2">
+            <div class="text-xs text-blue-500">
+              {{followersString || 0}}
+              <a (click)="setOpen(true)"> {{ 'PAGES.ORGANIZATION.FOLLOWERS' |
+                translate}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-xs">
+      <div class="flex space-x-2">
+        <ion-button size="small" *ngIf="organization.websites" color="dark" fill="clear" target="_blank"
+          [href]="organization.websites">
+          <ion-icon name="link-outline"></ion-icon>
+        </ion-button>
+        <ion-button size="small" *ngIf="socials.facebook" color="primary" fill="clear" target="_blank"
+          [href]="socials.facebook">
+          <ion-icon name="logo-facebook"></ion-icon>
+        </ion-button>
+        <ion-button size="small" *ngIf="socials.instagram" color="dark" fill="clear" target="_blank"
+          [href]="socials.instagram">
+          <ion-icon name="logo-instagram"></ion-icon>
+        </ion-button>
+        <ion-button size="small" *ngIf="socials.youtube" color="danger" fill="clear" target="_blank"
+          [href]="socials.youtube">
+          <ion-icon name="logo-youtube" class="color-red-700"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+<ion-modal [isOpen]="isShowListFollow">
+  <ng-template>
+    <app-users-follows [data]="organization" [resource_type]="'organization'" [type]="'follower'"
+      (setOpen)="setOpen($event)"></app-users-follows>
+  </ng-template>
+</ion-modal>

@@ -1,0 +1,128 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex">
+      <ion-buttons>
+        <ion-back-button class="text-xs" text="" defaultHref="/login"></ion-back-button>
+      </ion-buttons>
+      <ion-title class="text-sm">{{'PAGES.REGISTER.TITLE' | translate}}</ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="registerForm" novalidate>
+    <div class="register-page">
+      <ion-list>
+        <ion-item lines="none" class="ion-margin-top ion-margin-bottom">
+          <img src="../../../assets/logo/gcec.png" />
+        </ion-item>
+        <ion-item lines="none">
+          <ion-text>
+            <p clas="text-xs text-justify">
+              {{'PAGES.REGISTER.SLOGAN' | translate}}
+            </p>
+          </ion-text>
+        </ion-item>
+
+        <ion-item>
+          <ion-input class="required" [label]="'FORM.FIELD.FULL_NAME' | translate" labelPlacement="floating"
+            formControlName="username" [clearInput]="true" />
+        </ion-item>
+        <div class="error-container"
+          *ngIf="(registerForm.get('username')?.invalid && registerForm.get('username')?.touched) || registerForm.get('username')?.dirty  || isSubmitting">
+          <div class="text-rose-600 text-xs pl-4 pr-4">
+            <span *ngIf="registerForm.get('username')?.errors?.['required']">
+              {{'FORM.VALID.FULL_NAME.REQUIRED' | translate}}
+            </span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-input class="required" [label]="'FORM.FIELD.EMAIL' | translate" formControlName="email"
+            labelPlacement="floating" [clearInput]="true"></ion-input>
+        </ion-item>
+        <div class="error-container"
+          *ngIf="(registerForm.get('email')?.invalid && registerForm.get('email')?.touched) || registerForm.get('email')?.dirty  || isSubmitting">
+          <div class="text-rose-600 text-xs pl-4 pr-4">
+            <span *ngIf="registerForm.get('email')?.errors?.['required']">
+              {{'FORM.VALID.EMAIL.REQUIRED' | translate}}
+            </span>
+            <span *ngIf="registerForm.get('email')?.errors?.['pattern']">
+              {{'FORM.VALID.EMAIL.CORRECT_FORMAT' | translate}}
+            </span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-input class="required" [label]="'FORM.FIELD.PHONE' | translate" formControlName="phone"
+            labelPlacement="floating" [clearInput]="true"></ion-input>
+        </ion-item>
+        <div class="error-container"
+          *ngIf="(registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched) || registerForm.get('phone')?.dirty  || isSubmitting">
+          <div class="text-rose-600 text-xs pl-4 pr-4">
+            <span *ngIf="registerForm.get('phone')?.errors?.['required']">
+              {{'FORM.VALID.PHONE.REQUIRED' | translate}}
+            </span>
+            <span *ngIf="registerForm.get('phone')?.errors?.['pattern']">
+              {{'FORM.VALID.PHONE.CORRECT_FORMAT' | translate}}
+            </span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-input class="required" [label]="'FORM.FIELD.PASSWORD' | translate" formControlName="password"
+            labelPlacement="floating" [type]="passwordType" />
+          <ion-icon item-end [name]="passwordIcon" class="passwordIcon" (click)="hideShowPassword()"></ion-icon>
+        </ion-item>
+        <div class="error-container"
+          *ngIf="(registerForm.get('password')?.invalid && registerForm.get('password')?.touched) || registerForm.get('password')?.dirty || isSubmitting">
+          <div class="text-rose-600 text-xs pl-4 pr-4">
+            <span *ngIf="registerForm.get('password')?.errors?.['required']">
+              {{'FORM.VALID.PASSWORD.REQUIRED' | translate}}
+            </span>
+            <span *ngIf="registerForm.get('password')?.errors?.['pattern']">
+              {{'FORM.VALID.PASSWORD.CORRECT_FORMAT' | translate}}</span>
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-input [label]="'FORM.FIELD.CONFIRM_PASSWORD' | translate" class="required"
+            formControlName="confirmPassword" labelPlacement="floating" [type]="passwordType" />
+          <ion-icon item-end [name]="passwordIcon" class="passwordIcon" (click)="hideShowPassword()"></ion-icon>
+        </ion-item>
+        <div class="error-container"
+          *ngIf="(registerForm.get('password')?.invalid && registerForm.get('password')?.touched) || registerForm.get('password')?.dirty || isSubmitting">
+          <div class="text-rose-600 text-xs pl-4 pr-4">
+            <span *ngIf="registerForm.get('password')?.errors?.['required']">
+              {{'FORM.VALID.CONFIRM_PASSWORD.REQUIRED' | translate}}
+            </span>
+            <span *ngIf="registerForm.get('password')?.errors?.['pattern']">
+              {{'FORM.VALID.CONFIRM_PASSWORD.CORRECT_MATCH' | translate}}</span>
+          </div>
+        </div>
+
+        <ion-item lines="none" class="ion-margin-top ion-margin-bottom">
+          <ion-text>
+            <i>{{'PAGES.REGISTER.AGREE_TO' | translate}}
+              <a routerLink="/terms-policy" class="text-blue-500"><span>{{'PAGES.REGISTER.TERMS' | translate}}</span>,
+                <span>{{'PAGES.REGISTER.PRIVACY_POLICY' | translate}}
+                </span></a>
+              {{'PAGES.REGISTER.US' | translate}}.</i></ion-text>
+        </ion-item>
+      </ion-list>
+      <ion-row>
+        <ion-col>
+          <ion-button class="px-2" (click)="submit()" expand="block" [disabled]="registerForm.invalid || isSubmitting">
+            <ion-icon name="reload-outline" [hidden]="!isSubmitting" class="icon-load mr-3"></ion-icon>
+            <span>{{'BUTTON.REGISTER' | translate}}</span></ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <div text-center>
+          {{'PAGES.REGISTER.HAVE_ACCOUNT' | translate}}
+          <a class="text-blue-500" routerLink="/login">{{'BUTTON.LOGIN' | translate}}</a>
+        </div>
+      </ion-row>
+    </div>
+  </form>
+</ion-content>

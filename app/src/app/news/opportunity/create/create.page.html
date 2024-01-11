@@ -1,0 +1,168 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center">
+      <ion-buttons>
+        <ion-button fill="clear" color="dark" (click)="goBackCreate()" slot="start">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <!-- <ion-item lines="none"> -->
+      <ion-text> {{titlePage}} </ion-text>
+      <!-- </ion-item> -->
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <form *ngIf="isLoading">
+    <ion-skeleton-text [animated]="true" class="h-12"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-24"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-20"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-20"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-96"></ion-skeleton-text>
+  </form>
+  <form [formGroup]="form" novalidate *ngIf="!isLoading">
+    <!-- <ion-item>
+      <ion-label class="label-text sc-ion-textarea-ios">{{ "TAB.HOME.OPPORTUNITY_TYPE.CREATE" | translate }}</ion-label>
+      <div>{{'TAB.HOME.CHILD.OPPORTUNITY' | translate}}</div>
+    </ion-item> -->
+
+    <ion-item *ngIf="!query?.organization_id" [hidden]="isEdit">
+      <ion-select label="{{'TAB.COMMERCE.CHOICE_ORG' | translate}}" label-placement="floating"
+        formControlName="organization_id" okText="{{ 'BUTTON.CHOICE' | translate}}"
+        cancelText="{{ 'BUTTON.CANCEL' | translate}}" [class]="form.value.organization_id !== '' ? 'chooseOrg' : ''">
+        <ion-select-option *ngFor="let option of organizations" [value]="option.id">{{option.name}}</ion-select-option>
+      </ion-select>
+      <ion-icon *ngIf="form.value.organization_id !== ''" name="close-outline" (click)="clearOrg()"></ion-icon>
+    </ion-item>
+
+    <app-items-select [title]="'FORM.FIELD.INDUSTRY'" [itemId]="form.value.industry_id" [data]="industries"
+      (chooseData)="onChooseData($event)" (searchQuery)="onSearchQuery($event)" [isLoading]="isIndustry"
+      (createData)="onCreateData($event)" [removeName]="removeName"></app-items-select>
+
+    <ion-item>
+      <ion-textarea name="name" formControlName="name" type="text" [label]="'FORM.FIELD.TITLE' | translate"
+        labelPlacement="floating" [placeholder]="'ENTER' | translate" style="height: 100px"
+        class="required"></ion-textarea>
+    </ion-item>
+    <div class="pl-4 leading-10 flex justify-between">
+      <span class="mb-0">{{'FORM.FIELD.OPPORTUNITIES_PRICE' |translate}}</span>
+      <div class="mr-4">
+        <ion-radio-group [value]="typePrice" (ionChange)="checkTypePrice($event)">
+          <ion-radio [value]="0" class="mr-5" labelPlacement="end">{{"COMMON.CONTACT" |
+            translate}}</ion-radio>
+          <!-- <ion-radio [value]="0" class="mr-5" labelPlacement="end">{{"COMMON.FREE" | translate}}</ion-radio> -->
+          <ion-radio [value]="1" labelPlacement="end">{{"COMMON.CHARGES" | translate}}</ion-radio>
+        </ion-radio-group>
+      </div>
+    </div>
+    <ion-item *ngIf="typePrice === 1">
+      <app-price-input class="w-full" [label]="'FORM.FIELD.PRICE'" [priceEdit]="data?.minimum_price"
+        (price)="onPrice($event)"></app-price-input>
+    </ion-item>
+
+    <ion-item>
+      <div class="datetime-item">
+        <span class="">{{ 'FORM.FIELD.START_DATE' | translate }} </span>
+        <ion-text id="open-date-start" class="text-sm text-slate-500 hover:text-blue-600">
+          {{form.value.event_date_start}}
+        </ion-text>
+        <ion-modal trigger="open-date-start" [cssClass]="'bottom-end'">
+          <ng-template>
+            <ion-datetime presentation="date" size="cover" formControlName="event_date_start"
+              [showDefaultButtons]="true" doneText="{{'BUTTON.CHOICE' | translate}}"
+              cancelText="{{'BUTTON.CANCEL' | translate}}" [min]="dayNow"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+
+        <ion-text id="open-time-start" class="text-sm text-slate-500 hover:text-blue-600">{{form.value.start_time
+          }}</ion-text>
+        <ion-modal trigger="open-time-start" [cssClass]="'bottom-end'">
+          <ng-template>
+            <ion-datetime presentation="time" formControlName="start_time" size="cover" [showDefaultButtons]="true"
+              doneText="{{'BUTTON.CHOICE' | translate}}" cancelText="{{'BUTTON.CANCEL' | translate}}"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </div>
+    </ion-item>
+    <div [class]="isShowDateEnd ? 'datetime show' : 'datetime'" (click)="onShowDateEnd(!isShowDateEnd)">
+      <div class="content">
+        <ion-icon name="add-outline" *ngIf="!isShowDateEnd"></ion-icon>
+        <ion-icon name="remove-outline" *ngIf="isShowDateEnd"></ion-icon>
+        <span class="text" *ngIf="!isShowDateEnd">{{'PAGES.EVENTS.ADD_END_DATE' | translate}}</span>
+        <span class="text" *ngIf="isShowDateEnd">{{'PAGES.EVENTS.REMOVE_END_DATE' | translate}}</span>
+      </div>
+    </div>
+
+    <ion-item *ngIf="isShowDateEnd">
+      <div class="datetime-item">
+        <span class="">{{ 'FORM.FIELD.END_DATE' | translate }}</span>
+        <ion-text id="open-date-end" class="text-sm text-slate-500 hover:text-blue-600">
+          {{form.value.event_date_end}}
+        </ion-text>
+
+        <ion-modal trigger="open-date-end" [cssClass]="'bottom-end'">
+          <ng-template>
+            <ion-datetime presentation="date" size="cover" formControlName="event_date_end" [showDefaultButtons]="true"
+              doneText="{{'BUTTON.CHOICE' | translate}}" cancelText="{{'BUTTON.CANCEL' | translate}}"
+              [min]="form.value.event_date_start" (ionChange)="onTimeEventDateEnd($event)"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+
+        <ion-text id="open-time-end" class="text-sm text-slate-500 hover:text-blue-600">{{form.value.end_time
+          }}</ion-text>
+        <ion-modal trigger="open-time-end" [cssClass]="'bottom-end'">
+          <ng-template>
+            <ion-datetime presentation="time" formControlName="end_time" size="cover" [showDefaultButtons]="true"
+              doneText="{{'BUTTON.CHOICE' | translate}}" cancelText="{{'BUTTON.CANCEL' | translate}}"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </div>
+    </ion-item>
+
+
+    <app-hashtag-mention (getArrayHashtag)="onGetArrayHashtag($event)" (getHashtag)="onGetHasTag($event)"
+      [arrayHashtag]="arrayTag"></app-hashtag-mention>
+
+
+
+    <div class="p-4">
+      <ion-label position="fixed" class="label-required">{{'FORM.FIELD.CONTENT' | translate}}</ion-label>
+      <div class="NgxEditor__Wrapper mt-2">
+        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" class="sticky top-0 z-50">
+        </ngx-editor-menu>
+        <ngx-editor [editor]="editor" formControlName="content" [placeholder]="'ENTER' | translate"
+          (ngModelChange)="editorChange($event)"></ngx-editor>
+      </div>
+    </div>
+
+    <ion-item>
+      <ion-textarea name="requirement" formControlName="requirement" type="text"
+        [label]="'FORM.FIELD.REQUIREMENT' | translate" labelPlacement="floating" [placeholder]="'ENTER' | translate"
+        class="h-20"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-textarea name="location" formControlName="location" type="text" [label]="'FORM.FIELD.LOCATION' | translate"
+        labelPlacement="floating" [placeholder]="'ENTER' | translate" class="h-20"></ion-textarea>
+    </ion-item>
+
+    <div class="image">
+      <h5>{{"FORM.FIELD.UPLOAD_IMAGE" | translate}}</h5>
+      <app-avatar [data]="data" [isCreate]="isCreate" [isEdit]="isEdit" (removeImage)="handleRemoveImage($event)"
+        [isLoadingUpload]="isLoadingUpload" (addImage)="handleAddImage($event)"></app-avatar>
+    </div>
+
+  </form>
+</ion-content>
+
+<ion-footer class="bg-white">
+  <ion-row>
+    <ion-col>
+      <ion-button class="px-2" type="submit" expand="block" (click)="submit()" [disabled]="isNotCanSave">
+        <ion-icon name="reload-outline" [hidden]="!isSubmitting" class="icon-load mr-3"></ion-icon>
+
+        <span *ngIf="isCreate">{{'BUTTON.CREATE' | translate}}</span>
+        <span *ngIf="!isCreate">{{'BUTTON.SAVE' | translate}}</span>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

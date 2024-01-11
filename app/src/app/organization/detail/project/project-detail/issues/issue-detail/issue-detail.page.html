@@ -1,0 +1,76 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-button fill="clear" color="dark" (click)="goBack()" slot="start">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title>{{issue.code}}</ion-title>
+    <ion-button fill="clear" slot="end" [routerLink]="['issue-update']">
+      <ion-icon size="medium" color="dark" name="create-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div>
+
+    <ion-item>
+      <div class="flex">
+        <span class="font-bold text-green-500"> {{issue.code }} </span>
+        <div class="pl-1"> {{issue.name}} </div>
+      </div>
+    </ion-item>
+  </div>
+
+  <div class="pb-1">
+    <ion-item>
+      <div class="flex items-center w-full">
+        <app-avatar *ngIf="issue.assignee" [classNameAvatar]="'thumbnail-2'" [isAvatar]="true"
+          [data]="issue.assignee || {}"></app-avatar>
+        <div class="pl-1">
+          <div class="font-bold"> {{issue.assignee?.username || 'unassignee'}}</div>
+          <div class="text-xs">{{ issue.updated_date | date: 'hh:mm:ss dd/MM/yyyy'}}</div>
+        </div>
+      </div>
+    </ion-item>
+  </div>
+
+  <div>
+    <pre>{{issue.description}}</pre>
+  </div>
+
+  <div>
+      <ion-chip class="text-right text-xs h-[1.4rem]">{{ 'Type: ' + displayType(issue.type || 1) }}
+      </ion-chip>
+      <ion-chip class="text-right text-xs h-[1.4rem]">{{ 'Priority: ' + issue.priority?.name || 'Normal' }}
+      </ion-chip>
+      <ion-chip [color]="issue.status?.color || ''" class="text-right text-xs h-[1.4rem]">{{ 'Status: '
+        +issue.status?.name
+        || 'open' }}
+      </ion-chip>
+      <ion-chip *ngIf="issue.parent?.code" class="text-right text-xs h-[1.4rem]">{{'Parent: ' + issue.parent?.code }}
+      </ion-chip>
+
+  </div>
+  <div>
+      <ion-chip *ngIf="issue.milestone?.name" class="text-right text-xs h-[1.4rem]">{{'Milestone: ' + issue.milestone?.name }}
+      </ion-chip>
+      <ion-chip *ngIf="issue.version?.name" class="text-right text-xs h-[1.4rem]">{{'Version: ' + issue.version?.name }}
+      </ion-chip>
+  </div>
+  <div>
+      <ion-chip class="text-right text-xs h-[1.4rem]">{{issue.start_date | date: 'hh:mm:ss dd/MM/yyyy' }} -
+        {{issue.due_date | date: 'hh:mm:ss dd/MM/yyyy'}}
+      </ion-chip>
+      <ion-chip class="text-right text-xs h-[1.4rem]">{{ 'Est: ' + issue.estimate_hours }} - {{ 'Act: ' +
+        issue.actual_hours || '' }}
+      </ion-chip>
+  </div>
+
+  <div>
+    <pmo-checklist-list [issueId]="id"></pmo-checklist-list>
+  </div>
+
+  <app-issue-comment [id]="id"></app-issue-comment>
+
+  <app-activity-list [issueId]="id"></app-activity-list>
+</ion-content>

@@ -1,0 +1,22 @@
+ion-card {
+  ion-card-header {
+    padding: 8px;
+
+    .container {
+      align-items: center;
+      justify-content: space-between;
+
+      .left {
+        align-items: center;
+
+        ion-icon {
+          font-size: 30px;
+        }
+        .text {
+          margin-left: 8px;
+          font-size: 15px;
+        }
+      }
+    }
+  }
+}
