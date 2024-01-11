@@ -772,7 +772,7 @@
       "USER_FOLLOWING": "Just follow you",
       "UPDATE_OR_NOT_FOUND": "Some products have been changed or do not exist. Please check again!",
       "ORDER_SUCCESS": "Order success",
-      "ASSIGNEE_ISSUE": "assigned you a new issue"
+      "ASSIGNEE_ISSUE": "assigned issue for you"
     },
     "MARK_ALL_AS_READ": "Mark all as read"
   },

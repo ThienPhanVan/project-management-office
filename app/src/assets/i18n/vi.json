@@ -780,7 +780,7 @@
       "USER_FOLLOWING": "Vừa theo dõi bạn",
       "UPDATE_OR_NOT_FOUND": "Có sản phẩm đã bị thay đổi hoặc không tồn tại. Vui lòng kiểm tra lại!",
       "ORDER_SUCCESS": "Đặt hàng thành công",
-      "ASSIGNEE_ISSUE": "đã assignee cho bạn một issue mới"
+      "ASSIGNEE_ISSUE": "đã giao cho bạn một công việc"
     },
     "MARK_ALL_AS_READ": "Đánh dấu tất cả là đã đọc "
   },
